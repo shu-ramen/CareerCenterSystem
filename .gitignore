@@ -1,0 +1,10 @@
+## React
+src/CareerCenterSystem/resources/react_jsx/node_modules/
+**/.DS_Store
+
+### Django ###
+*.log
+*.pot
+*.pyc
+**/__pycache__/
+/src/CareerCenterSystem/db.sqlite3
