@@ -17,7 +17,7 @@ if __name__ == '__main__':
         if sys.argv[2] == "react":
             project_root = os.getcwd()
             os.chdir(os.path.join(project_root, "resources\\react_jsx"))
-            os.system("node_modules\.bin\webpack")
+            os.system("node_modules\\.bin\\webpack")
             os.chdir(project_root)
             sys.argv.pop(2)
         execute_from_command_line(sys.argv)
