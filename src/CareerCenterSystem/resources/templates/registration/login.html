@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<input type="hidden" name="next" value="{{ next }}"/>
+
+{% if next %}
+    {% if user.is_authenticated %}
+        {% if form.errors %}
+            <div id="formerror-hasnext-authenticated-login"></div>
+        {% else %}
+            <div id="hasnext-authenticated-login"></div>
+        {% endif %}
+    {% else %}
+        {% if form.errors %}
+            <div id="formerror-hasnext-not-authenticated-login"></div>
+        {% else %}
+            <div id="hasnext-not-authenticated-login"></div>
+        {% endif %}
+    {% endif %}
+{% else %}
+    {% if user.is_authenticated %}
+        {% if form.errors %}
+            <div id="formerror-authenticated-login"></div>
+        {% else %}
+            <div id="authenticated-login"></div>
+        {% endif %}
+    {% else %}
+        {% if form.errors %}
+            <div id="formerror-not-authenticated-login"></div>
+        {% else %}
+            <div id="not-authenticated-login"></div>
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/registration_login.js"></script>
+{% endblock %}

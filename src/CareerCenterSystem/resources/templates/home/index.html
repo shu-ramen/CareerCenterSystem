@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}トップページ{% endblock %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<img src="/static/images/library.jpg" style="display:none" />
+<div id="main"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/home_index.js"></script>
+{% endblock %}
