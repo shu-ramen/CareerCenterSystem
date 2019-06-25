@@ -12,6 +12,14 @@ def index(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+@login_required
+def search(request):
+    template = loader.get_template('library/search.html')
+    context = {
+        "categories": [c.name for c in models.Category.objects.all()]
+    }
+    return HttpResponse(template.render(context, request))
+
 @staff_member_required(login_url="/accounts/login/")
 def register_category(request):
     template = loader.get_template('library/register_category.html')
