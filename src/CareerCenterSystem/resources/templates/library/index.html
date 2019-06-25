@@ -1,0 +1,15 @@
+    
+{% extends 'base.html' %}
+
+{% block title %}図書貸出システム{% endblock %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+<div id="main"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/othello_index.js"></script>
+{% endblock %}
