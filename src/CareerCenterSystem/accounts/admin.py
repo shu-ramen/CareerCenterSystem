@@ -21,14 +21,6 @@ class CustomUserCreationForm(UserCreationForm):
                   "last_name_kana",
                   "email",
                   "phone_number",)
-    
-    def clean_username(self):
-        username = self.cleaned_data["username"]
-        try:
-            get_user_model().objects.get(username=username)
-        except get_user_model().DoesNotExist:
-            return username
-        raise forms.ValidationError(self.error_messages['duplicate_username'])
 
 class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
