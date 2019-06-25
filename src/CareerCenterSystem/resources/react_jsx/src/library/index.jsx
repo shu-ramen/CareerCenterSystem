@@ -65,12 +65,24 @@ class Index extends React.Component {
                 <Row>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
                         <Card bg="dark" text="white" style={{ width: '18rem' }}>
+                            <Card.Header as="h5">カテゴリ登録</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    カテゴリの登録を行います．
+                                </Card.Text>
+                                <Button variant="dark" href="register/category/" block>実行</Button>
+                            </Card.Body>
+                        </Card>
+                        <br />
+                    </Col>
+                    <Col xl={4} lg={4} md={4} sm={12} xs={12}>
+                        <Card bg="dark" text="white" style={{ width: '18rem' }}>
                             <Card.Header as="h5">図書登録</Card.Header>
                             <Card.Body>
                                 <Card.Text>
                                     図書の登録を行います．
                                 </Card.Text>
-                                <Button variant="dark" href="register/" block>実行</Button>
+                                <Button variant="dark" href="register/book/" block>実行</Button>
                             </Card.Body>
                         </Card>
                         <br />
@@ -82,7 +94,7 @@ class Index extends React.Component {
                                 <Card.Text>
                                     図書の廃棄を行います．
                                 </Card.Text>
-                                <Button variant="dark" href="unregister/" block>実行</Button>
+                                <Button variant="dark" href="unregister/book/" block>実行</Button>
                             </Card.Body>
                         </Card>
                         <br />
