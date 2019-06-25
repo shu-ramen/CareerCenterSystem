@@ -8,3 +8,4 @@ src/CareerCenterSystem/resources/react_jsx/node_modules/
 *.pyc
 **/__pycache__/
 /src/CareerCenterSystem/db.sqlite3
+/src/CareerCenterSystem/resources/static/js/
