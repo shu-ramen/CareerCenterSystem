@@ -37,6 +37,30 @@ class Signup extends React.Component {
                                 <Form.Label>パスワード (確認)</Form.Label>
                                 <Form.Control name="password2" type="password" placeholder="再度同じパスワードを入力してください" required />
                             </Form.Group>
+                            <Form.Group controlId="id_last_name">
+                                <Form.Label>姓</Form.Label>
+                                <Form.Control name="last_name" type="text" placeholder="姓を入力してください" required />
+                            </Form.Group>
+                            <Form.Group controlId="id_first_name">
+                                <Form.Label>名</Form.Label>
+                                <Form.Control name="first_name" type="text" placeholder="名を入力してください" required />
+                            </Form.Group>
+                            <Form.Group controlId="id_last_name">
+                                <Form.Label>姓（かな）</Form.Label>
+                                <Form.Control name="last_name_kana" type="text" placeholder="姓（かな）を入力してください" required />
+                            </Form.Group>
+                            <Form.Group controlId="id_first_name">
+                                <Form.Label>名（かな）</Form.Label>
+                                <Form.Control name="first_name_kana" type="text" placeholder="名（かな）を入力してください" required />
+                            </Form.Group>
+                            <Form.Group controlId="id_email">
+                                <Form.Label>メールアドレス</Form.Label>
+                                <Form.Control name="email" type="text" placeholder="メールアドレスを入力してください" required />
+                            </Form.Group>
+                            <Form.Group controlId="id_phone_number">
+                                <Form.Label>電話番号</Form.Label>
+                                <Form.Control name="phone_number" type="text" placeholder="電話番号を入力してください" required />
+                            </Form.Group>
                             <Button variant="success" size="lg" type="submit" block>登録</Button>
                             <Button variant="link" href="/accounts/login/" block>すでにアカウントを持っている方はこちら</Button>
                         </Form>
