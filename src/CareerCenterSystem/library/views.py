@@ -1,14 +1,18 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from . import models, forms
 
 # Create your views here.
+@login_required(login_url="/accounts/login/")
 def index(request):
     template = loader.get_template('library/index.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+@staff_member_required(login_url="/accounts/login/")
 def register_category(request):
     template = loader.get_template('library/register_category.html')
     context = {}
