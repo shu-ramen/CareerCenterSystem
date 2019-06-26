@@ -27,6 +27,12 @@
     {% endfor %}
 {% endif %}
 
+{% if results %}
+    {% for result in results %}
+        {{ result.id }} {{ result.title }} {{ result.category.name }} {{ result.publisher }}
+    {% endfor %}
+{% endif %}
+
 <div id="main"></div>
 {% endblock %}
 

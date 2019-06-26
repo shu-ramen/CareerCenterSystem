@@ -18,6 +18,29 @@ def search(request):
     context = {
         "categories": [c.name for c in models.Category.objects.all()]
     }
+    if request.method == "POST":
+        try:
+            # 検索条件を取得
+            title = request.POST["title"]
+            category_name = request.POST["category"]
+            category = None
+            if category_name != "":
+                category = models.Category.objects.get(name=category_name)
+            publisher = request.POST["publisher"]
+            # 検索
+            results = None
+            if category != None:
+                results = models.Book.objects.filter(title__icontains=title, category=category, publisher__icontains=publisher)
+            else:
+                results = models.Book.objects.filter(title__icontains=title, publisher__icontains=publisher)
+            # 値をセットする
+            if results.count() > 0:
+                context["results"] = list(results)
+                context["message"] = "検索が完了しました"
+            else:
+                context["message"] = "検索条件に一致するものは存在しません"
+        except Exception as e:
+            context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
 
 @staff_member_required(login_url="/accounts/login/")
