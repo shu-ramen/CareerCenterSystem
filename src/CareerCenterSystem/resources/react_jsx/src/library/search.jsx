@@ -24,13 +24,13 @@ class Search extends React.Component {
                     {options}
                 </Form.Control>
             </Form.Group>
-        )
+        );
     }
 
     getCategoryOption(category) {
         return (
             <option>{category}</option>
-        )
+        );
     }
 
     render() {
