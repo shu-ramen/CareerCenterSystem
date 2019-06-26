@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Row, Col, Container, Button } from 'react-bootstrap';
+import { Form, Row, Col, Container, Button, Table } from 'react-bootstrap';
 
 class Search extends React.Component {
     constructor() {
@@ -64,7 +64,75 @@ class Search extends React.Component {
     }
 }
 
-if (document.getElementsByName('category') != null) {
+class Result extends React.Component {
+    constructor() {
+        super();
+    }
+
+    getTbody() {
+        let trs = this.props.results.map((result) => this.getTr(result));
+        return (
+            <tbody>
+                {trs}
+            </tbody>
+        )
+    }
+
+    getTr(result) {
+        return (
+            <tr>
+                <td>{result["id"]}</td>
+                <td>{result["title"]}</td>
+                <td>{result["category"]}</td>
+                <td>{result["publisher"]}</td>
+            </tr>
+        )
+    }
+
+    render() {
+        let tbody = this.getTbody();
+
+        return (
+            <Container>
+                <br />
+                <Row>
+                    <Col></Col>
+                    <Col xl={8} lg={8} md={8} sm={12} sx={12}>
+                        <Table striped bordered hover>
+                            <thead>
+                                <th>#</th>
+                                <th>タイトル</th>
+                                <th>カテゴリ</th>
+                                <th>出版社</th>
+                            </thead>
+                            {tbody}
+                        </Table>
+                    </Col>
+                    <Col></Col>
+                </Row>
+            </Container>
+        );
+    }
+}
+
+if (document.getElementsByName('result').length > 0) {
+    let resultTags = document.getElementsByName('result')
+    let results = []
+    for (let resultTag of resultTags) {
+        results.push({
+            "id": resultTag.children[0].value,
+            "title": resultTag.children[1].value,
+            "category": resultTag.children[2].value,
+            "publisher": resultTag.children[3].value
+        });
+    }
+    ReactDOM.render(
+        <Result results={results} />,
+        document.getElementById('result_table')
+    );
+}
+
+if (document.getElementsByName('category').length > 0) {
     let categoryTags = document.getElementsByName('category');
     let categories = [];
     for (let categoryTag of categoryTags) {
@@ -72,6 +140,11 @@ if (document.getElementsByName('category') != null) {
     }
     ReactDOM.render(
         <Search categories={categories} />,
+        document.getElementById('main')
+    );
+} else {
+    ReactDOM.render(
+        <Search categories={[]} />,
         document.getElementById('main')
     );
 }
