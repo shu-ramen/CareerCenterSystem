@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Row, Col, Container, Button } from 'react-bootstrap';
+import { Form, Row, Col, Container, Button, Input } from 'react-bootstrap';
 
 class Register extends React.Component {
     constructor() {
@@ -55,6 +55,15 @@ class Register extends React.Component {
                                 <Form.Control name="publisher" type="text" placeholder="出版社を入力してください" maxlength="256" required />
                             </Form.Group>
                             <Button variant="success" size="lg" type="submit" block>登録</Button>
+                        </Form>
+                        <br />
+                        <Form method="POST">
+                            {csrfTokenTag}
+                            <Form.Group controlId="id_title">
+                                <Form.Label>インポートするCSVファイル</Form.Label>
+                                <Form.Control name="title" type="file" placeholder="ファイルをドラッグしてください" maxlength="256" required />
+                            </Form.Group>
+                            <Button variant="success" size="lg" type="submit" block>一括登録</Button>
                         </Form>
                     </Col>
                     <Col></Col>
