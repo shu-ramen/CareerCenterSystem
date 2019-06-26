@@ -1,7 +1,12 @@
 from django import forms
-from .models import Category
+from . import models
 
 class CategoryForm(forms.ModelForm):
     class Meta:
-        model = Category
+        model = models.Category
         fields = ['name']
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = models.Book
+        fields = ['title', 'category', 'publisher']

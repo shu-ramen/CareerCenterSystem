@@ -12,8 +12,9 @@ module.exports = {
       share_message:             path.resolve(__dirname, "src/share/message.jsx"),
       home_index:                path.resolve(__dirname, "src/home/index.jsx"),
       library_index:             path.resolve(__dirname, "src/library/index.jsx"),
-      library_search:             path.resolve(__dirname, "src/library/search.jsx"),
+      library_search:            path.resolve(__dirname, "src/library/search.jsx"),
       library_register_category: path.resolve(__dirname, "src/library/register_category.jsx"),
+      library_register_book:     path.resolve(__dirname, "src/library/register_book.jsx"),
     },
     output: {
         path: path.resolve(__dirname, "../static/js/") ,

@@ -50,9 +50,39 @@ def register_category(request):
     if request.method == "POST":
         try:
             obj = models.Category()
-            category = forms.CategoryForm(request.POST, instance=obj)
-            category.save()
-            context["message"] = "登録しました"
+            data = {
+                "name": request.POST["name"]
+            }
+            category = forms.CategoryForm(data, instance=obj)
+            if category.is_valid():
+                category.save()
+                context["message"] = "登録しました"
+            else:
+                context["form"] = category
+        except Exception as e:
+            context["message"] = "失敗しました：{}".format(e)
+    return HttpResponse(template.render(context, request))
+
+@staff_member_required(login_url="/accounts/login/")
+def register_book(request):
+    template = loader.get_template('library/register_book.html')
+    context = {
+        "categories": [c.name for c in models.Category.objects.all()]
+    }
+    if request.method == "POST":
+        try:
+            obj = models.Book()
+            data = {
+                "title": request.POST["title"],
+                "category": models.Category.objects.get(name=request.POST["category"]).id,
+                "publisher": request.POST["publisher"]
+            }
+            book = forms.BookForm(data, instance=obj)
+            if book.is_valid():
+                book.save()
+                context["message"] = "登録しました"
+            else:
+                context["form"] = book
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))

@@ -27,7 +27,7 @@ class Register extends React.Component {
                             {csrfTokenTag}
                             <Form.Group controlId="id_name">
                                 <Form.Label>カテゴリ名</Form.Label>
-                                <Form.Control name="name"  type="text" placeholder="カテゴリ名を入力してください" maxlength="150" required />
+                                <Form.Control name="name" type="text" placeholder="カテゴリ名を入力してください" maxlength="150" required />
                             </Form.Group>
                             <Button variant="success" size="lg" type="submit" block>登録</Button>
                         </Form>
