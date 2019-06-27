@@ -47,12 +47,12 @@ class Search extends React.Component {
                             {csrfTokenTag}
                             <Form.Group controlId="id_title">
                                 <Form.Label>書籍名</Form.Label>
-                                <Form.Control name="title"  type="text" placeholder="書籍名を入力してください" maxlength="256" />
+                                <Form.Control name="title" type="text" placeholder="書籍名を入力してください" maxlength="256" />
                             </Form.Group>
                             {categorySelectBox}
                             <Form.Group controlId="id_publisher">
                                 <Form.Label>出版社</Form.Label>
-                                <Form.Control name="publisher"  type="text" placeholder="出版社を入力してください" maxlength="256" />
+                                <Form.Control name="publisher" type="text" placeholder="出版社を入力してください" maxlength="256" />
                             </Form.Group>
                             <Button variant="success" size="lg" type="submit" block>検索</Button>
                         </Form>
