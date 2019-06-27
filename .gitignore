@@ -9,3 +9,4 @@ src/CareerCenterSystem/resources/react_jsx/node_modules/
 **/__pycache__/
 /src/CareerCenterSystem/db.sqlite3
 /src/CareerCenterSystem/resources/static/js/
+/src/CareerCenterSystem/resources/react_jsx/pachage-lock.json
