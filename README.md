@@ -9,5 +9,5 @@
 ## Anaconda
 * Latest Version (https://www.anaconda.com/)
 ## npm
-* npm    5.6.0   (https://nodejs.org/ja/)
+* npm    6.9.0   (https://nodejs.org/ja/)
 
