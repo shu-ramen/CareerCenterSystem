@@ -116,7 +116,7 @@ class Result extends React.Component {
 }
 
 if (document.getElementsByName('result').length > 0) {
-    let resultTags = document.getElementsByName('result')
+    let resultTags = document.getElementsByName('result');
     let results = []
     for (let resultTag of resultTags) {
         results.push({
