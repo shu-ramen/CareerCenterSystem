@@ -43,6 +43,19 @@ def search(request):
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="/accounts/login/")
+def borrow(request):
+    template = loader.get_template('library/borrow.html')
+    context = {}
+    if request.method == "POST":
+        try:
+            if (len(models.Book.objects.filter(id=request.GET["book_id"])) > 0):
+                book = models.Book.objects.get(id=request.GET["book_id"])
+                context["book"] = book
+        except Exception as e:
+            context["message"] = "失敗しました：{}".format(e)
+    return HttpResponse(template.render(context, request))
+
 @staff_member_required(login_url="/accounts/login/")
 def register_category(request):
     template = loader.get_template('library/register_category.html')

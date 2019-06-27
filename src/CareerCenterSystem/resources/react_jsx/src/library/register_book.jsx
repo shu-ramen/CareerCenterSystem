@@ -57,13 +57,13 @@ class Register extends React.Component {
                             <Button variant="success" size="lg" type="submit" block>登録</Button>
                         </Form>
                         <br />
-                        <Form method="POST">
+                        <Form>
                             {csrfTokenTag}
                             <Form.Group controlId="id_title">
                                 <Form.Label>インポートするCSVファイル</Form.Label>
                                 <Form.Control name="title" type="file" placeholder="ファイルをドラッグしてください" maxlength="256" required />
                             </Form.Group>
-                            <Button variant="success" size="lg" type="submit" block>一括登録</Button>
+                            <Button variant="success" size="lg" type="submit" block>一括登録（未完成）</Button>
                         </Form>
                     </Col>
                     <Col></Col>
