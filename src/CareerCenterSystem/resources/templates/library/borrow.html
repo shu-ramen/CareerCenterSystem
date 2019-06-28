@@ -21,15 +21,6 @@
     <div id="message">{{ message }}</div>
 {% endif %}
 
-{% if book %}
-    <div type="hidden" name="book">
-        <input type="hidden" name="id" value={{ book.id }} />
-        <input type="hidden" name="title" value={{ book.title }} />
-        <input type="hidden" name="category_name" value={{ book.category.name }} />
-        <input type="hidden" name="publisher" value={{ book.publisher }} />
-    </div>
-{% endif %}
-
 <div id="main"></div>
 {% endblock %}
 

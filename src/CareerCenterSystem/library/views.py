@@ -1,5 +1,7 @@
+import json
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
+from django.http.response import JsonResponse
 from django.template import loader
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
@@ -49,9 +51,29 @@ def borrow(request):
     context = {}
     if request.method == "POST":
         try:
-            if (len(models.Book.objects.filter(id=request.GET["book_id"])) > 0):
-                book = models.Book.objects.get(id=request.GET["book_id"])
-                context["book"] = book
+            body = request.body
+            data = json.loads(body)
+            process = data["process"]
+            if process == "add_book":
+                book_id = int(data["book_id"])
+                response = None
+                if (len(models.Book.objects.filter(id=book_id)) > 0):
+                    book = models.Book.objects.get(id=book_id)
+                    response = {
+                        "book_id": book.id,
+                        "book_title": book.title,
+                        "book_category": book.category.name,
+                        "book_publisher": book.publisher,
+                        "success": True
+                    }
+                else:
+                    response = {
+                        "message": "IDの一致する図書が存在しません",
+                        "success": False,
+                    }
+                return JsonResponse(response)
+            else:
+                return JsonResponse({"test": "test"})
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))

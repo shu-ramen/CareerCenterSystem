@@ -43,7 +43,7 @@ class Search extends React.Component {
                 <Row>
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
-                        <Form method="POST">
+                        <Form method="GET">
                             {csrfTokenTag}
                             <Form.Group controlId="id_title">
                                 <Form.Label>書籍名</Form.Label>
@@ -100,7 +100,7 @@ class Result extends React.Component {
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Table striped bordered hover>
                             <thead>
-                                <th>#</th>
+                                <th>ID</th>
                                 <th>タイトル</th>
                                 <th>カテゴリ</th>
                                 <th>出版社</th>
