@@ -43,7 +43,7 @@ class Search extends React.Component {
                 <Row>
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
-                        <Form method="GET">
+                        <Form method="POST">
                             {csrfTokenTag}
                             <Form.Group controlId="id_title">
                                 <Form.Label>書籍名</Form.Label>
