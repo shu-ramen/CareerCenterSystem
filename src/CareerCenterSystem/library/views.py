@@ -59,6 +59,18 @@ def borrow(request):
                 response = None
                 if (len(models.Book.objects.filter(id=book_id)) > 0):
                     book = models.Book.objects.get(id=book_id)
+                    histories = models.History.objects.filter(book=book)
+                    latest = None
+                    if (len(histories) > 0):
+                        latest = histories.order_by('-timestamp')[0]
+                    if (latest is not None):
+                        print(latest.action)
+                        if latest.action == "0":
+                            response = {
+                                "message": "その本はすでに借り出されています",
+                                "success": False,
+                            }
+                            return JsonResponse(response)
                     response = {
                         "book_id": book.id,
                         "book_title": book.title,
@@ -71,6 +83,22 @@ def borrow(request):
                         "message": "IDの一致する図書が存在しません",
                         "success": False,
                     }
+                return JsonResponse(response)
+            elif process == "borrow_request":
+                books = data["books"]
+                user = request.user
+                for book in books:
+                    book_obj = models.Book.objects.get(id=book["id"])
+                    history = models.History(
+                        book=book_obj,
+                        user=user,
+                        action=0
+                    )
+                    history.save()
+                response = {
+                    "message": "貸出が完了しました",
+                    "success": True,
+                }
                 return JsonResponse(response)
             else:
                 return JsonResponse({"test": "test"})

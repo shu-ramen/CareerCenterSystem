@@ -118,8 +118,31 @@ class Borrow extends React.Component {
             }.bind(this));
     }
 
+    borrow_request() {
+        if (this.state.books.length == 0) {
+            alert("少なくとも１冊の本を選択してください");
+            return;
+        }
+        addHeader(request.post(""))
+            .send({
+                "books": this.state.books,
+                "process": "borrow_request"
+            })
+            .end(function (err, res) {
+                if (err) {
+                    alert(res.text);
+                }
+                if (res.body["success"]) {
+                    alert(res.body["message"]);
+                    this.setState({
+                        books: [],
+                        idList: [],
+                    })
+                }
+            }.bind(this));
+    }
+
     render() {
-        let csrfTokenTag = this.getCsrfTokenTag();
         let booksTable = this.getBooksTable();
 
         return (
@@ -142,10 +165,9 @@ class Borrow extends React.Component {
                             </Col>
                         </Row>
                         {booksTable}
-                        <Form method="POST">
-                            {csrfTokenTag}
-                            <Button variant="success" size="lg" type="submit" block>貸出申請</Button>
-                        </Form>
+                        <Row>
+                            <Button variant="success" size="lg" onClick={() => this.borrow_request()} block>貸出申請</Button>
+                        </Row>
                     </Col>
                     <Col></Col>
                 </Row>
