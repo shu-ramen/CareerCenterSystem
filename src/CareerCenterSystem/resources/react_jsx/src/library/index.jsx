@@ -49,7 +49,7 @@ class Index extends React.Component {
                                 <Card.Text>
                                     図書の返却を行います．
                                 </Card.Text>
-                                <Button variant="dark" href="return/" block>実行</Button>
+                                <Button variant="dark" href="giveback/" block>実行</Button>
                             </Card.Body>
                         </Card>
                         <br />

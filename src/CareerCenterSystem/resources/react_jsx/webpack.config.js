@@ -14,6 +14,7 @@ module.exports = {
       library_index:             path.resolve(__dirname, "src/library/index.jsx"),
       library_search:            path.resolve(__dirname, "src/library/search.jsx"),
       library_borrow:            path.resolve(__dirname, "src/library/borrow.jsx"),
+      library_giveback:          path.resolve(__dirname, "src/library/giveback.jsx"),
       library_register_category: path.resolve(__dirname, "src/library/register_category.jsx"),
       library_register_book:     path.resolve(__dirname, "src/library/register_book.jsx"),
     },

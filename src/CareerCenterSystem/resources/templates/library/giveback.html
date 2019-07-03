@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}返却 | 図書システム{% endblock %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+
+<br />
+
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div name="error">{{ error }}</div>
+        {% endfor %}
+     {% endfor %}
+{% endif %}
+
+{% if message %}
+    <div id="message">{{ message }}</div>
+{% endif %}
+
+{% if borrowList %}
+    {% for borrow in borrowList %}
+        <div type="hidden" name="borrow">
+            <input type="hidden" name="book_id" value={{ borrow.book.id }} />
+            <input type="hidden" name="title" value={{ borrow.book.title }} />
+            <input type="hidden" name="category_name" value={{ borrow.book.category.name }} />
+            <input type="hidden" name="publisher" value={{ borrow.book.publisher }} />
+            <input type="hidden" name="timestamp" value={{ borrow.timestamp }} />
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div id="borrow_table"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/share_error.js"></script>
+<script src="/static/js/share_message.js"></script>
+<script src="/static/js/library_giveback.js"></script>
+{% endblock %}

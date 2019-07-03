@@ -106,6 +106,38 @@ def borrow(request):
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url="/accounts/login/")
+def giveback(request):
+    template = loader.get_template('library/giveback.html')
+    context = {}
+    user = request.user
+    if request.method == "POST":
+        book_id = request.POST["book_id"]
+        book = models.Book.objects.get(id=book_id)
+        try:
+            history = models.History(
+                user=user,
+                book=book,
+                action=1
+            )
+            history.save()
+            context["message"] = "返却処理を行いました"
+        except Exception as e:
+            context["message"] = "失敗しました：{}".format(e)
+    histories = models.History.objects.filter(user=user)
+    if (len(histories) > 0):
+        histories = histories.order_by('-timestamp')
+        idList = []
+        borrowList = []
+        for history in histories:
+            if int(history.book.id) not in idList:
+                idList.append(int(history.book.id))
+                if history.action == "0":
+                    borrowList.append(history)
+        context["borrowList"] = borrowList
+    print(borrowList)
+    return HttpResponse(template.render(context, request))
+
 @staff_member_required(login_url="/accounts/login/")
 def register_category(request):
     template = loader.get_template('library/register_category.html')

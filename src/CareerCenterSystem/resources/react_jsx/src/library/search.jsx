@@ -44,7 +44,7 @@ class Search extends React.Component {
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Form method="POST">
-                            {csrfTokenTag}
+                            {csrfTokenTag} 
                             <Form.Group controlId="id_title">
                                 <Form.Label>書籍名</Form.Label>
                                 <Form.Control name="title" type="text" placeholder="書籍名を入力してください" maxlength="256" />
@@ -68,6 +68,13 @@ class Result extends React.Component {
     constructor() {
         super();
     }
+    
+    getCsrfTokenTag() {
+        let csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        return (
+            <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken}></input>
+        )
+    }
 
     getTbody() {
         let trs = this.props.results.map((result) => this.getTr(result));
@@ -79,14 +86,34 @@ class Result extends React.Component {
     }
 
     getTr(result) {
+        let status = this.getStatus();
+        let button = this.getButton();
         return (
             <tr>
                 <td>{result["id"]}</td>
                 <td>{result["title"]}</td>
                 <td>{result["category"]}</td>
                 <td>{result["publisher"]}</td>
+                <td>{status}</td>
+                <td>{button}</td>
             </tr>
         )
+    }
+
+    getStatus() {
+        return "○";
+    }
+
+    getButton() {
+        if (true) {
+            return (
+                <Form method="POST">
+                    {this.getCsrfTokenTag()}
+                    <input type="hidden" name="book_id" value={0}></input>
+                    <Button variant="info" type="submit">貸出</Button>
+                </Form>
+            )
+        }
     }
 
     render() {
@@ -100,10 +127,12 @@ class Result extends React.Component {
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Table striped bordered hover>
                             <thead>
-                                <th>ID</th>
+                                <th>図書ID</th>
                                 <th>タイトル</th>
                                 <th>カテゴリ</th>
                                 <th>出版社</th>
+                                <th>貸出可否</th>
+                                <th>処理</th>
                             </thead>
                             {tbody}
                         </Table>
