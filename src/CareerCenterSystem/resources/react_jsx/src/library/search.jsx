@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
+import { Button, Col, Container, Form, InputGroup, Row, Table } from 'react-bootstrap';
 import { getCsrfTokenTag } from '../share/csrf.jsx';
 
 class Search extends React.Component {
@@ -12,11 +12,15 @@ class Search extends React.Component {
         let options = this.props.categories.map((category) => this.getCategoryOption(category));
         return (
             <Form.Group controlId="id_category">
-                <Form.Label>カテゴリ</Form.Label>
-                <Form.Control as="select" name="category">
-                    <option></option>
-                    {options}
-                </Form.Control>
+                <InputGroup className="mb-3">
+                    <InputGroup.Prepend>
+                        <InputGroup.Text>カテゴリ</InputGroup.Text>
+                    </InputGroup.Prepend>
+                    <Form.Control as="select" name="category">
+                        <option></option>
+                        {options}
+                    </Form.Control>
+                </InputGroup>
             </Form.Group>
         );
     }
@@ -40,13 +44,21 @@ class Search extends React.Component {
                             {getCsrfTokenTag()}
                             <input type="hidden" name="process" value="search"></input>
                             <Form.Group controlId="id_title">
-                                <Form.Label>書籍名</Form.Label>
-                                <Form.Control name="title" type="text" placeholder="書籍名を入力してください" maxlength="256" />
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text>書籍名</InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control name="title" type="text" placeholder="書籍名を入力してください" maxlength="256" />
+                                </InputGroup>
                             </Form.Group>
                             {categorySelectBox}
                             <Form.Group controlId="id_publisher">
-                                <Form.Label>出版社</Form.Label>
-                                <Form.Control name="publisher" type="text" placeholder="出版社を入力してください" maxlength="256" />
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text>出版社</InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control name="publisher" type="text" placeholder="出版社を入力してください" maxlength="256" />
+                                </InputGroup>
                             </Form.Group>
                             <Button variant="success" size="lg" type="submit" block>検索</Button>
                         </Form>
