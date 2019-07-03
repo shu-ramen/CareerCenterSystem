@@ -14,9 +14,11 @@
 * npm    6.9.0   (https://nodejs.org/ja/)
 
 ## src/CareerCenterSystem/CareerCenterSystem/emailsettings.py
-EMAIL_USE_TLS = True<br />
-EMAIL_HOST = 'smtp.gmail.com'<br />
-EMAIL_HOST_USER = 'your_account@gmail.com'<br />
-EMAIL_HOST_PASSWORD = 'your_password'<br />
-EMAIL_PORT = 587<br />
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'<br />
+```
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'your_account@gmail.com'
+EMAIL_HOST_PASSWORD = 'your_password'
+EMAIL_PORT = 587
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+```
