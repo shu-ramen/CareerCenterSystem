@@ -77,7 +77,8 @@ class Result extends React.Component {
         let button = this.getButton(result["id"], result["borrowable"]);
         return (
             <tr>
-                <td>{result["id"]}</td>
+                <td>{result["book_id"]}</td>
+                <td>{result["control_number"]}</td>
                 <td>{result["title"]}</td>
                 <td>{result["category"]}</td>
                 <td>{result["publisher"]}</td>
@@ -122,6 +123,7 @@ class Result extends React.Component {
                         <Table striped bordered hover>
                             <thead>
                                 <th>図書ID</th>
+                                <th>管理番号</th>
                                 <th>タイトル</th>
                                 <th>カテゴリ</th>
                                 <th>出版社</th>
@@ -143,11 +145,12 @@ if (document.getElementsByName('result').length > 0) {
     let results = []
     for (let resultTag of resultTags) {
         results.push({
-            "id": resultTag.children[0].value,
-            "title": resultTag.children[1].value,
-            "category": resultTag.children[2].value,
-            "publisher": resultTag.children[3].value,
-            "borrowable": resultTag.children[4].value
+            "book_id": resultTag.children[0].value,
+            "control_number": resultTag.children[1].value,
+            "title": resultTag.children[2].value,
+            "category": resultTag.children[3].value,
+            "publisher": resultTag.children[4].value,
+            "borrowable": resultTag.children[5].value
         });
     }
     ReactDOM.render(

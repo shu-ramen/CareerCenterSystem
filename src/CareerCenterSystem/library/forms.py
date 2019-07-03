@@ -9,4 +9,4 @@ class CategoryForm(forms.ModelForm):
 class BookForm(forms.ModelForm):
     class Meta:
         model = models.Book
-        fields = ['title', 'category', 'publisher']
+        fields = ['control_number', 'title', 'category', 'publisher']

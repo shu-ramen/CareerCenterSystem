@@ -59,7 +59,6 @@ class Login extends React.Component {
     render() {
         let formErrorTag = this.getFormErrorTag(this.props.formError);
         let nextErrorTag = this.getNextErrorTag(this.props.hasNext, this.props.authenticated);
-        let csrfTokenTag = this.getCsrfTokenTag();
         let nextTag = this.getNextTag();
 
         return (

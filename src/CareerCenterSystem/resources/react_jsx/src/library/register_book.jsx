@@ -38,6 +38,10 @@ class Register extends React.Component {
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Form method="POST">
                             {getCsrfTokenTag()}
+                            <Form.Group controlId="id_control_number">
+                                <Form.Label>管理番号</Form.Label>
+                                <Form.Control name="control_number" type="text" placeholder="管理番号を入力してください" maxlength="16" required />
+                            </Form.Group>
                             <Form.Group controlId="id_title">
                                 <Form.Label>タイトル</Form.Label>
                                 <Form.Control name="title" type="text" placeholder="タイトルを入力してください" maxlength="256" required />

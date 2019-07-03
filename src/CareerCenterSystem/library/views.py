@@ -40,7 +40,8 @@ def search(request):
                     for book in books:
                         context["results"].append({})
                         context["results"][-1].update({
-                            "id": book.id,
+                            "book_id": book.id,
+                            "control_number": book.control_number,
                             "title": book.title,
                             "category": book.category,
                             "publisher": book.publisher,
@@ -72,6 +73,7 @@ def borrow(request):
                 if book is not None:
                     response = {
                         "book_id": book.id,
+                        "control_number": book.control_number,
                         "book_title": book.title,
                         "book_category": book.category.name,
                         "book_publisher": book.publisher,
@@ -147,6 +149,7 @@ def register_book(request):
         try:
             obj = models.Book()
             data = {
+                "control_number": request.POST["control_number"],
                 "title": request.POST["title"],
                 "category": models.Category.objects.get(name=request.POST["category"]).id,
                 "publisher": request.POST["publisher"]

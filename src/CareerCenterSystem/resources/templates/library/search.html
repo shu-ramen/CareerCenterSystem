@@ -30,7 +30,8 @@
 {% if results %}
     {% for result in results %}
         <div type="hidden" name="result">
-            <input type="hidden" name="id" value={{ result.id }} />
+            <input type="hidden" name="book_id" value={{ result.book_id }} />
+            <input type="hidden" name="control_number" value={{ result.control_number }} />
             <input type="hidden" name="title" value={{ result.title }} />
             <input type="hidden" name="category_name" value={{ result.category.name }} />
             <input type="hidden" name="publisher" value={{ result.publisher }} />
