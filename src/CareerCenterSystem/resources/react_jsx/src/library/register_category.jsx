@@ -1,22 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Row, Col, Container, Button } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { getCsrfTokenTag } from '../share/csrf.jsx';
 
 class Register extends React.Component {
     constructor() {
         super();
     }
-    
-    getCsrfTokenTag() {
-        let csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-        return (
-            <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken}></input>
-        )
-    }
 
     render() {
-        let csrfTokenTag = this.getCsrfTokenTag();
-        
         return (
             <Container>
                 <br />
@@ -24,7 +16,7 @@ class Register extends React.Component {
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Form method="POST">
-                            {csrfTokenTag}
+                            {getCsrfTokenTag()}
                             <Form.Group controlId="id_name">
                                 <Form.Label>カテゴリ名</Form.Label>
                                 <Form.Control name="name" type="text" placeholder="カテゴリ名を入力してください" maxlength="150" required />

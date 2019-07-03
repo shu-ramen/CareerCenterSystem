@@ -1,17 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Alert, Form, Row, Col, Container, Button, Table } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
+import { getCsrfTokenTag } from '../share/csrf.jsx';
 
 class BorrowTable extends React.Component {
     constructor() {
         super();
-    }
-    
-    getCsrfTokenTag() {
-        let csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-        return (
-            <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken}></input>
-        )
     }
 
     getTbody() {
@@ -33,7 +27,7 @@ class BorrowTable extends React.Component {
                 <td>{borrow["timestamp"]}</td>
                 <td>
                     <Form method="POST">
-                        {this.getCsrfTokenTag()}
+                        {getCsrfTokenTag()}
                         <input type="hidden" name="book_id" value={borrow["book_id"]}></input>
                         <Button variant="info" type="submit">返却</Button>
                     </Form>

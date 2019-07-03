@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Alert, Row, Col, Container, } from 'react-bootstrap';
+import { Alert, Col, Container, Row } from 'react-bootstrap';
 
 class Error extends React.Component {
     constructor() {

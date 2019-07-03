@@ -1,17 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Row, Col, Container, Button, Table } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap';
+import { getCsrfTokenTag } from '../share/csrf.jsx';
 
 class Search extends React.Component {
     constructor() {
         super();
-    }
-    
-    getCsrfTokenTag() {
-        let csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-        return (
-            <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken}></input>
-        )
     }
 
     getCategorySelectBox() {
@@ -34,7 +28,6 @@ class Search extends React.Component {
     }
 
     render() {
-        let csrfTokenTag = this.getCsrfTokenTag();
         let categorySelectBox = this.getCategorySelectBox();
         
         return (
@@ -44,7 +37,7 @@ class Search extends React.Component {
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Form method="POST">
-                            {csrfTokenTag} 
+                            {getCsrfTokenTag()} 
                             <Form.Group controlId="id_title">
                                 <Form.Label>書籍名</Form.Label>
                                 <Form.Control name="title" type="text" placeholder="書籍名を入力してください" maxlength="256" />
@@ -108,7 +101,7 @@ class Result extends React.Component {
         if (true) {
             return (
                 <Form method="POST">
-                    {this.getCsrfTokenTag()}
+                    {getCsrfTokenTag()}
                     <input type="hidden" name="book_id" value={0}></input>
                     <Button variant="info" type="submit">貸出</Button>
                 </Form>

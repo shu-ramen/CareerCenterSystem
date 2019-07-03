@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import request from 'superagent';
-import { Button, Form, Col, Container, Row, Table, InputGroup } from 'react-bootstrap';
+import { Button, Col, Container, Form, InputGroup, Row, Table } from 'react-bootstrap';
 import { addHeader } from '../share/csrf.jsx';
 
 class Borrow extends React.Component {
@@ -11,13 +11,6 @@ class Borrow extends React.Component {
             books: [],
             idList: [],
         };
-    }
-    
-    getCsrfTokenTag() {
-        let csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-        return (
-            <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken}></input>
-        )
     }
 
     getBooksTable() {

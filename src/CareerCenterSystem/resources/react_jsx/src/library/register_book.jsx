@@ -1,17 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Row, Col, Container, Button, Input } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { getCsrfTokenTag } from '../share/csrf.jsx';
 
 class Register extends React.Component {
     constructor() {
         super();
-    }
-    
-    getCsrfTokenTag() {
-        let csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-        return (
-            <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken}></input>
-        )
     }
 
     getCategorySelectBox() {
@@ -34,7 +28,6 @@ class Register extends React.Component {
     }
 
     render() {
-        let csrfTokenTag = this.getCsrfTokenTag();
         let categorySelectBox = this.getCategorySelectBox();
         
         return (
@@ -44,7 +37,7 @@ class Register extends React.Component {
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Form method="POST">
-                            {csrfTokenTag}
+                            {getCsrfTokenTag()}
                             <Form.Group controlId="id_title">
                                 <Form.Label>タイトル</Form.Label>
                                 <Form.Control name="title" type="text" placeholder="タイトルを入力してください" maxlength="256" required />
@@ -58,7 +51,7 @@ class Register extends React.Component {
                         </Form>
                         <br />
                         <Form>
-                            {csrfTokenTag}
+                            {getCsrfTokenTag()}
                             <Form.Group controlId="id_title">
                                 <Form.Label>インポートするCSVファイル</Form.Label>
                                 <Form.Control name="title" type="file" placeholder="ファイルをドラッグしてください" maxlength="256" required />

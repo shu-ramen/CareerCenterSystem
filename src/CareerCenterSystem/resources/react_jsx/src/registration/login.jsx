@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Row, Col, Alert, Container, Form, Button } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { getCsrfTokenTag } from '../share/csrf.jsx';
 
 class Login extends React.Component {
     constructor() {
@@ -48,13 +49,6 @@ class Login extends React.Component {
         }
     }
 
-    getCsrfTokenTag() {
-        let csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-        return (
-            <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken}></input>
-        )
-    }
-
     getNextTag() {
         let next = document.getElementsByName("next")[0].value;
         return (
@@ -77,7 +71,7 @@ class Login extends React.Component {
                         {formErrorTag}
                         {nextErrorTag}
                         <Form method="POST" action="/accounts/login/">
-                            {csrfTokenTag}
+                            {getCsrfTokenTag()}
                             <Form.Group controlId="id_username">
                                 <Form.Label>学籍番号</Form.Label>
                                 <Form.Control name="username"  type="text" placeholder="学籍番号を入力してください" required />
@@ -90,26 +84,6 @@ class Login extends React.Component {
                             <Button variant="link" href="/accounts/signup/" block>アカウントを持っていない方はこちら</Button>
                             {nextTag}
                         </Form>
-                    </Col>
-                    <Col></Col>
-                </Row>
-            </Container>
-        )
-    }
-}
-
-class Error extends React.Component {
-    constructor() {
-        super();
-    }
-
-    render() {
-        return (
-            <Container>
-                <Row>
-                    <Col></Col>
-                    <Col xl={8} lg={8} md={8} sm={12} sx={12}>
-                        <Alert variant="danger">{this.props.error}</Alert>
                     </Col>
                     <Col></Col>
                 </Row>
