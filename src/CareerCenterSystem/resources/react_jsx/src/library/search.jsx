@@ -61,13 +61,6 @@ class Result extends React.Component {
     constructor() {
         super();
     }
-    
-    getCsrfTokenTag() {
-        let csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-        return (
-            <input type="hidden" name="csrfmiddlewaretoken" value={csrfToken}></input>
-        )
-    }
 
     getTbody() {
         let trs = this.props.results.map((result) => this.getTr(result));

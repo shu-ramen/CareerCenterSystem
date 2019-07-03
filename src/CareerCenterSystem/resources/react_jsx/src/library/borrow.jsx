@@ -20,9 +20,6 @@ class Borrow extends React.Component {
                 <Container>
                     <br />
                     <Row>
-
-                    </Row>
-                    <Row>
                         <Col xl={12} lg={12} md={12} sm={12} sx={12}>
                             <Table striped bordered hover>
                                 <thead>
