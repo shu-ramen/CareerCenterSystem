@@ -23,7 +23,8 @@ class Borrow extends React.Component {
                         <Col xl={12} lg={12} md={12} sm={12} sx={12}>
                             <Table striped bordered hover>
                                 <thead>
-                                    <th>ID</th>
+                                    <th>図書ID</th>
+                                    <th>管理番号</th>
                                     <th>タイトル</th>
                                     <th>カテゴリ</th>
                                     <th>出版社</th>
@@ -54,7 +55,8 @@ class Borrow extends React.Component {
     getTr(book, idx) {
         return (
             <tr>
-                <td>{book["id"]}</td>
+                <td>{book["book_id"]}</td>
+                <td>{book["control_number"]}</td>
                 <td>{book["title"]}</td>
                 <td>{book["category"]}</td>
                 <td>{book["publisher"]}</td>
@@ -74,11 +76,11 @@ class Borrow extends React.Component {
         });
     }
 
-    requestBook() {
+    requestBookWithId() {
         addHeader(request.post(""))
             .send({
                 "book_id": document.getElementById("book_id").value,
-                "process": "add_book",
+                "process": "add_book_id",
             })
             .end(function (err, res) {
                 if (err) {
@@ -89,7 +91,43 @@ class Borrow extends React.Component {
                         let temp_books = this.state.books;
                         let temp_idList = this.state.idList;
                         temp_books.push({
-                            "id": res.body["book_id"],
+                            "book_id": res.body["book_id"],
+                            "control_number": res.body["control_number"],
+                            "title": res.body["book_title"],
+                            "category": res.body["book_category"],
+                            "publisher": res.body["book_publisher"],
+                        });
+                        temp_idList.push(res.body["book_id"]);
+                        this.setState({
+                            books: temp_books,
+                            idList: temp_idList,
+                        });
+                    } else {
+                        alert("そのIDの本はすでに追加されています")
+                    }
+                } else {
+                    alert(res.body["message"]);
+                }
+            }.bind(this));
+    }
+
+    requestBookWithControlNumber() {
+        addHeader(request.post(""))
+            .send({
+                "control_number": document.getElementById("control_number").value,
+                "process": "add_book_control_number",
+            })
+            .end(function (err, res) {
+                if (err) {
+                    alert(res.text);
+                }
+                if (res.body["success"]) {
+                    if (this.state.idList.indexOf(res.body["book_id"]) == -1) {
+                        let temp_books = this.state.books;
+                        let temp_idList = this.state.idList;
+                        temp_books.push({
+                            "book_id": res.body["book_id"],
+                            "control_number": res.body["control_number"],
                             "title": res.body["book_title"],
                             "category": res.body["book_category"],
                             "publisher": res.body["book_publisher"],
@@ -151,7 +189,20 @@ class Borrow extends React.Component {
                                 </InputGroup>
                             </Col>
                             <Col xl={4} lg={4} md={4} sm={12} sx={12}>
-                                <Button variant="info" onClick={() => this.requestBook()} block>追加</Button>
+                                <Button variant="info" onClick={() => this.requestBookWithId()} block>追加</Button>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xl={8} lg={8} md={8} sm={12} sx={12}>
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text>管理番号</InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control id="control_number" />
+                                </InputGroup>
+                            </Col>
+                            <Col xl={4} lg={4} md={4} sm={12} sx={12}>
+                                <Button variant="info" onClick={() => this.requestBookWithControlNumber()} block>追加</Button>
                             </Col>
                         </Row>
                         {booksTable}

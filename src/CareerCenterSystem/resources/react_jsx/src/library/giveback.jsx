@@ -21,6 +21,7 @@ class BorrowTable extends React.Component {
         return (
             <tr>
                 <td>{borrow["book_id"]}</td>
+                <td>{borrow["control_number"]}</td>
                 <td>{borrow["title"]}</td>
                 <td>{borrow["category"]}</td>
                 <td>{borrow["publisher"]}</td>
@@ -44,10 +45,11 @@ class BorrowTable extends React.Component {
                 <br />
                 <Row>
                     <Col></Col>
-                    <Col xl={8} lg={8} md={8} sm={12} sx={12}>
+                    <Col xl={10} lg={10} md={10} sm={12} sx={12}>
                         <Table striped bordered hover>
                             <thead>
                                 <th>図書ID</th>
+                                <th>管理番号</th>
                                 <th>タイトル</th>
                                 <th>カテゴリ</th>
                                 <th>出版社</th>
@@ -70,10 +72,11 @@ if (document.getElementsByName('borrow').length > 0) {
     for (let borrowTag of borrowTags) {
         borrowList.push({
             "book_id": borrowTag.children[0].value,
-            "title": borrowTag.children[1].value,
-            "category": borrowTag.children[2].value,
-            "publisher": borrowTag.children[3].value,
-            "timestamp": borrowTag.children[4].value,
+            "control_number": borrowTag.children[1].value,
+            "title": borrowTag.children[2].value,
+            "category": borrowTag.children[3].value,
+            "publisher": borrowTag.children[4].value,
+            "timestamp": borrowTag.children[5].value,
         });
     }
     ReactDOM.render(

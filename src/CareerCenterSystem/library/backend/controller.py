@@ -50,16 +50,27 @@ class BookController(object):
             return None
     
     @staticmethod
-    def cart_in(book_id):
+    def cart_in(filter_condition, mode):
         book = None
         message = None
-        borrowable = BookController.is_borrowable(book_id)
-        if borrowable:
-            book = models.Book.objects.get(id=book_id)
-        elif borrowable is None:
-            message = "IDの一致する図書が存在しません"
-        else:
-            message = "その本はすでに貸し出されています"
+        if mode == "id":
+            borrowable = BookController.is_borrowable(filter_condition)
+            if borrowable:
+                book = models.Book.objects.get(id=filter_condition)
+            elif borrowable is None:
+                message = "IDの一致する図書が存在しません"
+            else:
+                message = "その本はすでに貸し出されています"
+        elif mode == "control_number":
+            if models.Book.objects.filter(control_number=filter_condition).count() == 1:
+                book = models.Book.objects.get(control_number=filter_condition)
+                latest = BookController.get_latest_history(book)
+                if latest is not None:
+                    if latest.action == "1":
+                        book = None
+                        message = "その本はすでに貸し出されています"
+            else:
+                message = "IDの一致する図書が存在しないか，条件に一致する図書が複数存在します"
         return book, message
     
     @staticmethod

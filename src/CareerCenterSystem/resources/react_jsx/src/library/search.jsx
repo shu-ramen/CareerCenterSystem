@@ -74,7 +74,7 @@ class Result extends React.Component {
 
     getTr(result) {
         let status = this.getStatus(result["borrowable"]);
-        let button = this.getButton(result["id"], result["borrowable"]);
+        let button = this.getButton(result["book_id"], result["borrowable"]);
         return (
             <tr>
                 <td>{result["book_id"]}</td>

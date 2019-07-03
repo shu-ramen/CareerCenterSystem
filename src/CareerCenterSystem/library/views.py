@@ -65,11 +65,31 @@ def borrow(request):
         try:
             data = CommCtrl.get_ajax_data(request.body)
             process = data["process"]
-            if process == "add_book":
+            if process == "add_book_id":
                 # カートイン処理
                 book_id = int(data["book_id"])
                 response = None
-                book, message = BookCtrl.cart_in(book_id)
+                book, message = BookCtrl.cart_in(book_id, "id")
+                if book is not None:
+                    response = {
+                        "book_id": book.id,
+                        "control_number": book.control_number,
+                        "book_title": book.title,
+                        "book_category": book.category.name,
+                        "book_publisher": book.publisher,
+                        "success": True
+                    }
+                else:
+                    response = {
+                        "message": message,
+                        "success": False
+                    }
+                return JsonResponse(response)
+            elif process == "add_book_control_number":
+                # カートイン処理
+                control_number = data["control_number"]
+                response = None
+                book, message = BookCtrl.cart_in(control_number, "control_number")
                 if book is not None:
                     response = {
                         "book_id": book.id,
@@ -88,7 +108,7 @@ def borrow(request):
             elif process == "borrow_request":
                 # 貸出処理
                 books = data["books"]
-                book_ids = [book["id"] for book in books]
+                book_ids = [book["book_id"] for book in books]
                 user = request.user
                 message, success = BookCtrl.borrow(book_ids, user)
                 response = {
@@ -96,8 +116,6 @@ def borrow(request):
                     "success": success,
                 }
                 return JsonResponse(response)
-            else:
-                return JsonResponse({"test": "test"})
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
