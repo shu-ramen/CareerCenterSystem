@@ -37,7 +37,8 @@ class Search extends React.Component {
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Form method="POST">
-                            {getCsrfTokenTag()} 
+                            {getCsrfTokenTag()}
+                            <input type="hidden" name="process" value="search"></input>
                             <Form.Group controlId="id_title">
                                 <Form.Label>書籍名</Form.Label>
                                 <Form.Control name="title" type="text" placeholder="書籍名を入力してください" maxlength="256" />
@@ -53,7 +54,7 @@ class Search extends React.Component {
                     <Col></Col>
                 </Row>
             </Container>
-        )
+        );
     }
 }
 
@@ -68,12 +69,12 @@ class Result extends React.Component {
             <tbody>
                 {trs}
             </tbody>
-        )
+        );
     }
 
     getTr(result) {
-        let status = this.getStatus();
-        let button = this.getButton();
+        let status = this.getStatus(result["borrowable"]);
+        let button = this.getButton(result["id"], result["borrowable"]);
         return (
             <tr>
                 <td>{result["id"]}</td>
@@ -83,22 +84,29 @@ class Result extends React.Component {
                 <td>{status}</td>
                 <td>{button}</td>
             </tr>
-        )
+        );
     }
 
-    getStatus() {
-        return "○";
+    getStatus(borrowable) {
+        if (borrowable == "True") {
+            return "o";
+        } else {
+            return "x";
+        }
     }
 
-    getButton() {
-        if (true) {
+    getButton(book_id, borrowable) {
+        if (borrowable == "True") {
             return (
                 <Form method="POST">
                     {getCsrfTokenTag()}
-                    <input type="hidden" name="book_id" value={0}></input>
+                    <input type="hidden" name="process" value="borrow_request"></input>
+                    <input type="hidden" name="book_id" value={book_id}></input>
                     <Button variant="info" type="submit">貸出</Button>
                 </Form>
-            )
+            );
+        } else {
+            return;
         }
     }
 
@@ -138,7 +146,8 @@ if (document.getElementsByName('result').length > 0) {
             "id": resultTag.children[0].value,
             "title": resultTag.children[1].value,
             "category": resultTag.children[2].value,
-            "publisher": resultTag.children[3].value
+            "publisher": resultTag.children[3].value,
+            "borrowable": resultTag.children[4].value
         });
     }
     ReactDOM.render(

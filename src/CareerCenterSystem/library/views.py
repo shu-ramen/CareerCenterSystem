@@ -6,6 +6,8 @@ from django.template import loader
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from . import models, forms
+from .backend.controller import BookController as BookCtrl
+from .backend.controller import CommController as CommCtrl
 
 # Create your views here.
 @login_required(login_url="/accounts/login/")
@@ -22,25 +24,34 @@ def search(request):
     }
     if request.method == "POST":
         try:
-            # 検索条件を取得
-            title = request.POST["title"]
-            category_name = request.POST["category"]
-            category = None
-            if category_name != "":
-                category = models.Category.objects.get(name=category_name)
-            publisher = request.POST["publisher"]
-            # 検索
-            results = None
-            if category != None:
-                results = models.Book.objects.filter(title__icontains=title, category=category, publisher__icontains=publisher)
-            else:
-                results = models.Book.objects.filter(title__icontains=title, publisher__icontains=publisher)
-            # 値をセットする
-            if results.count() > 0:
-                context["results"] = list(results)
-                context["message"] = "検索が完了しました"
-            else:
-                context["message"] = "検索条件に一致するものは存在しません"
+            process = request.POST["process"]
+            if process == "search":
+                # 検索条件を取得
+                title = request.POST["title"]
+                category_name = request.POST["category"]
+                category = None
+                if category_name != "":
+                    category = models.Category.objects.get(name=category_name)
+                publisher = request.POST["publisher"]
+                # 検索
+                books, message = BookCtrl.search(title, category, publisher)
+                if books is not None:
+                    context["results"] = []
+                    for book in books:
+                        context["results"].append({})
+                        context["results"][-1].update({
+                            "id": book.id,
+                            "title": book.title,
+                            "category": book.category,
+                            "publisher": book.publisher,
+                            "borrowable": BookCtrl.is_borrowable(book.id)
+                        })
+                context["message"] = message
+            elif process == "borrow_request":
+                book_id = int(request.POST["book_id"])
+                user = request.user
+                message, success = BookCtrl.borrow([book_id], user)
+                context["message"] = message
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
@@ -51,26 +62,14 @@ def borrow(request):
     context = {}
     if request.method == "POST":
         try:
-            body = request.body
-            data = json.loads(body)
+            data = CommCtrl.get_ajax_data(request.body)
             process = data["process"]
             if process == "add_book":
+                # カートイン処理
                 book_id = int(data["book_id"])
                 response = None
-                if (len(models.Book.objects.filter(id=book_id)) > 0):
-                    book = models.Book.objects.get(id=book_id)
-                    histories = models.History.objects.filter(book=book)
-                    latest = None
-                    if (len(histories) > 0):
-                        latest = histories.order_by('-timestamp')[0]
-                    if (latest is not None):
-                        print(latest.action)
-                        if latest.action == "0":
-                            response = {
-                                "message": "その本はすでに借り出されています",
-                                "success": False,
-                            }
-                            return JsonResponse(response)
+                book, message = BookCtrl.cart_in(book_id)
+                if book is not None:
                     response = {
                         "book_id": book.id,
                         "book_title": book.title,
@@ -80,24 +79,19 @@ def borrow(request):
                     }
                 else:
                     response = {
-                        "message": "IDの一致する図書が存在しません",
-                        "success": False,
+                        "message": message,
+                        "success": False
                     }
                 return JsonResponse(response)
             elif process == "borrow_request":
+                # 貸出処理
                 books = data["books"]
+                book_ids = [book["id"] for book in books]
                 user = request.user
-                for book in books:
-                    book_obj = models.Book.objects.get(id=book["id"])
-                    history = models.History(
-                        book=book_obj,
-                        user=user,
-                        action=0
-                    )
-                    history.save()
+                message, success = BookCtrl.borrow(book_ids, user)
                 response = {
-                    "message": "貸出が完了しました",
-                    "success": True,
+                    "message": message,
+                    "success": success,
                 }
                 return JsonResponse(response)
             else:
@@ -113,29 +107,14 @@ def giveback(request):
     user = request.user
     if request.method == "POST":
         book_id = request.POST["book_id"]
-        book = models.Book.objects.get(id=book_id)
         try:
-            history = models.History(
-                user=user,
-                book=book,
-                action=1
-            )
-            history.save()
-            context["message"] = "返却処理を行いました"
+            message = BookCtrl.giveback(book_id, user)
+            context["message"] = message
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
-    histories = models.History.objects.filter(user=user)
-    if (len(histories) > 0):
-        histories = histories.order_by('-timestamp')
-        idList = []
-        borrowList = []
-        for history in histories:
-            if int(history.book.id) not in idList:
-                idList.append(int(history.book.id))
-                if history.action == "0":
-                    borrowList.append(history)
+    borrowList = BookCtrl.get_borrowed_books(user)
+    if len(borrowList) > 0:
         context["borrowList"] = borrowList
-    print(borrowList)
     return HttpResponse(template.render(context, request))
 
 @staff_member_required(login_url="/accounts/login/")
