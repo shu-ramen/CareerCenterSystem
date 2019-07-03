@@ -11,6 +11,11 @@ class Category(models.Model):
     )
 
 class Book(models.Model):
+    control_number = models.CharField(max_length=16, unique=True, null=False,
+        error_messages={
+            'unique': _("This control number already exists."),
+        },
+    )
     title = models.CharField(max_length=256)
     category = models.ForeignKey("Category", related_name="book_category", on_delete=models.SET_NULL, null=True)
     publisher = models.CharField(max_length=256)
