@@ -142,6 +142,7 @@ class BookController(object):
             if models.Book.objects.filter(control_number=filter_condition).count() == 1:
                 # 図書を取得
                 book = models.Book.objects.get(control_number=filter_condition)
+                print(book.is_active)
                 if book.is_active:
                     # 図書が有効の場合
                     # 最新履歴を取得
@@ -152,6 +153,7 @@ class BookController(object):
                             book = None
                             message = "その本はすでに貸し出されています"
                 else:
+                    book = None
                     message = "管理番号の一致する図書が存在しません"
             else:
                 # 単一の存在チェックが失敗した場合
