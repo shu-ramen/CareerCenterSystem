@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import request from 'superagent';
 import { Button, Col, Container, Form, InputGroup, Row, Table } from 'react-bootstrap';
-import { getCsrfTokenTag } from '../share/csrf.jsx';
-import { addHeader } from '../share/csrf.jsx';
+import { addHeader, getCsrfTokenTag } from '../share/csrf.jsx';
 
 class Search extends React.Component {
     constructor() {
