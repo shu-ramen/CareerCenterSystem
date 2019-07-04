@@ -6,10 +6,11 @@ class BookController(object):
     CARTIN_MODE_CTRL_NUM = 1
 
     @staticmethod
-    def search(title="", category=None, publisher=""):
+    def search(control_number="", title="", category=None, publisher=""):
         """図書の検索
         
         Args:
+            control_number (str, optional): 管理番号. Defaults to "".
             title (str, optional): 図書のタイトル. Defaults to "".
             category (models.Category, optional): 図書のカテゴリー. Defaults to None.
             publisher (str, optional): 出版社名. Defaults to "".
@@ -20,15 +21,15 @@ class BookController(object):
         books = None
         message = None
         # 検索条件が空の場合を許可しない
-        if ((title == "") and (category is None) and (publisher == "")):
+        if ((control_number == "") and (title == "") and (category is None) and (publisher == "")):
             message = "少なくとも１つの検索条件を指定してください"
         else:
             if category is not None:
                 # カテゴリーの指定がある場合
-                books = models.Book.objects.filter(title__icontains=title, category=category, publisher__icontains=publisher, is_active=True)
+                books = models.Book.objects.filter(control_number__icontains=control_number, title__icontains=title, category=category, publisher__icontains=publisher, is_active=True)
             else:
                 # カテゴリーの指定がある場合
-                books = models.Book.objects.filter(title__icontains=title, publisher__icontains=publisher, is_active=True)
+                books = models.Book.objects.filter(control_number__icontains=control_number, title__icontains=title, publisher__icontains=publisher, is_active=True)
             # 検索条件に一致するものがあるかチェック
             if books.count() > 0:
                 message = "検索が完了しました"
@@ -121,7 +122,7 @@ class BookController(object):
         """
         book = None
         message = None
-        if mode == CARTIN_MODE_ID:
+        if mode == BookController.CARTIN_MODE_ID:
             # 図書IDモード
             # 貸出可否をチェック
             borrowable = BookController.is_borrowable(filter_condition)
@@ -133,7 +134,7 @@ class BookController(object):
             else:
                 # すでに貸し出されている場合
                 message = "その本はすでに貸し出されています"
-        elif mode == CARTIN_MODE_CTRL_NUM :
+        elif mode == BookController.CARTIN_MODE_CTRL_NUM :
             # 管理番号モード
             # 図書の存在をチェック（１件の場合のみを許可する）
             if models.Book.objects.filter(control_number=filter_condition).count() == 1:
@@ -144,7 +145,7 @@ class BookController(object):
                     # 最新履歴を取得
                     latest = BookController.get_latest_history(book)
                     if latest is not None:
-                        if latest.action == "1":
+                        if latest.action == "0":
                             # 最新履歴が貸し出しの場合
                             book = None
                             message = "その本はすでに貸し出されています"
@@ -327,15 +328,18 @@ class BookController(object):
 
 class CommController(object):
     @staticmethod
-    def get_ajax_data(body):
-        """Ajax通信で受信したデータをPython用に変換して返却
+    def get_posted_data(request):
+        """POSTで受信したデータをPython用に変換して返却
         
         Args:
-            body (object): request.bodyから取得されるデータ
+            request (HttpRequest): HttpRequest．
         
         Returns:
             dict: 辞書型に変換したデータ
         """
-        # 辞書型でデータを取得
-        data = json.loads(body)
+        data = None
+        if request.is_ajax():
+            data = json.loads(request.body)
+        else:
+            data = request.POST
         return data

@@ -23,17 +23,19 @@ def search(request):
     }
     if request.method == "POST":
         try:
-            process = request.POST["process"]
+            data = CommCtrl.get_posted_data(request)
+            process = data["process"]
             if process == "search":
                 # 検索条件を取得
-                title = request.POST["title"]
-                category_name = request.POST["category"]
+                control_number = data["control_number"]
+                title = data["title"]
+                category_name = data["category"]
                 category = None
                 if category_name != "":
                     category = models.Category.objects.get(name=category_name)
-                publisher = request.POST["publisher"]
+                publisher = data["publisher"]
                 # 検索
-                books, message = BookCtrl.search(title, category, publisher)
+                books, message = BookCtrl.search(control_number, title, category, publisher)
                 if books is not None:
                     context["results"] = []
                     for book in books:
@@ -48,7 +50,7 @@ def search(request):
                         })
                 context["message"] = message
             elif process == "borrow_request":
-                book_id = int(request.POST["book_id"])
+                book_id = int(data["book_id"])
                 user = request.user
                 message, success = BookCtrl.borrow([book_id], user)
                 context["message"] = message
@@ -62,7 +64,7 @@ def borrow(request):
     context = {}
     if request.method == "POST":
         try:
-            data = CommCtrl.get_ajax_data(request.body)
+            data = CommCtrl.get_posted_data(request)
             process = data["process"]
             if process == "add_book_id":
                 # カートイン処理
@@ -125,8 +127,9 @@ def giveback(request):
     context = {}
     user = request.user
     if request.method == "POST":
-        book_id = request.POST["book_id"]
         try:
+            data = CommCtrl.get_posted_data(request)
+            book_id = data["book_id"]
             message = BookCtrl.giveback(book_id, user)
             context["message"] = message
         except Exception as e:
@@ -142,11 +145,12 @@ def register_category(request):
     context = {}
     if request.method == "POST":
         try:
+            data = CommCtrl.get_posted_data(request)
             obj = models.Category()
-            data = {
-                "name": request.POST["name"]
+            obj_data = {
+                "name": data["name"]
             }
-            category = forms.CategoryForm(data, instance=obj)
+            category = forms.CategoryForm(obj_data, instance=obj)
             if category.is_valid():
                 category.save()
                 context["message"] = "登録しました"
@@ -164,12 +168,13 @@ def register_book(request):
     }
     if request.method == "POST":
         try:
+            data = CommCtrl.get_posted_data(request)
             obj = models.Book()
-            data = {
-                "control_number": request.POST["control_number"],
-                "title": request.POST["title"],
-                "category": models.Category.objects.get(name=request.POST["category"]).id,
-                "publisher": request.POST["publisher"]
+            obj_data = {
+                "control_number": data["control_number"],
+                "title": data["title"],
+                "category": models.Category.objects.get(name=data["category"]).id,
+                "publisher": data["publisher"]
             }
             book = forms.BookForm(data, instance=obj)
             if book.is_valid():
@@ -189,17 +194,19 @@ def unregister_book(request):
     }
     if request.method == "POST":
         try:
-            process = request.POST["process"]
+            data = CommCtrl.get_posted_data(request)
+            process = data["process"]
             if process == "search":
                 # 検索条件を取得
-                title = request.POST["title"]
-                category_name = request.POST["category"]
+                control_number = data["control_number"]
+                title = data["title"]
+                category_name = data["category"]
                 category = None
                 if category_name != "":
                     category = models.Category.objects.get(name=category_name)
-                publisher = request.POST["publisher"]
+                publisher = data["publisher"]
                 # 検索
-                books, message = BookCtrl.search(title, category, publisher)
+                books, message = BookCtrl.search(control_number, title, category, publisher)
                 if books is not None:
                     context["results"] = []
                     for book in books:
@@ -214,7 +221,7 @@ def unregister_book(request):
                         })
                 context["message"] = message
             elif process == "unregister_book_request":
-                book_id = int(request.POST["book_id"])
+                book_id = int(data["book_id"])
                 # message = BookCtrl.deactivate(book_id)
                 # context["message"] = message
                 context["message"] = book_id

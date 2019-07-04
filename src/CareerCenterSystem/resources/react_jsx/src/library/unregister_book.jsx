@@ -43,6 +43,14 @@ class Search extends React.Component {
                         <Form method="POST">
                             {getCsrfTokenTag()}
                             <input type="hidden" name="process" value="search"></input>
+                            <Form.Group controlId="id_control_number">
+                                <InputGroup className="mb-3">
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text>管理番号</InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control name="control_number" type="text" placeholder="管理番号を入力してください" maxlength="16" />
+                                </InputGroup>
+                            </Form.Group>
                             <Form.Group controlId="id_title">
                                 <InputGroup className="mb-3">
                                     <InputGroup.Prepend>
