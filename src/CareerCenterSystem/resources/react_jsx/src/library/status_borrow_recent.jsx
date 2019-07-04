@@ -41,18 +41,18 @@ class Result extends React.Component {
         let tbody = this.getTbody();
 
         return (
-            <Container>
+            <Container fluid>
                 <br />
                 <Row>
                     <Col xl={12} lg={12} md={12} sm={12} sx={12}>
                         <Table striped bordered hover size="sm">
                             <thead>
                                 <th>ID</th>
-                                <th>図書ID</th>
                                 <th>学籍番号</th>
                                 <th>氏名</th>
                                 <th>メールアドレス</th>
                                 <th>電話番号</th>
+                                <th>図書ID</th>
                                 <th>管理番号</th>
                                 <th>タイトル</th>
                                 <th>カテゴリ</th>
@@ -75,11 +75,11 @@ if (document.getElementsByName('result').length > 0) {
     for (let resultTag of resultTags) {
         results.push({
             "id": resultTag.children[0].value,
-            "book_id": resultTag.children[1].value,
-            "username": resultTag.children[2].value,
-            "name": resultTag.children[3].value,
-            "email": resultTag.children[4].value,
-            "phone": resultTag.children[5].value,
+            "username": resultTag.children[1].value,
+            "name": resultTag.children[2].value,
+            "email": resultTag.children[3].value,
+            "phone": resultTag.children[4].value,
+            "book_id": resultTag.children[5].value,
             "control_number": resultTag.children[6].value,
             "title": resultTag.children[7].value,
             "category": resultTag.children[8].value,

@@ -318,19 +318,21 @@ class BookController(object):
     
     @staticmethod
     def history_to_dict(history):
+        date = history.timestamp
+        deadline = date + datetime.timedelta(weeks=2)
         data = {
             "id": history.id,
-            "book_id": history.book.id,
             "username": history.user.username,
             "name": "{0} {1}".format(history.user.last_name, history.user.first_name),
             "email": history.user.email,
             "phone": history.user.phone_number,
+            "book_id": history.book.id,
             "control_number": history.book.control_number,
             "title": history.book.title,
             "category": history.book.category.name,
             "publisher": history.book.publisher,
-            "timestamp": "あああ",
-            "deadline": "いいい"
+            "timestamp": date.strftime("%Y/%m/%d"),
+            "deadline": deadline.strftime("%Y/%m/%d")
         }
         return data
     
