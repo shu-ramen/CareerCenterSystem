@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import request from 'superagent';
-import { Button, Col, Container, Form, InputGroup, Row, Table } from 'react-bootstrap';
-import { addHeader, getCsrfTokenTag } from '../share/csrf.jsx';
+import { Button, Col, Container, Form,  Row, Table } from 'react-bootstrap';
+import { getCsrfTokenTag } from '../share/csrf.jsx';
 
 class Result extends React.Component {
     constructor() {
@@ -31,6 +30,7 @@ class Result extends React.Component {
                 <td>{result["title"]}</td>
                 <td>{result["category"]}</td>
                 <td>{result["publisher"]}</td>
+                <td>{result["process"]}</td>
                 <td>{result["timestamp"]}</td>
                 <td>{result["deadline"]}</td>
             </tr>
@@ -44,6 +44,16 @@ class Result extends React.Component {
             <Container fluid>
                 <br />
                 <Row>
+                    <Col xl={8} lg={8} md={8} sm={12} sx={12}></Col>
+                    <Col xl={4} lg={4} md={4} sm={12} sx={12}>
+                        <Form method="POST">
+                            {getCsrfTokenTag()}
+                            <Button variant="success" type="submit" block>ダウンロード</Button>
+                        </Form>
+                    </Col>
+                </Row>
+                <br />
+                <Row>
                     <Col xl={12} lg={12} md={12} sm={12} sx={12}>
                         <Table striped bordered hover size="sm">
                             <thead>
@@ -54,10 +64,11 @@ class Result extends React.Component {
                                 <th>電話番号</th>
                                 <th>図書ID</th>
                                 <th>管理番号</th>
-                                <th>タイトル</th>
+                                <th>書籍名</th>
                                 <th>カテゴリ</th>
                                 <th>出版社</th>
-                                <th>貸出日</th>
+                                <th>処理</th>
+                                <th>実行日</th>
                                 <th>返却期限</th>
                             </thead>
                             {tbody}
@@ -84,8 +95,9 @@ if (document.getElementsByName('result').length > 0) {
             "title": resultTag.children[7].value,
             "category": resultTag.children[8].value,
             "publisher": resultTag.children[9].value,
-            "timestamp": resultTag.children[10].value,
-            "deadline": resultTag.children[11].value
+            "process": resultTag.children[10].value,
+            "timestamp": resultTag.children[11].value,
+            "deadline": resultTag.children[12].value
         });
     }
     ReactDOM.render(

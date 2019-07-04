@@ -266,9 +266,7 @@ class BookController(object):
                     idList.append(history.book.id)
                     # 貸出状態のみを取得する
                     if history.action == "0":
-                        borrowList.append({
-                            ""
-                        })
+                        borrowList.append(history)
         # 古い順に並び替える
         borrowList = borrowList[::-1]
         return borrowList
@@ -331,8 +329,9 @@ class BookController(object):
             "title": history.book.title,
             "category": history.book.category.name,
             "publisher": history.book.publisher,
+            "process": ("貸出", "返却")[int(history.action)],
             "timestamp": date.strftime("%Y/%m/%d"),
-            "deadline": deadline.strftime("%Y/%m/%d")
+            "deadline": (deadline.strftime("%Y/%m/%d"), "-")[int(history.action)]
         }
         return data
     

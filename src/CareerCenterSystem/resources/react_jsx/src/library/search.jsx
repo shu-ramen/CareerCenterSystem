@@ -184,7 +184,7 @@ class Result extends React.Component {
 
 if (document.getElementsByName('result').length > 0) {
     let resultTags = document.getElementsByName('result');
-    let results = []
+    let results = [];
     for (let resultTag of resultTags) {
         results.push({
             "book_id": resultTag.children[0].value,

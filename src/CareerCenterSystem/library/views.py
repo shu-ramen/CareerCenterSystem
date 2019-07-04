@@ -1,3 +1,5 @@
+import csv
+import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.http.response import JsonResponse
@@ -241,10 +243,68 @@ def unregister_book(request):
 
 @staff_member_required(login_url="/accounts/login/")
 def status_borrow_recent(request):
-    template = loader.get_template('library/status_borrow_recent.html')
-    print(BookCtrl.get_current_history())
+    template = loader.get_template('library/status_borrow.html')
     context = {
         "results": BookCtrl.get_current_history(),
     }
-    print(context["results"])
+    if request.method == "POST":
+        response = HttpResponse(content_type='text/csv; charset=Shift-JIS')
+        filename = datetime.datetime.now().strftime("history_recent_%Y%m%d_%H%M%S.csv")
+        response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+        writer = csv.writer(response)
+        writer.writerow([
+            "履歴ID", "学籍番号", "氏名", "メールアドレス", "電話番号",
+            "図書ID", "管理番号", "書籍名", "カテゴリ", "出版社", "処理", "実行日", "返却期限"
+        ])
+        for row in BookCtrl.get_current_history():
+            writer.writerow([
+                row["id"],
+                row["username"],
+                row["name"],
+                row["email"],
+                "tel:{}".format(row["phone"]),
+                row["book_id"],
+                row["control_number"],
+                row["title"],
+                row["category"],
+                row["publisher"],
+                row["process"],
+                row["timestamp"],
+                row["deadline"]
+            ])
+        return response
+    return HttpResponse(template.render(context, request))
+
+@staff_member_required(login_url="/accounts/login/")
+def status_borrow_past(request):
+    template = loader.get_template('library/status_borrow.html')
+    context = {
+        "results": BookCtrl.get_all_history(),
+    }
+    if request.method == "POST":
+        response = HttpResponse(content_type='text/csv; charset=Shift-JIS')
+        filename = datetime.datetime.now().strftime("history_all_%Y%m%d_%H%M%S.csv")
+        response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+        writer = csv.writer(response)
+        writer.writerow([
+            "履歴ID", "学籍番号", "氏名", "メールアドレス", "電話番号",
+            "図書ID", "管理番号", "書籍名", "カテゴリ", "出版社", "処理", "実行日", "返却期限"
+        ])
+        for row in BookCtrl.get_all_history():
+            writer.writerow([
+                row["id"],
+                row["username"],
+                row["name"],
+                row["email"],
+                "tel:{}".format(row["phone"]),
+                row["book_id"],
+                row["control_number"],
+                row["title"],
+                row["category"],
+                row["publisher"],
+                row["process"],
+                row["timestamp"],
+                row["deadline"]
+            ])
+        return response
     return HttpResponse(template.render(context, request))

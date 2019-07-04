@@ -10,4 +10,5 @@ urlpatterns = [
     path('register/book/', views.register_book, name='library-register-book'),
     path('unregister/book/', views.unregister_book, name='library-unregister-book'),
     path('status/borrow/recent/', views.status_borrow_recent, name='library-status-borrow-recent'),
+    path('status/borrow/past/', views.status_borrow_past, name='library-status-borrow-past'),
 ]

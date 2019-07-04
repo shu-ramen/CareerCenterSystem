@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}貸出履歴 | 図書システム{% endblock %}
+{% block title %}貸出履歴（直近） | 図書システム{% endblock %}
 
 {% block stylesheet %}{% endblock %}
 
@@ -34,6 +34,7 @@
             <input type="hidden" name="title" value={{ result.title }} />
             <input type="hidden" name="category_name" value={{ result.category }} />
             <input type="hidden" name="publisher" value={{ result.publisher }} />
+            <input type="hidden" name="process" value={{ result.process }} />
             <input type="hidden" name="timestamp" value={{ result.timestamp }} />
             <input type="hidden" name="deadline" value={{ result.deadline }} />
         </div>
@@ -46,5 +47,5 @@
 {% block scripts %}
 <script src="/static/js/share_error.js"></script>
 <script src="/static/js/share_message.js"></script>
-<script src="/static/js/library_status_borrow_recent.js"></script>
+<script src="/static/js/library_status_borrow.js"></script>
 {% endblock %}
