@@ -144,6 +144,8 @@ class Result extends React.Component {
                     let tbody = document.getElementById("result_tbody");
                     ReactDOM.render(this.getStatus("False"), tbody.children[idx].children[5]);
                     ReactDOM.render(this.getButton(book_id, "False", idx), tbody.children[idx].children[6]);
+                } else {
+                    alert(res.body["message"]);
                 }
             }.bind(this));
     }
