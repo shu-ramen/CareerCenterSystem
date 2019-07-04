@@ -130,24 +130,27 @@ class Result extends React.Component {
     }
 
     borrow_request(book_id, idx) {
-        addHeader(request.post(""))
-            .send({
-                "book_id": book_id,
-                "process": "borrow_request"
-            })
-            .end(function (err, res) {
-                if (err) {
-                    alert(res.text);
-                }
-                if (res.body["success"]) {
-                    alert(res.body["message"]);
-                    let tbody = document.getElementById("result_tbody");
-                    ReactDOM.render(this.getStatus("False"), tbody.children[idx].children[5]);
-                    ReactDOM.render(this.getButton(book_id, "False", idx), tbody.children[idx].children[6]);
-                } else {
-                    alert(res.body["message"]);
-                }
-            }.bind(this));
+        let confirmation = confirm("選択した書籍の貸出申請をしてもよろしいですか？");
+        if (confirmation) {
+            addHeader(request.post(""))
+                .send({
+                    "book_id": book_id,
+                    "process": "borrow_request"
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        alert(res.text);
+                    }
+                    if (res.body["success"]) {
+                        alert(res.body["message"]);
+                        let tbody = document.getElementById("result_tbody");
+                        ReactDOM.render(this.getStatus("False"), tbody.children[idx].children[5]);
+                        ReactDOM.render(this.getButton(book_id, "False", idx), tbody.children[idx].children[6]);
+                    } else {
+                        alert(res.body["message"]);
+                    }
+                }.bind(this));
+        }
     }
 
     render() {

@@ -314,17 +314,20 @@ class BookController(object):
             book_id (int): 図書ID
         
         Returns:
-            str: 応答メッセージ
+            str, bool: 応答メッセージ, 成功したかどうか
         """
         message = None
+        success = None
         if (models.Book.objects.filter(id=book_id).count() == 1):
             book = models.Book.objects.get(id=book_id)
             book.is_active = False
             book.save()
             message = "図書の廃棄処理を行いました"
+            success = True
         else:
             message = "IDの一致する図書が存在しません"
-        return message
+            success = False
+        return message, success
 
 class CommController(object):
     @staticmethod

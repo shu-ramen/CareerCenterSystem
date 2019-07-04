@@ -180,7 +180,7 @@ def register_book(request):
                 "category": models.Category.objects.get(name=data["category"]).id,
                 "publisher": data["publisher"]
             }
-            book = forms.BookForm(data, instance=obj)
+            book = forms.BookForm(obj_data, instance=obj)
             if book.is_valid():
                 book.save()
                 context["message"] = "登録しました"
@@ -226,9 +226,12 @@ def unregister_book(request):
                 context["message"] = message
             elif process == "unregister_book_request":
                 book_id = int(data["book_id"])
-                # message = BookCtrl.deactivate(book_id)
-                # context["message"] = message
-                context["message"] = book_id
+                message, success = BookCtrl.deactivate(book_id)
+                response = {
+                    "message": message,
+                    "success": success
+                }
+                return JsonResponse(response)
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
