@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import request from 'superagent';
 import { Button, Col, Container, Form, InputGroup, Row, Table } from 'react-bootstrap';
 import { getCsrfTokenTag } from '../share/csrf.jsx';
+import { addHeader } from '../share/csrf.jsx';
 
 class Search extends React.Component {
     constructor() {
@@ -84,17 +86,17 @@ class Result extends React.Component {
     }
 
     getTbody() {
-        let trs = this.props.results.map((result) => this.getTr(result));
+        let trs = this.props.results.map((result, idx) => this.getTr(result, idx));
         return (
-            <tbody>
+            <tbody id="result_tbody">
                 {trs}
             </tbody>
         );
     }
 
-    getTr(result) {
+    getTr(result, idx) {
         let status = this.getStatus(result["borrowable"]);
-        let button = this.getButton(result["book_id"], result["borrowable"]);
+        let button = this.getButton(result["book_id"], result["borrowable"], idx);
         return (
             <tr>
                 <td>{result["book_id"]}</td>
@@ -116,19 +118,35 @@ class Result extends React.Component {
         }
     }
 
-    getButton(book_id, borrowable) {
+    getButton(book_id, borrowable, idx) {
         if (borrowable == "True") {
             return (
-                <Form method="POST">
-                    {getCsrfTokenTag()}
-                    <input type="hidden" name="process" value="borrow_request"></input>
-                    <input type="hidden" name="book_id" value={book_id}></input>
-                    <Button variant="info" type="submit" size="sm">貸出</Button>
-                </Form>
+                <Button variant="info" onClick={() => this.borrow_request(book_id, idx)} size="sm">貸出</Button>
             );
         } else {
-            return;
+            return (
+                <div></div>
+            );
         }
+    }
+
+    borrow_request(book_id, idx) {
+        addHeader(request.post(""))
+            .send({
+                "book_id": book_id,
+                "process": "borrow_request"
+            })
+            .end(function (err, res) {
+                if (err) {
+                    alert(res.text);
+                }
+                if (res.body["success"]) {
+                    alert(res.body["message"]);
+                    let tbody = document.getElementById("result_tbody");
+                    ReactDOM.render(this.getStatus("False"), tbody.children[idx].children[5]);
+                    ReactDOM.render(this.getButton(book_id, "False", idx), tbody.children[idx].children[6]);
+                }
+            }.bind(this));
     }
 
     render() {

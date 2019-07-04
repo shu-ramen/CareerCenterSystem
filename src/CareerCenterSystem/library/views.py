@@ -53,7 +53,11 @@ def search(request):
                 book_id = int(data["book_id"])
                 user = request.user
                 message, success = BookCtrl.borrow([book_id], user)
-                context["message"] = message
+                responce = {
+                    "message": message,
+                    "success": success
+                }
+                return JsonResponse(responce)
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
