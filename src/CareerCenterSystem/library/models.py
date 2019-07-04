@@ -19,6 +19,7 @@ class Book(models.Model):
     title = models.CharField(max_length=256)
     category = models.ForeignKey("Category", related_name="book_category", on_delete=models.SET_NULL, null=True)
     publisher = models.CharField(max_length=256)
+    is_active = models.BooleanField(default=True)
 
 class History(models.Model):
     book = models.ForeignKey("Book", related_name="history_book", on_delete=models.SET_NULL, null=True)

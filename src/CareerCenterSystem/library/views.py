@@ -1,4 +1,3 @@
-import json
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.http.response import JsonResponse
@@ -69,7 +68,7 @@ def borrow(request):
                 # カートイン処理
                 book_id = int(data["book_id"])
                 response = None
-                book, message = BookCtrl.cart_in(book_id, "id")
+                book, message = BookCtrl.cart_in(book_id, BookCtrl.CARTIN_MODE_ID)
                 if book is not None:
                     response = {
                         "book_id": book.id,
@@ -89,7 +88,7 @@ def borrow(request):
                 # カートイン処理
                 control_number = data["control_number"]
                 response = None
-                book, message = BookCtrl.cart_in(control_number, "control_number")
+                book, message = BookCtrl.cart_in(control_number, BookCtrl.CARTIN_MODE_CTRL_NUM)
                 if book is not None:
                     response = {
                         "book_id": book.id,
