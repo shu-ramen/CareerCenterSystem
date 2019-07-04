@@ -160,7 +160,7 @@ class BookController(object):
         """図書の貸出
         
         Args:
-            book_ids (int): 図書ID
+            book_ids (list[int]): 図書IDのリスト
             user (accounts.models.CustomUser): ユーザー
         
         Returns:

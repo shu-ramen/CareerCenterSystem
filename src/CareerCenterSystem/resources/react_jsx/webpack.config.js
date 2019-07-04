@@ -17,6 +17,7 @@ module.exports = {
       library_giveback:          path.resolve(__dirname, "src/library/giveback.jsx"),
       library_register_category: path.resolve(__dirname, "src/library/register_category.jsx"),
       library_register_book:     path.resolve(__dirname, "src/library/register_book.jsx"),
+      library_unregister_book:   path.resolve(__dirname, "src/library/unregister_book.jsx"),
     },
     output: {
         path: path.resolve(__dirname, "../static/js/") ,

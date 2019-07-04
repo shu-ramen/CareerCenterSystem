@@ -60,7 +60,7 @@ class Borrow extends React.Component {
                 <td>{book["title"]}</td>
                 <td>{book["category"]}</td>
                 <td>{book["publisher"]}</td>
-                <td><Button variant="danger" onClick={() => this.deleteBook(idx)}>削除</Button></td>
+                <td><Button variant="danger" onClick={() => this.deleteBook(idx)} size="sm">削除</Button></td>
             </tr>
         )
     }

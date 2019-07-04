@@ -102,9 +102,9 @@ class Result extends React.Component {
 
     getStatus(borrowable) {
         if (borrowable == "True") {
-            return "o";
+            return "";
         } else {
-            return "x";
+            return "貸出中";
         }
     }
 
@@ -113,9 +113,9 @@ class Result extends React.Component {
             return (
                 <Form method="POST">
                     {getCsrfTokenTag()}
-                    <input type="hidden" name="process" value="borrow_request"></input>
+                    <input type="hidden" name="process" value="unregister_book_request"></input>
                     <input type="hidden" name="book_id" value={book_id}></input>
-                    <Button variant="info" type="submit" size="sm">貸出</Button>
+                    <Button variant="info" type="submit" size="sm">廃棄</Button>
                 </Form>
             );
         } else {
@@ -139,7 +139,7 @@ class Result extends React.Component {
                                 <th>タイトル</th>
                                 <th>カテゴリ</th>
                                 <th>出版社</th>
-                                <th>貸出可否</th>
+                                <th>貸出状態</th>
                                 <th>処理</th>
                             </thead>
                             {tbody}

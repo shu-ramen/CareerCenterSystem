@@ -180,3 +180,44 @@ def register_book(request):
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
+
+@staff_member_required(login_url="/accounts/login/")
+def unregister_book(request):
+    template = loader.get_template('library/unregister_book.html')
+    context = {
+        "categories": [c.name for c in models.Category.objects.all()]
+    }
+    if request.method == "POST":
+        try:
+            process = request.POST["process"]
+            if process == "search":
+                # 検索条件を取得
+                title = request.POST["title"]
+                category_name = request.POST["category"]
+                category = None
+                if category_name != "":
+                    category = models.Category.objects.get(name=category_name)
+                publisher = request.POST["publisher"]
+                # 検索
+                books, message = BookCtrl.search(title, category, publisher)
+                if books is not None:
+                    context["results"] = []
+                    for book in books:
+                        context["results"].append({})
+                        context["results"][-1].update({
+                            "book_id": book.id,
+                            "control_number": book.control_number,
+                            "title": book.title,
+                            "category": book.category,
+                            "publisher": book.publisher,
+                            "borrowable": BookCtrl.is_borrowable(book.id)
+                        })
+                context["message"] = message
+            elif process == "unregister_book_request":
+                book_id = int(request.POST["book_id"])
+                # message = BookCtrl.deactivate(book_id)
+                # context["message"] = message
+                context["message"] = book_id
+        except Exception as e:
+            context["message"] = "失敗しました：{}".format(e)
+    return HttpResponse(template.render(context, request))

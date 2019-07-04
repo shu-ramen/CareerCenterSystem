@@ -30,7 +30,7 @@ class BorrowTable extends React.Component {
                     <Form method="POST">
                         {getCsrfTokenTag()}
                         <input type="hidden" name="book_id" value={borrow["book_id"]}></input>
-                        <Button variant="info" type="submit">返却</Button>
+                        <Button variant="info" type="submit" size="sm">返却</Button>
                     </Form>
                 </td>
             </tr>

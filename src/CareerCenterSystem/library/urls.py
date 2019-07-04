@@ -8,4 +8,5 @@ urlpatterns = [
     path('giveback/', views.giveback, name='library-giveback'),
     path('register/category/', views.register_category, name='library-register-category'),
     path('register/book/', views.register_book, name='library-register-book'),
+    path('unregister/book/', views.unregister_book, name='library-unregister-book'),
 ]
