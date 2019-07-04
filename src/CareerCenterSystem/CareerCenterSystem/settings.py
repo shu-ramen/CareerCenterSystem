@@ -133,7 +133,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 LOGIN_REDIRECT_URL = '/'
 
 # メールの設定ファイルを読み込む．パスワード等の情報が含まれるためgit管理下から除外．
-from CareerCenterSystem import emailsettings
+from . import emailsettings
 EMAIL_USE_TLS = emailsettings.EMAIL_USE_TLS
 EMAIL_HOST = emailsettings.EMAIL_HOST
 EMAIL_HOST_USER = emailsettings.EMAIL_HOST_USER

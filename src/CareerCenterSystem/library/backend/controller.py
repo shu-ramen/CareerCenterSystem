@@ -1,5 +1,7 @@
 import json
+import datetime
 from .. import models
+from ..email import email_borrow
 
 class BookController(object):
     CARTIN_MODE_ID = 0
@@ -328,6 +330,16 @@ class BookController(object):
             message = "IDの一致する図書が存在しません"
             success = False
         return message, success
+    
+    @staticmethod
+    def book_ids_to_str(book_ids):
+        books = []
+        for book_id in book_ids:
+            books.append(models.Book.objects.get(id=book_id))
+        books_str = ""
+        for book in books:
+            books_str += "[{0}] {1} ({2})\n".format(book.control_number, book.title, book.publisher)
+        return books_str
 
 class CommController(object):
     @staticmethod
@@ -346,3 +358,24 @@ class CommController(object):
         else:
             data = request.POST
         return data
+
+class EmailController(object):
+    WEEKDAYS = ["月", "火", "水", "木", "金", "土", "日"]
+
+    @staticmethod
+    def send_email_borrow(book_ids, user):
+        try:
+            today = datetime.datetime.now()
+            deadline = today + datetime.timedelta(weeks=2)
+            user.email_user(
+                email_borrow.SUBJECT,
+                email_borrow.MESSAGE.format(
+                    user.username,
+                    "{0} {1}".format(user.last_name, user.first_name),
+                    BookController.book_ids_to_str(book_ids),
+                    "{0} ({1})".format(today.strftime("%Y/%m/%d"), EmailController.WEEKDAYS[today.weekday()]),
+                    "{0} ({1})".format(deadline.strftime("%Y/%m/%d"), EmailController.WEEKDAYS[deadline.weekday()])
+                )
+            )
+        except Exception as e:
+            print(e)

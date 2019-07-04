@@ -7,6 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from . import models, forms
 from .backend.controller import BookController as BookCtrl
 from .backend.controller import CommController as CommCtrl
+from .backend.controller import EmailController as EmailCtrl
 
 # Create your views here.
 @login_required(login_url="/accounts/login/")
@@ -57,6 +58,7 @@ def search(request):
                     "message": message,
                     "success": success
                 }
+                EmailCtrl.send_email_borrow([book_id], user)
                 return JsonResponse(responce)
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
@@ -120,6 +122,7 @@ def borrow(request):
                     "message": message,
                     "success": success,
                 }
+                EmailCtrl.send_email_borrow(book_ids, user)
                 return JsonResponse(response)
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
