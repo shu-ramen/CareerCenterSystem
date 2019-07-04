@@ -25,10 +25,10 @@ class BookController(object):
         else:
             if category is not None:
                 # カテゴリーの指定がある場合
-                books = models.Book.objects.filter(title__icontains=title, category=category, publisher__icontains=publisher)
+                books = models.Book.objects.filter(title__icontains=title, category=category, publisher__icontains=publisher, is_active=True)
             else:
                 # カテゴリーの指定がある場合
-                books = models.Book.objects.filter(title__icontains=title, publisher__icontains=publisher)
+                books = models.Book.objects.filter(title__icontains=title, publisher__icontains=publisher, is_active=True)
             # 検索条件に一致するものがあるかチェック
             if books.count() > 0:
                 message = "検索が完了しました"
@@ -48,7 +48,13 @@ class BookController(object):
         """
         if (models.Book.objects.filter(id=book_id).count() == 1):
             # 図書が存在する場合
-            return True
+            book = models.Book.objects.get(id=book_id)
+            if book.is_active:
+                # 図書が有効の場合
+                return True
+            else:
+                # 図書が無効の場合
+                return False
         else:
             # 図書が存在しない場合
             return False
@@ -133,16 +139,20 @@ class BookController(object):
             if models.Book.objects.filter(control_number=filter_condition).count() == 1:
                 # 図書を取得
                 book = models.Book.objects.get(control_number=filter_condition)
-                # 最新履歴を取得
-                latest = BookController.get_latest_history(book)
-                if latest is not None:
-                    if latest.action == "1":
-                        # 最新履歴が貸し出しの場合
-                        book = None
-                        message = "その本はすでに貸し出されています"
+                if book.is_active:
+                    # 図書が有効の場合
+                    # 最新履歴を取得
+                    latest = BookController.get_latest_history(book)
+                    if latest is not None:
+                        if latest.action == "1":
+                            # 最新履歴が貸し出しの場合
+                            book = None
+                            message = "その本はすでに貸し出されています"
+                else:
+                    message = "管理番号の一致する図書が存在しません"
             else:
                 # 単一の存在チェックが失敗した場合
-                message = "IDの一致する図書が存在しないか，条件に一致する図書が複数存在します"
+                message = "管理番号の一致する図書が存在しないか，条件に一致する図書が複数存在します"
         return book, message
     
     @staticmethod
@@ -290,10 +300,30 @@ class BookController(object):
         """
         histories = models.History.objects.all()
         if (histories.count() > 0):
-            histories = histories.order_by("-timestamp")
-            return histories
+            # 履歴が存在すれば新しい順に並べて返す
+            return histories.order_by("-timestamp")
         else:
             return None
+    
+    @staticmethod
+    def deactivate(book_id):
+        """図書の廃棄（無効化）
+        
+        Args:
+            book_id (int): 図書ID
+        
+        Returns:
+            str: 応答メッセージ
+        """
+        message = None
+        if (models.Book.objects.filter(id=book_id).count() == 1):
+            book = models.Book.objects.get(id=book_id)
+            book.is_active = False
+            book.save()
+            message = "図書の廃棄処理を行いました"
+        else:
+            message = "IDの一致する図書が存在しません"
+        return message
 
 class CommController(object):
     @staticmethod
