@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}貸出履歴 | 図書システム{% endblock %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+
+<br />
+
+{% if form.errors %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div name="error">{{ error }}</div>
+        {% endfor %}
+     {% endfor %}
+{% endif %}
+
+{% if message %}
+    <div id="message">{{ message }}</div>
+{% endif %}
+
+{% if results %}
+    {% for result in results %}
+        <div type="hidden" name="result">
+            <input type="hidden" name="id" value={{ result.id }} />
+            <input type="hidden" name="book_id" value={{ result.book_id }} />
+            <input type="hidden" name="username" value={{ result.username }} />
+            <input type="hidden" name="name" value={{ result.name }} />
+            <input type="hidden" name="email" value={{ result.email }} />
+            <input type="hidden" name="phone" value={{ result.phone }} />
+            <input type="hidden" name="control_number" value={{ result.control_number }} />
+            <input type="hidden" name="title" value={{ result.title }} />
+            <input type="hidden" name="category_name" value={{ result.category }} />
+            <input type="hidden" name="publisher" value={{ result.publisher }} />
+            <input type="hidden" name="timestamp" value={{ result.timestamp }} />
+            <input type="hidden" name="deadline" value={{ result.deadline }} />
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div id="result_table"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/share_error.js"></script>
+<script src="/static/js/share_message.js"></script>
+<script src="/static/js/library_status_borrow_recent.js"></script>
+{% endblock %}

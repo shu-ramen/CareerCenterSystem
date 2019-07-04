@@ -238,3 +238,13 @@ def unregister_book(request):
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
+
+@staff_member_required(login_url="/accounts/login/")
+def status_borrow_recent(request):
+    template = loader.get_template('library/status_borrow_recent.html')
+    print(BookCtrl.get_current_history())
+    context = {
+        "results": BookCtrl.get_current_history(),
+    }
+    print(context["results"])
+    return HttpResponse(template.render(context, request))

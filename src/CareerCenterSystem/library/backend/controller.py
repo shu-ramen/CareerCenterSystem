@@ -266,7 +266,9 @@ class BookController(object):
                     idList.append(history.book.id)
                     # 貸出状態のみを取得する
                     if history.action == "0":
-                        borrowList.append(history)
+                        borrowList.append({
+                            ""
+                        })
         # 古い順に並び替える
         borrowList = borrowList[::-1]
         return borrowList
@@ -291,7 +293,7 @@ class BookController(object):
                     idList.append(history.book.id)
                     # 貸出状態のみを取得する
                     if history.action == "0":
-                        borrowList.append(history)
+                        borrowList.append(BookController.history_to_dict(history))
         # 古い順に並び替える
         borrowList = borrowList[::-1]
         return borrowList
@@ -303,12 +305,34 @@ class BookController(object):
         Returns:
             list[models.History]: 貸出中の図書の履歴
         """
+        historyList = []
         histories = models.History.objects.all()
         if (histories.count() > 0):
             # 履歴が存在すれば新しい順に並べて返す
-            return histories.order_by("-timestamp")
+            histories = histories.order_by("-timestamp")
+            for history in histories:
+                historyList.append(BookController.history_to_dict(history))
+            return historyList
         else:
             return None
+    
+    @staticmethod
+    def history_to_dict(history):
+        data = {
+            "id": history.id,
+            "book_id": history.book.id,
+            "username": history.user.username,
+            "name": "{0} {1}".format(history.user.last_name, history.user.first_name),
+            "email": history.user.email,
+            "phone": history.user.phone_number,
+            "control_number": history.book.control_number,
+            "title": history.book.title,
+            "category": history.book.category.name,
+            "publisher": history.book.publisher,
+            "timestamp": "あああ",
+            "deadline": "いいい"
+        }
+        return data
     
     @staticmethod
     def deactivate(book_id):
