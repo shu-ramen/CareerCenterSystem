@@ -19,37 +19,37 @@ class Index extends React.Component {
                 </Row>
                 <Row>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="dark" text="white" style={{ width: '18rem' }}>
+                        <Card bg="success" text="white" style={{ width: '18rem' }}>
                             <Card.Header as="h5">図書検索</Card.Header>
                             <Card.Body>
                                 <Card.Text>
                                     図書の検索を行います．
                                 </Card.Text>
-                                <Button variant="dark" href="search/" block>実行</Button>
+                                <Button variant="success" href="search/" block>実行</Button>
                             </Card.Body>
                         </Card>
                         <br />
                     </Col>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="dark" text="white" style={{ width: '18rem' }}>
+                        <Card bg="success" text="white" style={{ width: '18rem' }}>
                             <Card.Header as="h5">図書貸出</Card.Header>
                             <Card.Body>
                                 <Card.Text>
                                     図書の貸出を行います．
                                 </Card.Text>
-                                <Button variant="dark" href="borrow/" block>実行</Button>
+                                <Button variant="success" href="borrow/" block>実行</Button>
                             </Card.Body>
                         </Card>
                         <br />
                     </Col>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="dark" text="white" style={{ width: '18rem' }}>
+                        <Card bg="success" text="white" style={{ width: '18rem' }}>
                             <Card.Header as="h5">図書返却</Card.Header>
                             <Card.Body>
                                 <Card.Text>
                                     図書の返却を行います．
                                 </Card.Text>
-                                <Button variant="dark" href="giveback/" block>実行</Button>
+                                <Button variant="success" href="giveback/" block>実行</Button>
                             </Card.Body>
                         </Card>
                         <br />

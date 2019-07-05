@@ -21,11 +21,11 @@ class Result extends React.Component {
         return (
             <tr>
                 <td>{result["id"]}</td>
-                <td>{result["book_id"]}</td>
                 <td>{result["username"]}</td>
                 <td>{result["name"]}</td>
                 <td>{result["email"]}</td>
                 <td>{result["phone"]}</td>
+                <td>{result["book_id"]}</td>
                 <td>{result["control_number"]}</td>
                 <td>{result["title"]}</td>
                 <td>{result["category"]}</td>

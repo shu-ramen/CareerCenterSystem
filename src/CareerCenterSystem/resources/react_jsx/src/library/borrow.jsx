@@ -10,6 +10,7 @@ class Borrow extends React.Component {
         this.state = {
             books: [],
             idList: [],
+            isLoading: false,
         };
     }
 
@@ -147,6 +148,9 @@ class Borrow extends React.Component {
     }
 
     borrow_request() {
+        this.setState({
+            isLoading: true
+        });
         if (this.state.books.length == 0) {
             alert("少なくとも１冊の本を選択してください");
             return;
@@ -167,11 +171,15 @@ class Borrow extends React.Component {
                         idList: [],
                     })
                 }
+                this.setState({
+                    isLoading: false
+                });
             }.bind(this));
     }
 
     render() {
         let booksTable = this.getBooksTable();
+        const { isLoading } = this.state;
 
         return (
             <Container>
@@ -207,7 +215,15 @@ class Borrow extends React.Component {
                         </Row>
                         {booksTable}
                         <Row>
-                            <Button variant="success" size="lg" onClick={() => this.borrow_request()} block>貸出申請</Button>
+                            <Button
+                                variant="success"
+                                size="lg"
+                                disabled={isLoading}
+                                onClick={!isLoading ? () => this.borrow_request() : null}
+                                block
+                            >
+                                {isLoading ? "申請中..." : "貸出申請"}
+                            </Button>
                         </Row>
                     </Col>
                     <Col></Col>

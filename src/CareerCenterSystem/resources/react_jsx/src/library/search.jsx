@@ -82,6 +82,10 @@ class Search extends React.Component {
 class Result extends React.Component {
     constructor() {
         super();
+        this.state = {
+            isLoading: false,
+            loadingIdx: -1,
+        }
     }
 
     getTbody() {
@@ -118,9 +122,17 @@ class Result extends React.Component {
     }
 
     getButton(book_id, borrowable, idx) {
+        const { isLoading, loadingIdx } = this.state;
         if (borrowable == "True") {
             return (
-                <Button variant="info" onClick={() => this.borrow_request(book_id, idx)} size="sm">貸出</Button>
+                <Button
+                    variant="info"
+                    disabled={isLoading}
+                    onClick={!isLoading ? () => this.borrow_request(book_id, idx) : null}
+                    size="sm"
+                >
+                    {isLoading && loadingIdx == idx ? "申請中..." : "貸出"}
+                </Button>
             );
         } else {
             return (
@@ -132,6 +144,10 @@ class Result extends React.Component {
     borrow_request(book_id, idx) {
         let confirmation = confirm("選択した書籍の貸出申請をしてもよろしいですか？");
         if (confirmation) {
+            this.setState({
+                isLoading: true,
+                loadingIdx: idx,
+            });
             addHeader(request.post(""))
                 .send({
                     "book_id": book_id,
@@ -149,6 +165,10 @@ class Result extends React.Component {
                     } else {
                         alert(res.body["message"]);
                     }
+                    this.setState({
+                        isLoading: false,
+                        loadingIdx: -1,
+                    });
                 }.bind(this));
         }
     }
@@ -161,7 +181,7 @@ class Result extends React.Component {
                 <br />
                 <Row>
                     <Col></Col>
-                    <Col xl={8} lg={8} md={8} sm={12} sx={12}>
+                    <Col xl={12} lg={12} md={12} sm={12} sx={12}>
                         <Table striped bordered hover>
                             <thead>
                                 <th>図書ID</th>
