@@ -13,6 +13,19 @@
 ## npm
 * npm    6.9.0   (https://nodejs.org/ja/)
 
+## How to run
+```
+cd src
+cd CareerCenterSystem
+cd resources
+cd react_jsx
+npm install
+cd ..
+cd ..
+python manage.py migrate
+python magage.py runserver react
+```
+
 ## src/CareerCenterSystem/CareerCenterSystem/emailsettings.py
 ```
 EMAIL_USE_TLS = True
