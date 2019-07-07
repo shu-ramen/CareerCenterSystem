@@ -15,6 +15,9 @@
 
 ## How to run
 ```
+cd home\of\git\local\
+git clone https://github.com/shu-ramen/CareerCenterSystem.git
+cd CareerCenterSystem
 cd src
 cd CareerCenterSystem
 cd resources
@@ -22,6 +25,7 @@ cd react_jsx
 npm install
 cd ..
 cd ..
+conda activate [your environment]
 python manage.py migrate
 python magage.py runserver react
 ```
