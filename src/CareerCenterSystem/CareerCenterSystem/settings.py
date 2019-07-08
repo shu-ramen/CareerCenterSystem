@@ -137,6 +137,7 @@ from . import emailsettings
 EMAIL_USE_TLS = emailsettings.EMAIL_USE_TLS
 EMAIL_HOST = emailsettings.EMAIL_HOST
 EMAIL_HOST_USER = emailsettings.EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = emailsettings.DEFAULT_FROM_EMAIL
 EMAIL_HOST_PASSWORD = emailsettings.EMAIL_HOST_PASSWORD
 EMAIL_PORT = emailsettings.EMAIL_PORT
 EMAIL_BACKEND = emailsettings.EMAIL_BACKEND

@@ -395,8 +395,8 @@ class EmailController(object):
             today = datetime.datetime.now()
             deadline = today + datetime.timedelta(weeks=2)
             user.email_user(
-                email_borrow.SUBJECT,
-                email_borrow.MESSAGE.format(
+                subject=email_borrow.SUBJECT,
+                message=email_borrow.MESSAGE.format(
                     user.username,
                     "{0} {1}".format(user.last_name, user.first_name),
                     BookController.book_ids_to_str(book_ids),
