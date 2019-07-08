@@ -19,6 +19,49 @@
 ## Git for Windows
 * Git      2.22.0  (https://gitforwindows.org/)
 
+## How to install applications
+### Anaconda
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/1.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/2.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/3.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/4.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/5.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/6.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/7.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/8.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/9.png)
+### VSCode
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/1.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/2.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/3.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/4.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/5.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/6.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/7.png)
+### Git
+警告が出る <br />
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/1.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/2.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/3.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/4.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/5.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/6.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/7.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/8.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/9.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/10.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/11.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/12.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/13.png)
+### npm(NodeJS)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/NodeJS/1.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/NodeJS/2.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/NodeJS/3.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/NodeJS/4.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/NodeJS/5.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/NodeJS/6.png)
+![](https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/NodeJS/7.png)
+
 ## How to create anaconda environment
 ```
 conda update -n base conda
