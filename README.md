@@ -13,6 +13,14 @@
 ## npm
 * npm    6.9.0   (https://nodejs.org/ja/)
 
+## How to create anaconda environment
+```
+conda update -n base conda
+conda create -n webdev python=3.6 anaconda
+conda activate webdev
+conda install django
+```
+
 ## How to run
 ```
 cd home\of\git\local\
