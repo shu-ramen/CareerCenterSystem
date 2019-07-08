@@ -38,6 +38,7 @@ class Register extends React.Component {
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Form method="POST">
                             {getCsrfTokenTag()}
+                            <input type="hidden" name="process" value="register_book"></input>
                             <Form.Group controlId="id_control_number">
                                 <Form.Label>管理番号</Form.Label>
                                 <Form.Control name="control_number" type="text" placeholder="管理番号を入力してください" maxlength="16" required />
@@ -54,13 +55,14 @@ class Register extends React.Component {
                             <Button variant="success" size="lg" type="submit" block>登録</Button>
                         </Form>
                         <br />
-                        <Form>
+                        <Form method="POST" enctype="multipart/form-data">
                             {getCsrfTokenTag()}
-                            <Form.Group controlId="id_title">
+                            <input type="hidden" name="process" value="register_book_file"></input>
+                            <Form.Group controlId="id_file">
                                 <Form.Label>インポートするCSVファイル</Form.Label>
-                                <Form.Control name="title" type="file" placeholder="ファイルをドラッグしてください" maxlength="256" required />
+                                <Form.Control name="file" type="file" required />
                             </Form.Group>
-                            <Button variant="success" size="lg" type="submit" block>一括登録（未完成）</Button>
+                            <Button variant="info" size="lg" type="submit" block>一括登録（未完成）</Button>
                         </Form>
                     </Col>
                     <Col></Col>

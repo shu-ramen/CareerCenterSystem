@@ -1,5 +1,6 @@
 import csv
 import datetime
+from io import TextIOWrapper, StringIO
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.http.response import JsonResponse
@@ -178,19 +179,54 @@ def register_book(request):
     if request.method == "POST":
         try:
             data = CommCtrl.get_posted_data(request)
-            obj = models.Book()
-            obj_data = {
-                "control_number": data["control_number"],
-                "title": data["title"],
-                "category": models.Category.objects.get(name=data["category"]).id,
-                "publisher": data["publisher"]
-            }
-            book = forms.BookForm(obj_data, instance=obj)
-            if book.is_valid():
-                book.save()
-                context["message"] = "登録しました"
-            else:
-                context["form"] = book
+            if data["process"] == "register_book":
+                obj = models.Book()
+                obj_data = {
+                    "control_number": data["control_number"],
+                    "title": data["title"],
+                    "category": models.Category.objects.get(name=data["category"]).id,
+                    "publisher": data["publisher"]
+                }
+                book = forms.BookForm(obj_data, instance=obj)
+                if book.is_valid():
+                    book.save()
+                    context["message"] = "登録しました"
+                else:
+                    context["form"] = book
+            elif data["process"] == "register_book_file":
+                if "file" in request.FILES:
+                    form_data = TextIOWrapper(request.FILES["file"])
+                    csv_file = csv.reader(form_data)
+                    for idx, line in enumerate(csv_file):
+                        if idx == 0:
+                            if len(line) == 4:
+                                if line[0] == "管理番号" and \
+                                   line[1] == "書籍名" and \
+                                   line[2] == "出版社" and \
+                                   line[3] == "カテゴリ":
+                                   continue
+                                else:
+                                    context["message"] = "データの形式が正しくありません"
+                                    break
+                            else:
+                                context["message"] = "データの形式が正しくありません"
+                                break
+                        else:
+                            control_number = line[0]
+                            title = line[1]
+                            publisher = line[2]
+                            category = line[3]
+                            if models.Category.objects.filter(name=category).count() == 1:
+                                book = models.Book(
+                                    control_number=control_number,
+                                    title=title,
+                                    publisher=publisher,
+                                    category=models.Category.objects.get(name=category)
+                                )
+                                book.save()
+                            else:
+                                context["message"] = "{}件目のデータが不正です．以降のデータはすべて登録されていません．".format(idx)
+                        context["message"] = "{}件のデータを登録しました．".format(idx)
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
