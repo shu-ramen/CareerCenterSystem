@@ -20,6 +20,7 @@
 * Git      2.22.0  (https://gitforwindows.org/)
 
 ## How to install applications
+
 ### Anaconda
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/1.png" width="480px" />
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/2.png" width="480px" />
@@ -30,6 +31,7 @@
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/7.png" width="480px" />
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/8.png" width="480px" />
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Anaconda/9.png" width="480px" />
+
 ### VSCode
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/1.png" width="480px" />
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/2.png" width="480px" />
@@ -38,6 +40,7 @@
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/5.png" width="480px" />
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/6.png" width="480px" />
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/7.png" width="480px" />
+
 ### Git
 警告が出る <br />
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/1.png" width="480px" />
@@ -53,6 +56,7 @@
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/11.png" width="480px" />
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/12.png" width="480px" />
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/Git/13.png" width="480px" />
+
 ### npm(NodeJS)
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/NodeJS/1.png" width="480px" />
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/NodeJS/2.png" width="480px" />
