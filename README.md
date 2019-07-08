@@ -4,21 +4,28 @@
 # Required Environments
 ## Python
 * Python 3.6
-* Django 2.1.7
+* Django 2.2.1
 * numpy  1.16.2
 * [TODO] pip install schedule
 * [TODO] https://github.com/Lalcs/jpholiday
 ## Anaconda
-* Latest Version (https://www.anaconda.com/)
-## npm
-* npm    6.9.0   (https://nodejs.org/ja/)
+* Anaconda 2019.03 (https://www.anaconda.com/)
+## npm (NodeJS)
+* npm      6.9.0   (https://nodejs.org/ja/)
+## Visual Studio Code
+* VSCode   1.36.0  (https://code.visualstudio.com/)
+## Git for Windows
+* Git      2.22.0  (https://gitforwindows.org/)
 
 ## How to create anaconda environment
 ```
 conda update -n base conda
+# Proceed ([y]/n)? y
 conda create -n webdev python=3.6 anaconda
+# Proceed ([y]/n)? y
 conda activate webdev
 conda install django
+# Proceed ([y]/n)? y
 ```
 
 ## How to run
@@ -33,7 +40,7 @@ cd react_jsx
 npm install
 cd ..
 cd ..
-conda activate [your environment]
+conda activate webdev
 python manage.py migrate
 python magage.py runserver react
 ```
