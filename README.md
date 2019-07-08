@@ -44,6 +44,16 @@ cd ..
 cd ..
 conda activate webdev
 python manage.py migrate
+python manage.py createsuperuser
+# ユーザー名: ログインに使うユーザー名
+# 名: 名前
+# 姓: 苗字
+# First name kana: 名前（かな）
+# Last name kana: 苗字（かな）
+# メールアドレス: メールアドレス
+# Phone number: 電話番号
+# Password: パスワード
+# Password (again): パスワード（確認）
 python magage.py runserver react
 ```
 
