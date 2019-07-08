@@ -24,9 +24,9 @@ conda update -n base conda
 conda create -n webdev python=3.6 anaconda
 # Proceed ([y]/n)? y
 conda activate webdev
-conda install django
+conda install django==2.2.1
 # Proceed ([y]/n)? y
-conda install -c anaconda sqlparse 
+conda install -c anaconda sqlparse==0.3.0
 # Proceed ([y]/n)? y
 ```
 
