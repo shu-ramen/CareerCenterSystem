@@ -26,6 +26,8 @@ conda create -n webdev python=3.6 anaconda
 conda activate webdev
 conda install django
 # Proceed ([y]/n)? y
+conda install -c anaconda sqlparse 
+# Proceed ([y]/n)? y
 ```
 
 ## How to run
