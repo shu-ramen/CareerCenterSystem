@@ -2,6 +2,8 @@
 キャリア支援センター用システム
 
 # Required Environments
+## Download URL
+* https://drive.google.com/open?id=1MtGm2QAGHPBcG2pIJE4FJ-uWAD-p6Wm0
 ## Python
 * Python 3.6
 * Django 2.2.1
