@@ -77,6 +77,7 @@ conda install django==2.2.1
 # Proceed ([y]/n)? y
 conda install -c anaconda sqlparse==0.3.0
 # Proceed ([y]/n)? y
+pip install schedule
 ```
 
 ## How to run
