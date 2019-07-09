@@ -8,7 +8,6 @@
 * Python 3.6
 * Django 2.2.1
 * numpy  1.16.2
-* [TODO] pip install schedule
 * [TODO] https://github.com/Lalcs/jpholiday
 ## Anaconda
 * Anaconda 2019.03 (https://www.anaconda.com/)
@@ -77,7 +76,7 @@ conda install django==2.2.1
 # Proceed ([y]/n)? y
 conda install -c anaconda sqlparse==0.3.0
 # Proceed ([y]/n)? y
-pip install schedule
+conda install -c conda-forge apscheduler
 ```
 
 ## How to run
