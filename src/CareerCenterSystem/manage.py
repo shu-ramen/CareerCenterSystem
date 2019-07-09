@@ -12,7 +12,6 @@ if __name__ == '__main__':
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-        
     try:
         if sys.argv[2] == "react":
             project_root = os.getcwd()
@@ -21,7 +20,13 @@ if __name__ == '__main__':
             os.chdir(project_root)
             sys.argv.pop(2)
         execute_from_command_line(sys.argv)
+        import scheduler
+        scheduler.start()
     except IndexError:
         execute_from_command_line(sys.argv)
+        import scheduler
+        scheduler.start()
     else:
         execute_from_command_line(sys.argv)
+        import scheduler
+        scheduler.start()

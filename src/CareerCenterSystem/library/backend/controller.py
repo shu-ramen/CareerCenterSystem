@@ -406,3 +406,20 @@ class EmailController(object):
             )
         except Exception as e:
             print(e)
+    
+    @staticmethod
+    def scheduled_check():
+        borrowList = BookController.get_current_history()
+        for borrow in borrowList:
+            deadline = datetime.datetime.strptime(borrow["deadline"], "%Y/%m/%d")
+            basedatetime = datetime.datetime.today() + datetime.timedelta(days=3)
+            delta = deadline - basedatetime
+            if delta.days <= 10:
+                history = models.History.objects.get(id=borrow["id"])
+                history.user.email_user(
+                    subject="test",
+                    message="test"
+                )
+                print(deadline)
+            else:
+                print("not yet")
