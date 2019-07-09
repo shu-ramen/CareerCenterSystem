@@ -1,7 +1,7 @@
 import json
 import datetime
 from .. import models
-from ..email import email_borrow
+from ..email import email_borrow, email_reminder_3daysbefore
 
 class BookController(object):
     CARTIN_MODE_ID = 0
@@ -414,12 +414,17 @@ class EmailController(object):
             deadline = datetime.datetime.strptime(borrow["deadline"], "%Y/%m/%d")
             basedatetime = datetime.datetime.today() + datetime.timedelta(days=3)
             delta = deadline - basedatetime
-            if delta.days <= 10:
+            if delta.days == 3:
                 history = models.History.objects.get(id=borrow["id"])
-                history.user.email_user(
-                    subject="test",
-                    message="test"
+                user = history.user
+                book = history.book
+                user.email_user(
+                    subject=email_reminder_3daysbefore.SUBJECT,
+                    message=email_reminder_3daysbefore.MESSAGE.format(
+                        user.username,
+                        "{0} {1}".format(user.last_name, user.first_name),
+                        BookController.book_ids_to_str([book.id]),
+                        borrow["timestamp"],
+                        borrow["deadline"]
+                    )
                 )
-                print(deadline)
-            else:
-                print("not yet")

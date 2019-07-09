@@ -6,6 +6,6 @@ def start():
     bgScheduler.add_job(
         EmailCtrl.scheduled_check, 
         "cron",
-        hour=15,
-        minute=49)
+        hour=16,
+        minute=1)
     bgScheduler.start()
