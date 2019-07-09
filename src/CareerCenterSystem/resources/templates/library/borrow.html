@@ -7,25 +7,9 @@
 {% block content %}
 {% csrf_token %}
 
-<br />
-
-{% if form.errors %}
-    {% for field in form %}
-        {% for error in field.errors %}
-            <div name="error">{{ error }}</div>
-        {% endfor %}
-     {% endfor %}
-{% endif %}
-
-{% if message %}
-    <div id="message">{{ message }}</div>
-{% endif %}
-
 <div id="main"></div>
 {% endblock %}
 
 {% block scripts %}
-<script src="/static/js/share_error.js"></script>
-<script src="/static/js/share_message.js"></script>
 <script src="/static/js/library_borrow.js"></script>
 {% endblock %}

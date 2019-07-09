@@ -23,7 +23,9 @@ def index(request):
 def search(request):
     template = loader.get_template('library/search.html')
     context = {
-        "categories": [c.name for c in models.Category.objects.all()]
+        "categories": [c.name for c in models.Category.objects.all()],
+        "messages": [],
+        "errors": []
     }
     if request.method == "POST":
         try:
@@ -52,7 +54,9 @@ def search(request):
                             "publisher": book.publisher,
                             "borrowable": BookCtrl.is_borrowable(book.id)
                         })
-                context["message"] = message
+                    context["messages"].append(message)
+                else:
+                    context["errors"].append(message)
             elif process == "borrow_request":
                 book_id = int(data["book_id"])
                 user = request.user
@@ -64,13 +68,16 @@ def search(request):
                 EmailCtrl.send_email_borrow([book_id], user)
                 return JsonResponse(responce)
         except Exception as e:
-            context["message"] = "失敗しました：{}".format(e)
+            context["errors"].append("失敗しました：{}".format(e))
     return HttpResponse(template.render(context, request))
 
 @login_required(login_url="/accounts/login/")
 def borrow(request):
     template = loader.get_template('library/borrow.html')
-    context = {}
+    context = {
+        "messages": [],
+        "errors": []
+    }
     if request.method == "POST":
         try:
             data = CommCtrl.get_posted_data(request)
@@ -128,22 +135,25 @@ def borrow(request):
                 EmailCtrl.send_email_borrow(book_ids, user)
                 return JsonResponse(response)
         except Exception as e:
-            context["message"] = "失敗しました：{}".format(e)
+            context["errors"].append("失敗しました：{}".format(e))
     return HttpResponse(template.render(context, request))
 
 @login_required(login_url="/accounts/login/")
 def giveback(request):
     template = loader.get_template('library/giveback.html')
-    context = {}
+    context = {
+        "messages": [],
+        "errors": []
+    }
     user = request.user
     if request.method == "POST":
         try:
             data = CommCtrl.get_posted_data(request)
             book_id = data["book_id"]
             message = BookCtrl.giveback(book_id, user)
-            context["message"] = message
+            context["messages"].append(message)
         except Exception as e:
-            context["message"] = "失敗しました：{}".format(e)
+            context["errors"].append("失敗しました：{}".format(e))
     borrowList = BookCtrl.get_borrowed_books(user)
     if len(borrowList) > 0:
         context["borrowList"] = borrowList
@@ -152,7 +162,10 @@ def giveback(request):
 @staff_member_required(login_url="/accounts/login/")
 def register_category(request):
     template = loader.get_template('library/register_category.html')
-    context = {}
+    context = {
+        "messages": [],
+        "errors": []
+    }
     if request.method == "POST":
         try:
             data = CommCtrl.get_posted_data(request)
@@ -163,18 +176,20 @@ def register_category(request):
             category = forms.CategoryForm(obj_data, instance=obj)
             if category.is_valid():
                 category.save()
-                context["message"] = "登録しました"
+                context["messages"].append("登録しました")
             else:
                 context["form"] = category
         except Exception as e:
-            context["message"] = "失敗しました：{}".format(e)
+            context["errors"].append("失敗しました：{}".format(e))
     return HttpResponse(template.render(context, request))
 
 @staff_member_required(login_url="/accounts/login/")
 def register_book(request):
     template = loader.get_template('library/register_book.html')
     context = {
-        "categories": [c.name for c in models.Category.objects.all()]
+        "categories": [c.name for c in models.Category.objects.all()],
+        "messages": [],
+        "errors": []
     }
     if request.method == "POST":
         try:
@@ -190,7 +205,7 @@ def register_book(request):
                 book = forms.BookForm(obj_data, instance=obj)
                 if book.is_valid():
                     book.save()
-                    context["message"] = "登録しました"
+                    context["messages"].append("登録しました")
                 else:
                     context["form"] = book
             elif data["process"] == "register_book_file":
@@ -207,10 +222,10 @@ def register_book(request):
                                        line[3] == "出版社":
                                         continue
                                     else:
-                                        context["message"] = "【失敗】データの形式が正しくありません．登録処理は行われていません．"
+                                        context["messages"].append("【失敗】データの形式が正しくありません．登録処理は行われていません．")
                                         break
                                 else:
-                                    context["message"] = "【失敗】データの形式が正しくありません．登録処理は行われていません．"
+                                    context["messages"].append("【失敗】データの形式が正しくありません．登録処理は行われていません．")
                                     break
                             else:
                                 if len(line) == 4:
@@ -219,13 +234,13 @@ def register_book(request):
                                     category = line[2]
                                     publisher = line[3]
                                     if BookCtrl.search(control_number=control_number)[0].count() != 0:
-                                        context["message"] = "【失敗】{}件目のデータが不正です．管理番号が既存のものと重複しています．以降のデータはすべて登録されていません．".format(idx)
+                                        context["errors"].append("【失敗】{}件目のデータが不正です．管理番号が既存のものと重複しています．以降のデータはすべて登録されていません．".format(idx))
                                         break
                                     if models.Category.objects.filter(name=category).count() != 1:
-                                        context["message"] = "【失敗】{}件目のデータが不正です．指定されたカテゴリは存在しません．以降のデータはすべて登録されていません．".format(idx)
+                                        context["errors"].append("【失敗】{}件目のデータが不正です．指定されたカテゴリは存在しません．以降のデータはすべて登録されていません．".format(idx))
                                         break
                                     if control_number=="" or title == "" or category == "" or publisher == "":
-                                        context["message"] = "【失敗】{}件目のデータが不正です．空白のデータは許容されません．以降のデータはすべて登録されていません．".format(idx)
+                                        context["errors"].append("【失敗】{}件目のデータが不正です．空白のデータは許容されません．以降のデータはすべて登録されていません．".format(idx))
                                         break
                                     book = models.Book(
                                         control_number=control_number,
@@ -235,20 +250,22 @@ def register_book(request):
                                     )
                                     book.save()
                                 else:
-                                    context["message"] = "【失敗】{}件目のデータが不正です．データ形式を確認してください．以降のデータはすべて登録されていません．".format(idx)
+                                    context["errors"].append("【失敗】{}件目のデータが不正です．データ形式を確認してください．以降のデータはすべて登録されていません．".format(idx))
                                     break
-                            context["message"] = "【完了】{}件のデータを登録しました．".format(idx)
+                            context["messages"].append("【完了】{}件のデータを登録しました．".format(idx))
                     else:
-                        context["message"] = "【失敗】CSVファイルをアップロードしてください．"
+                        context["errors"].append("【失敗】CSVファイルをアップロードしてください．")
         except Exception as e:
-            context["message"] = "失敗しました：{}".format(e)
+            context["errors"].append("失敗しました：{}".format(e))
     return HttpResponse(template.render(context, request))
 
 @staff_member_required(login_url="/accounts/login/")
 def unregister_book(request):
     template = loader.get_template('library/unregister_book.html')
     context = {
-        "categories": [c.name for c in models.Category.objects.all()]
+        "categories": [c.name for c in models.Category.objects.all()],
+        "messages": [],
+        "errors": []
     }
     if request.method == "POST":
         try:
@@ -277,7 +294,9 @@ def unregister_book(request):
                             "publisher": book.publisher,
                             "borrowable": BookCtrl.is_borrowable(book.id)
                         })
-                context["message"] = message
+                    context["messages"].append(message)
+                else:
+                    context["errors"].append(message)
             elif process == "unregister_book_request":
                 book_id = int(data["book_id"])
                 message, success = BookCtrl.deactivate(book_id)
@@ -287,7 +306,7 @@ def unregister_book(request):
                 }
                 return JsonResponse(response)
         except Exception as e:
-            context["message"] = "失敗しました：{}".format(e)
+            context["errors"].append("失敗しました：{}".format(e))
     return HttpResponse(template.render(context, request))
 
 @staff_member_required(login_url="/accounts/login/")
@@ -295,6 +314,8 @@ def status_borrow_recent(request):
     template = loader.get_template('library/status_borrow.html')
     context = {
         "results": BookCtrl.get_current_history(),
+        "messages": [],
+        "errors": []
     }
     if request.method == "POST":
         response = HttpResponse(content_type='text/csv; charset=Shift-JIS')
@@ -329,6 +350,8 @@ def status_borrow_past(request):
     template = loader.get_template('library/status_borrow.html')
     context = {
         "results": BookCtrl.get_all_history(),
+        "messages": [],
+        "errors": []
     }
     if request.method == "POST":
         response = HttpResponse(content_type='text/csv; charset=Shift-JIS')

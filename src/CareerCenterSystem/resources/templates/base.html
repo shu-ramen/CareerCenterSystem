@@ -13,14 +13,40 @@
   </head>
   <body>
     {% if user.is_authenticated %}
-    <div id="authenticated-header">{{ user.get_username }}</div>
+      <div id="authenticated-header">{{ user.get_username }}</div>
     {% else %}
-    <div id="not-authenticated-header"></div>
+      <div id="not-authenticated-header"></div>
     {% endif %}
+
+    <br />
+
+    {% if form.errors %}
+      {% for field in form %}
+        {% for error in field.errors %}
+          <div type="hidden" name="error" style="display: none" >{{error}}</div>
+        {% endfor %}
+      {% endfor %}
+    {% endif %}
+    {% if errors %}
+      {% for error in errors %}
+        <div type="hidden" name="error" style="display: none" >{{error}}</div>
+      {% endfor %}
+    {% endif %}
+    <div id="errors"></div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div type="hidden" name="message" style="display: none" >{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <div id="messages"></div>
 
     {% block content %}{% endblock %}
     
     <script src="{% static 'js/share_header.js' %}"></script>
+    <script src="{% static 'js/share_error.js' %}"></script>
+    <script src="{% static 'js/share_message.js' %}"></script>
+
     {% block scripts %}{% endblock %}
   </body>
 </html>

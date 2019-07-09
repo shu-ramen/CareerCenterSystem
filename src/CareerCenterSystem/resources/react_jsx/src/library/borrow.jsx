@@ -104,7 +104,7 @@ class Borrow extends React.Component {
                             idList: temp_idList,
                         });
                     } else {
-                        alert("そのIDの本はすでに追加されています")
+                        alert("そのIDの本はすでに追加されています");
                     }
                 } else {
                     alert(res.body["message"]);
@@ -153,6 +153,9 @@ class Borrow extends React.Component {
         });
         if (this.state.books.length == 0) {
             alert("少なくとも１冊の本を選択してください");
+            this.setState({
+                isLoading: false
+            });
             return;
         }
         addHeader(request.post(""))
