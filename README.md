@@ -1,8 +1,8 @@
 # CareerCenterSystem
 キャリア支援センター用システム
 
-# Required Environments
-## Download URL
+# 必要環境
+## 環境構築用インストーラー
 * https://drive.google.com/open?id=1MtGm2QAGHPBcG2pIJE4FJ-uWAD-p6Wm0
 ## Python
 * Python 3.6
@@ -18,7 +18,7 @@
 ## Git for Windows
 * Git      2.22.0  (https://gitforwindows.org/)
 
-## How to install applications
+## 環境構築
 * ダウンロード用URLからインストーラーをすべてダウンロードする
 ### Anaconda
 * Anacondaのインストーラーを起動する．
@@ -137,7 +137,13 @@
 * Finishをクリックする
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/NodeJS/7.png" width="480px" />
 
-## How to create anaconda environment
+### 再起動
+* 以上のインストールが全て完了した段階で一度パソコンの再起動を行う
+
+## Anaconda環境（プログラム実行環境）の作り方
+* Visual Studio Codeを起動する
+* Ctrl+@を押す（すると，Visual Studio Codeの下部に黒い画面が開く．）
+* 以下のコマンドは上記操作で開いた黒い画面上で行う．
 ```
 conda update -n base conda
 # Proceed ([y]/n)? y
@@ -153,12 +159,15 @@ conda install -c conda-forge apscheduler
 
 ## ファイルの解凍（Gitを使う場合は飛ばして良い）
 * CareerCenterSystem.zipを解凍する
+* 解凍したファイルをVisualStudioCodeから開く（「ファイル」→「フォルダーを開く...」で解凍したファイルを選択する．）
+* 開いた状態でCtrl+@をする．
 
-## How to run
+## プログラムの初期設定
+* cdとは：ディレクトリ（フォルダ）の移動．すなわち画面上でフォルダをダブルクリックしているのに等しい．
 ```
-cd home\of\git\local\
-git clone https://github.com/shu-ramen/CareerCenterSystem.git（Gitを使わない場合はこの操作は行わず，解凍したZipファイルを使う）
-cd CareerCenterSystem（ここが解凍したファイルの先頭になる）
+cd home\of\git\local（Gitを使わない場合はこの操作は行わない）
+git clone https://github.com/shu-ramen/CareerCenterSystem.git（Gitを使わない場合はこの操作は行わず，解凍したZipファイルを使う．）
+cd CareerCenterSystem（Gitを使わない場合はこの操作は行わない，ここが解凍したファイルの先頭と同じになる．ただし，一つ上の階層になっている場合は行う．）
 cd src
 cd CareerCenterSystem
 cd resources
@@ -178,15 +187,32 @@ python manage.py createsuperuser
 # Phone number: 電話番号
 # Password: パスワード
 # Password (again): パスワード（確認）
+```
+
+## 起動（2回目以降はこの操作のみ）
+```
+（必要であればcdコマンドでmanage.pyがある階層まで移動）
 python magage.py runserver react
 ```
 
 ## src/CareerCenterSystem/CareerCenterSystem/emailsettings.py
+* Gmailの場合
 ```
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'your_account@gmail.com'
+DEFAULT_FROM_EMAIL = ''
 EMAIL_HOST_PASSWORD = 'your_password'
 EMAIL_PORT = 587
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+```
+* 独自サーバー（SMTP）の場合
+```
+EMAIL_USE_TLS = True or False
+EMAIL_HOST = 'サーバーのホスト名'
+EMAIL_HOST_USER = ''
+DEFAULT_FROM_EMAIL = 'メールアドレス'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = サーバーのポート番号
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ```
