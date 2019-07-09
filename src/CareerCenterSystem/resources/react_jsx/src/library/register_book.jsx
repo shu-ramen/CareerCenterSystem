@@ -60,9 +60,9 @@ class Register extends React.Component {
                             <input type="hidden" name="process" value="register_book_file"></input>
                             <Form.Group controlId="id_file">
                                 <Form.Label>インポートするCSVファイル</Form.Label>
-                                <Form.Control name="file" type="file" required />
+                                <Form.Control name="file" type="file" accept="text/csv,.csv" required />
                             </Form.Group>
-                            <Button variant="info" size="lg" type="submit" block>一括登録（未完成）</Button>
+                            <Button variant="info" size="lg" type="submit" block>一括登録</Button>
                         </Form>
                     </Col>
                     <Col></Col>

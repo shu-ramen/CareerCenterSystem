@@ -195,38 +195,51 @@ def register_book(request):
                     context["form"] = book
             elif data["process"] == "register_book_file":
                 if "file" in request.FILES:
-                    form_data = TextIOWrapper(request.FILES["file"])
-                    csv_file = csv.reader(form_data)
-                    for idx, line in enumerate(csv_file):
-                        if idx == 0:
-                            if len(line) == 4:
-                                if line[0] == "管理番号" and \
-                                   line[1] == "書籍名" and \
-                                   line[2] == "出版社" and \
-                                   line[3] == "カテゴリ":
-                                   continue
+                    if str(request.FILES["file"]).split(".")[-1] == "csv":
+                        form_data = TextIOWrapper(request.FILES["file"])
+                        csv_file = csv.reader(form_data)
+                        for idx, line in enumerate(csv_file):
+                            if idx == 0:
+                                if len(line) == 4:
+                                    if line[0] == "管理番号" and \
+                                       line[1] == "書籍名" and \
+                                       line[2] == "カテゴリ" and \
+                                       line[3] == "出版社":
+                                        continue
+                                    else:
+                                        context["message"] = "【失敗】データの形式が正しくありません．登録処理は行われていません．"
+                                        break
                                 else:
-                                    context["message"] = "データの形式が正しくありません"
+                                    context["message"] = "【失敗】データの形式が正しくありません．登録処理は行われていません．"
                                     break
                             else:
-                                context["message"] = "データの形式が正しくありません"
-                                break
-                        else:
-                            control_number = line[0]
-                            title = line[1]
-                            publisher = line[2]
-                            category = line[3]
-                            if models.Category.objects.filter(name=category).count() == 1:
-                                book = models.Book(
-                                    control_number=control_number,
-                                    title=title,
-                                    publisher=publisher,
-                                    category=models.Category.objects.get(name=category)
-                                )
-                                book.save()
-                            else:
-                                context["message"] = "{}件目のデータが不正です．以降のデータはすべて登録されていません．".format(idx)
-                        context["message"] = "{}件のデータを登録しました．".format(idx)
+                                if len(line) == 4:
+                                    control_number = line[0]
+                                    title = line[1]
+                                    category = line[2]
+                                    publisher = line[3]
+                                    if BookCtrl.search(control_number=control_number)[0].count() != 0:
+                                        context["message"] = "【失敗】{}件目のデータが不正です．管理番号が既存のものと重複しています．以降のデータはすべて登録されていません．".format(idx)
+                                        break
+                                    if models.Category.objects.filter(name=category).count() != 1:
+                                        context["message"] = "【失敗】{}件目のデータが不正です．指定されたカテゴリは存在しません．以降のデータはすべて登録されていません．".format(idx)
+                                        break
+                                    if control_number=="" or title == "" or category == "" or publisher == "":
+                                        context["message"] = "【失敗】{}件目のデータが不正です．空白のデータは許容されません．以降のデータはすべて登録されていません．".format(idx)
+                                        break
+                                    book = models.Book(
+                                        control_number=control_number,
+                                        title=title,
+                                        publisher=publisher,
+                                        category=models.Category.objects.get(name=category)
+                                    )
+                                    book.save()
+                                else:
+                                    context["message"] = "【失敗】{}件目のデータが不正です．データ形式を確認してください．以降のデータはすべて登録されていません．".format(idx)
+                                    break
+                            context["message"] = "【完了】{}件のデータを登録しました．".format(idx)
+                    else:
+                        context["message"] = "【失敗】CSVファイルをアップロードしてください．"
         except Exception as e:
             context["message"] = "失敗しました：{}".format(e)
     return HttpResponse(template.render(context, request))
