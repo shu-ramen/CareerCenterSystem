@@ -238,6 +238,30 @@ def register_book(request):
                     context["messages"].append("登録しました")
                 else:
                     context["form"] = book
+            elif data["process"] == "export_book_file":
+                response = HttpResponse(content_type='text/csv; charset=Shift-JIS')
+                filename = datetime.datetime.now().strftime("books_%Y%m%d_%H%M%S.csv")
+                response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+                writer = csv.writer(response)
+                writer.writerow(["管理番号", "書籍名", "カテゴリ", "出版社", "アクティブ"])
+                for book in models.Book.objects.all():
+                    if book.category:
+                        writer.writerow([
+                            book.control_number,
+                            book.title,
+                            book.category.name,
+                            book.publisher,
+                            book.is_active
+                        ])
+                    else:
+                        writer.writerow([
+                            book.control_number,
+                            book.title,
+                            "削除済",
+                            book.publisher,
+                            book.is_active
+                        ])
+                return response
             elif data["process"] == "register_book_file":
                 if "file" in request.FILES:
                     if str(request.FILES["file"]).split(".")[-1] == "csv":
