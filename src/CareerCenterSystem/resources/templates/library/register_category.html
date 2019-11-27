@@ -7,6 +7,12 @@
 {% block content %}
 {% csrf_token %}
 
+{% if categories %}
+    {% for category in categories %}
+        <input type="hidden" name="category" value={{ category }} />
+    {% endfor %}
+{% endif %}
+
 <div id="main"></div>
 {% endblock %}
 

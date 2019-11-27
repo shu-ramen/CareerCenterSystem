@@ -19,7 +19,7 @@ class Index extends React.Component {
                 </Row>
                 <Row>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="success" text="white" style={{ width: '18rem' }}>
+                        <Card bg="success" text="white" style={{ width: '100%' }}>
                             <Card.Header as="h5">図書検索</Card.Header>
                             <Card.Body>
                                 <Card.Text>
@@ -31,7 +31,7 @@ class Index extends React.Component {
                         <br />
                     </Col>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="success" text="white" style={{ width: '18rem' }}>
+                        <Card bg="success" text="white" style={{ width: '100%' }}>
                             <Card.Header as="h5">図書貸出</Card.Header>
                             <Card.Body>
                                 <Card.Text>
@@ -43,7 +43,7 @@ class Index extends React.Component {
                         <br />
                     </Col>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="success" text="white" style={{ width: '18rem' }}>
+                        <Card bg="success" text="white" style={{ width: '100%' }}>
                             <Card.Header as="h5">図書返却</Card.Header>
                             <Card.Body>
                                 <Card.Text>
@@ -64,11 +64,11 @@ class Index extends React.Component {
                 </Row>
                 <Row>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="dark" text="white" style={{ width: '18rem' }}>
-                            <Card.Header as="h5">カテゴリ登録</Card.Header>
+                        <Card bg="dark" text="white" style={{ width: '100%' }}>
+                            <Card.Header as="h5">カテゴリ登録・削除</Card.Header>
                             <Card.Body>
                                 <Card.Text>
-                                    カテゴリの登録を行います．
+                                    カテゴリの登録や削除を行います．
                                 </Card.Text>
                                 <Button variant="dark" href="register/category/" block>実行</Button>
                             </Card.Body>
@@ -76,7 +76,7 @@ class Index extends React.Component {
                         <br />
                     </Col>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="dark" text="white" style={{ width: '18rem' }}>
+                        <Card bg="dark" text="white" style={{ width: '100%' }}>
                             <Card.Header as="h5">図書登録</Card.Header>
                             <Card.Body>
                                 <Card.Text>
@@ -88,7 +88,7 @@ class Index extends React.Component {
                         <br />
                     </Col>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="dark" text="white" style={{ width: '18rem' }}>
+                        <Card bg="dark" text="white" style={{ width: '100%' }}>
                             <Card.Header as="h5">図書廃棄</Card.Header>
                             <Card.Body>
                                 <Card.Text>
@@ -100,7 +100,7 @@ class Index extends React.Component {
                         <br />
                     </Col>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="dark" text="white" style={{ width: '18rem' }}>
+                        <Card bg="dark" text="white" style={{ width: '100%' }}>
                             <Card.Header as="h5">貸出状況確認</Card.Header>
                             <Card.Body>
                                 <Card.Text>
@@ -112,7 +112,7 @@ class Index extends React.Component {
                         <br />
                     </Col>
                     <Col xl={4} lg={4} md={4} sm={12} xs={12}>
-                        <Card bg="dark" text="white" style={{ width: '18rem' }}>
+                        <Card bg="dark" text="white" style={{ width: '100%' }}>
                             <Card.Header as="h5">貸出履歴確認</Card.Header>
                             <Card.Body>
                                 <Card.Text>

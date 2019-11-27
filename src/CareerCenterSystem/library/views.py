@@ -163,22 +163,48 @@ def giveback(request):
 def register_category(request):
     template = loader.get_template('library/register_category.html')
     context = {
+        "categories": [c.name for c in models.Category.objects.all()],
         "messages": [],
         "errors": []
     }
     if request.method == "POST":
         try:
             data = CommCtrl.get_posted_data(request)
-            obj = models.Category()
-            obj_data = {
-                "name": data["name"]
-            }
-            category = forms.CategoryForm(obj_data, instance=obj)
-            if category.is_valid():
-                category.save()
-                context["messages"].append("登録しました")
-            else:
-                context["form"] = category
+            process = data["process"]
+            if process == "register_category":
+                # 登録処理
+                obj = models.Category()
+                obj_data = {
+                    "name": data["name"]
+                }
+                category = forms.CategoryForm(obj_data, instance=obj)
+                if category.is_valid():
+                    category.save()
+                    context["messages"].append("登録しました")
+                else:
+                    context["form"] = category
+            elif process == "unregister_category":
+                # 削除処理
+                category_name = data["category"]
+                if category_name != "":
+                    category = models.Category.objects.get(name=category_name)
+                    category.delete()
+                    context["categories"] = [c.name for c in models.Category.objects.all()]
+                    context["messages"].append("カテゴリ【{}】を削除しました".format(category_name))
+                else:
+                    context["errors"].append("削除するカテゴリを選択してください")
+            elif process == "change_category":
+                # 変更処理
+                category_name = data["category"]
+                new_name = data["name"]
+                if category_name != "":
+                    category = models.Category.objects.get(name=category_name)
+                    category.name = new_name
+                    category.save()
+                    context["categories"] = [c.name for c in models.Category.objects.all()]
+                    context["messages"].append("カテゴリ【{}】を【{}】に変更しました".format(category_name, new_name))
+                else:
+                    context["errors"].append("変更するカテゴリを選択してください")
         except Exception as e:
             context["errors"].append("失敗しました：{}".format(e))
     return HttpResponse(template.render(context, request))
