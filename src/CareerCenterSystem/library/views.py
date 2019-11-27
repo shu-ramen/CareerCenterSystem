@@ -181,18 +181,22 @@ def register_category(request):
                 if category.is_valid():
                     category.save()
                     context["messages"].append("登録しました")
+                    context["categories"] = [c.name for c in models.Category.objects.all()]
                 else:
                     context["form"] = category
-            elif process == "unregister_category":
+            elif process == "delete_category":
                 # 削除処理
                 category_name = data["category"]
                 if category_name != "":
                     category = models.Category.objects.get(name=category_name)
-                    category.delete()
+                    print(category.delete())
                     context["categories"] = [c.name for c in models.Category.objects.all()]
                     context["messages"].append("カテゴリ【{}】を削除しました".format(category_name))
-                else:
-                    context["errors"].append("削除するカテゴリを選択してください")
+                    responce = {
+                        "message": "カテゴリ【{}】を削除しました".format(category_name),
+                        "success": True
+                    }
+                    return JsonResponse(responce)
             elif process == "change_category":
                 # 変更処理
                 category_name = data["category"]

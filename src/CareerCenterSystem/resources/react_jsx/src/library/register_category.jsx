@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import request from 'superagent';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { getCsrfTokenTag } from '../share/csrf.jsx';
+import { addHeader, getCsrfTokenTag } from '../share/csrf.jsx';
 
 class Register extends React.Component {
     constructor() {
@@ -13,7 +14,7 @@ class Register extends React.Component {
         return (
             <Form.Group controlId="id_category" required>
                 <Form.Label>カテゴリ</Form.Label>
-                <Form.Control as="select" name="category">
+                <Form.Control as="select" id="category" name="category">
                     <option></option>
                     {options}
                 </Form.Control>
@@ -25,6 +26,34 @@ class Register extends React.Component {
         return (
             <option>{category}</option>
         );
+    }
+
+    deleteCategory() {
+        let category_name = document.getElementById("category-delete").childNodes[0].childNodes[1].value;
+        if (category_name == "") {
+            alert("削除するカテゴリを選択してください");
+            return;
+        }
+
+        let confirmation = confirm("本当にカテゴリ【" + category_name + "】を削除してもよろしいですか？※登録直後のカテゴリは削除できません．一度別画面に遷移してから削除してください．");
+        if (confirmation) {
+            addHeader(request.post(""))
+                .send({
+                    "category": category_name,
+                    "process": "delete_category"
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        alert(res.text);
+                    }
+                    if (res.body["success"]) {
+                        alert(res.body["message"]);
+                        window.location.reload();
+                    } else {
+                        alert("削除処理に失敗しました");
+                    }
+                }.bind(this));
+        }
     }
 
     render() {
@@ -71,12 +100,10 @@ class Register extends React.Component {
                 <Row>
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
-                        <Form method="POST">
-                            <input type="hidden" name="process" value="unregister_category"></input>
-                            {getCsrfTokenTag()}
+                        <div id="category-delete">
                             {categorySelectBox}
-                            <Button variant="danger" size="lg" type="submit" block>削除</Button>
-                        </Form>
+                        </div>
+                        <Button variant="danger" size="lg" onClick={() => this.deleteCategory()} block>削除</Button>
                     </Col>
                     <Col></Col>
                 </Row>
@@ -87,7 +114,6 @@ class Register extends React.Component {
 
 if (document.getElementsByName('category').length > 0) {
     let categoryTags = document.getElementsByName('category');
-    console.dir(categoryTags);
     let categories = [];
     for (let categoryTag of categoryTags) {
         categories.push(categoryTag.value);
