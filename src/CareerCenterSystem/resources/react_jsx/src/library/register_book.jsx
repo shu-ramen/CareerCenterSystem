@@ -44,8 +44,8 @@ class Register extends React.Component {
                                 <Form.Control name="control_number" type="text" placeholder="管理番号を入力してください" maxlength="16" required />
                             </Form.Group>
                             <Form.Group controlId="id_title">
-                                <Form.Label>タイトル</Form.Label>
-                                <Form.Control name="title" type="text" placeholder="タイトルを入力してください" maxlength="256" required />
+                                <Form.Label>書籍名</Form.Label>
+                                <Form.Control name="title" type="text" placeholder="書籍名を入力してください" maxlength="256" required />
                             </Form.Group>
                             {categorySelectBox}
                             <Form.Group controlId="id_publisher">

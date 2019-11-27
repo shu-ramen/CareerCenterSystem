@@ -120,7 +120,7 @@ class Result extends React.Component {
     getButton(book_id, borrowable, idx) {
         if (borrowable == "True") {
             return (
-                <Button variant="info" onClick={() => this.unregister_book_request(book_id, idx)} size="sm">廃棄</Button>
+                <Button variant="danger" onClick={() => this.unregister_book_request(book_id, idx)} size="sm">廃棄</Button>
             );
         } else {
             return (
@@ -166,7 +166,7 @@ class Result extends React.Component {
                             <thead>
                                 <th>図書ID</th>
                                 <th>管理番号</th>
-                                <th>タイトル</th>
+                                <th>書籍名</th>
                                 <th>カテゴリ</th>
                                 <th>出版社</th>
                                 <th>貸出状態</th>

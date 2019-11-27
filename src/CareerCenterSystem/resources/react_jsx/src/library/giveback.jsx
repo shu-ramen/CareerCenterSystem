@@ -50,7 +50,7 @@ class BorrowTable extends React.Component {
                             <thead>
                                 <th>図書ID</th>
                                 <th>管理番号</th>
-                                <th>タイトル</th>
+                                <th>書籍名</th>
                                 <th>カテゴリ</th>
                                 <th>出版社</th>
                                 <th>貸出日時</th>
