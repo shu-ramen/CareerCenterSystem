@@ -6,8 +6,22 @@
 
 {% block content %}
 {% csrf_token %}
-<img src="/static/images/library.jpg" style="display:none" />
+
+{% if news_messages %}
+    {% for news_message in news_messages %}
+        <input type="hidden" name="news_message" value={{ news_message }} />
+    {% endfor %}
+{% endif %}
+
+{% if important_news_messages %}
+    {% for important_news_message in important_news_messages %}
+        <input type="hidden" name="important_news_message" value={{ important_news_message }} />
+    {% endfor %}
+{% endif %}
+
 <div id="main"></div>
+<div id="important_news"></div>
+<div id="news"></div>
 {% endblock %}
 
 {% block scripts %}
