@@ -306,7 +306,7 @@ def register_book(request):
                                 else:
                                     context["errors"].append("【失敗】{}件目のデータが不正です．データ形式を確認してください．以降のデータはすべて登録されていません．".format(idx))
                                     break
-                            context["messages"].append("【完了】{}件のデータを登録しました．".format(idx))
+                            context["messages"] = "【完了】{}件のデータを登録しました．".format(idx)
                     else:
                         context["errors"].append("【失敗】CSVファイルをアップロードしてください．")
         except Exception as e:
