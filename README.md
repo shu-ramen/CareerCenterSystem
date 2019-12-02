@@ -72,7 +72,7 @@
 * チェックを外して完了をクリックする
 <img src="https://github.com/shu-ramen/CareerCenterSystem/blob/master/howto/VSCode/7.png" width="480px" />
 
-### Git（Gitを使わない場合は飛ばして良い）
+### Git
 * Gitのインストーラーを起動する
 * 警告が出るが，はいをクリックして続行する
 * Nextをクリックする
@@ -154,20 +154,14 @@ conda install django==2.2.1
 # Proceed ([y]/n)? y
 conda install -c anaconda sqlparse==0.3.0
 # Proceed ([y]/n)? y
-conda install -c conda-forge apscheduler
 ```
-
-## ファイルの解凍（Gitを使う場合は飛ばして良い）
-* CareerCenterSystem.zipを解凍する
-* 解凍したファイルをVisualStudioCodeから開く（「ファイル」→「フォルダーを開く...」で解凍したファイルを選択する．）
-* 開いた状態でCtrl+@をする．
 
 ## プログラムの初期設定
 * cdとは：ディレクトリ（フォルダ）の移動．すなわち画面上でフォルダをダブルクリックしているのに等しい．
 ```
-cd home\of\git\local（Gitを使わない場合はこの操作は行わない）
-git clone https://github.com/shu-ramen/CareerCenterSystem.git（Gitを使わない場合はこの操作は行わず，解凍したZipファイルを使う．）
-cd CareerCenterSystem（Gitを使わない場合はこの操作は行わない，ここが解凍したファイルの先頭と同じになる．ただし，一つ上の階層になっている場合は行う．）
+cd home\of\git\local（場所は任意．プログラムを保存したい場所に移動．）
+git clone https://github.com/shu-ramen/CareerCenterSystem.git
+cd CareerCenterSystem
 cd src
 cd CareerCenterSystem
 cd resources
@@ -176,6 +170,7 @@ npm install
 cd ..
 cd ..
 conda activate webdev
+conda env list (webdevに*がついていることを確認)
 python manage.py migrate
 python manage.py createsuperuser
 # ユーザー名: ログインに使うユーザー名
@@ -192,7 +187,35 @@ python manage.py createsuperuser
 ## 起動（2回目以降はこの操作のみ）
 ```
 （必要であればcdコマンドでmanage.pyがある階層まで移動）
-python magage.py runserver react
+conda activate webdev
+conda env list (webdevに*がついていることを確認)
+python magage.py runserver react 0.0.0.0:18080
+```
+
+## システムにアクセス
+* システムのアクセス方法
+ブラウザ（Google Chrome, Microsoft Edgeなど）に以下のアドレスを入力する．（xxx.xxx.xxx.xxxはPCのIPアドレス．）
+```
+http://xxx.xxx.xxx.xxx:18080/
+```
+* IPアドレスの確認方法
+コマンドプロンプト（スタートボタンを押して検索すると出てくる）を起動し，以下のコマンドを入力してPCのIPアドレスを確認する
+```
+ipconfig
+```
+すると，「IPv4アドレス」という項目が出てくる．これがそのPCに割り当てられているIPアドレスである．
+しかしながら，複数個これが出てくる場合が存在する．
+一般的には「192.xxx.xxx.xxx」というものが閉じたネットワークで，そうでないアドレスが外部から見えているネットワークのIPアドレスに該当することが多い．
+そのため，自分のPCからはいずれのIPアドレスでもよく，同じLAN内の他のPCからシステムを確認する場合には，外部から見えているIPアドレスを用いる．
+上記に該当しない場合はどれかを試せば一つはつながる．
+* システムにアクセスできない場合
+セキュリティソフトが導入されている場合，本プログラムが危険と判断されてシステムに外部からアクセスできない場合がある．
+そういった場合には，セキュリティソフトに本プログラムの通信許可を行う必要がある．（例：Windowsファイアウォールなら「Windowsファイアウォールアプリケーションの許可」で「python.exe」を許可したり，ESETであれば「設定＞パーソナルファイアウォールの歯車＞対話モード」の状態で通信を行いpythonプログラムの通信を許可するルールを作成するなどの必要がある．）
+
+## 最新バージョンへのアップデート
+```
+cd home\of\git\local\CareerCenterSystem (プログラムの保存場所に移動)
+git pull
 ```
 
 ## src/CareerCenterSystem/CareerCenterSystem/emailsettings.py
