@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}リマインダ | 図書システム{% endblock %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+
+{% if timestamp %}
+  <input type="hidden" name="timestamp" value={{ timestamp }} />
+{% endif %}
+
+<div id="reminder"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/library_remind.js"></script>
+{% endblock %}

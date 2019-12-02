@@ -19,6 +19,7 @@ module.exports = {
     library_register_book:     path.resolve(__dirname, "src/library/register_book.jsx"),
     library_unregister_book:   path.resolve(__dirname, "src/library/unregister_book.jsx"),
     library_status_borrow:     path.resolve(__dirname, "src/library/status_borrow.jsx"),
+    library_remind:            path.resolve(__dirname, "src/library/remind.jsx"),
   },
   output: {
     path: path.resolve(__dirname, "../static/js/") ,

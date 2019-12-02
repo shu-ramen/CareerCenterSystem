@@ -434,3 +434,13 @@ def status_borrow_past(request):
             ])
         return response
     return HttpResponse(template.render(context, request))
+
+@staff_member_required(login_url="/accounts/login/")
+def remind(request):
+    template = loader.get_template('library/remind.html')
+    context = { }
+    if request.method == "POST":
+        EmailCtrl.remind()
+    if EmailCtrl.getLatestReminderTimestamp is not None:
+        context["timestamp"] = EmailCtrl.getLatestReminderTimestamp
+    return HttpResponse(template.render(context, request))

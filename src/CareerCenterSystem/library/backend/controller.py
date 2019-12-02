@@ -1,7 +1,7 @@
 import json
 import datetime
 from .. import models
-from ..email import email_borrow, email_reminder_3daysbefore
+from ..email import email_borrow, email_reminder
 
 class BookController(object):
     CARTIN_MODE_ID = 0
@@ -316,7 +316,7 @@ class BookController(object):
     
     @staticmethod
     def history_to_dict(history):
-        date = history.timestamp
+        date = history.timestamp + datetime.timedelta(hours=9) # タイムゾーン反映
         deadline = date + datetime.timedelta(weeks=2)
         data = {
             "id": history.id,
@@ -408,23 +408,48 @@ class EmailController(object):
             print(e)
     
     @staticmethod
-    def scheduled_check():
+    def remind():
         borrowList = BookController.get_current_history()
         for borrow in borrowList:
+            # 締め切りまでの期間を計算
             deadline = datetime.datetime.strptime(borrow["deadline"], "%Y/%m/%d")
-            basedatetime = datetime.datetime.today() + datetime.timedelta(days=3)
+            basedatetime = datetime.datetime.today()
             delta = deadline - basedatetime
-            if delta.days == 3:
-                history = models.History.objects.get(id=borrow["id"])
-                user = history.user
-                book = history.book
-                user.email_user(
-                    subject=email_reminder_3daysbefore.SUBJECT,
-                    message=email_reminder_3daysbefore.MESSAGE.format(
-                        user.username,
-                        "{0} {1}".format(user.last_name, user.first_name),
-                        BookController.book_ids_to_str([book.id]),
-                        borrow["timestamp"],
-                        borrow["deadline"]
-                    )
+            if delta.days < 0:
+                # 返却期限を超過している場合
+                delta_message = "返却期限を{}日超過しています．".format(-1 * delta.days)
+            elif delta.days == 0:
+                delta_message = "返却期限当日です．"
+            elif delta.days <= 3:
+                delta_message = "返却期限が{}日後に迫っています．".format(delta.days)
+                # 返却期限が3日以内に迫っている場合
+            else:
+                # 返却リマインダの送信は不要
+                break
+            # リマインドメールの送信
+            history = models.History.objects.get(id=borrow["id"])
+            user = history.user
+            book = history.book
+            user.email_user(
+                subject=email_reminder.SUBJECT,
+                message=email_reminder.MESSAGE.format(
+                    user.username,
+                    "{0} {1}".format(user.last_name, user.first_name),
+                    delta_message,
+                    BookController.book_ids_to_str([book.id]),
+                    borrow["timestamp"],
+                    borrow["deadline"]
                 )
+            )
+        # リマインダの送信記録
+        reminderHistory = models.ReminderHistory()
+        reminderHistory.save()
+    
+    @staticmethod
+    def getLatestReminderTimestamp():
+        latest = models.ReminderHistory.objects.order_by('-id')
+        print(latest.count())
+        if (latest.count() > 0):
+            return (latest[0].timestamp + datetime.timedelta(hours=9)).strftime("%Y/%m/%d-%H:%M")
+        else:
+            return None

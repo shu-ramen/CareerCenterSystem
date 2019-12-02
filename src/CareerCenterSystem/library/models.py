@@ -30,3 +30,6 @@ class History(models.Model):
     )
     action = models.CharField(max_length=1, choices=ACTION_CHOICE)
     timestamp = models.DateTimeField(auto_now=True)
+
+class ReminderHistory(models.Model):
+    timestamp = models.DateTimeField(auto_now=True)

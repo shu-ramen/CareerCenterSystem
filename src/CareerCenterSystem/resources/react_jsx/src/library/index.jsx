@@ -123,6 +123,18 @@ class Index extends React.Component {
                         </Card>
                         <br />
                     </Col>
+                    <Col xl={4} lg={4} md={4} sm={12} xs={12}>
+                        <Card bg="dark" text="white" style={{ width: '100%' }}>
+                            <Card.Header as="h5">リマインドメール送信</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    返却期限間近の人にリマインドします．
+                                </Card.Text>
+                                <Button variant="dark" href="remind/" block>実行</Button>
+                            </Card.Body>
+                        </Card>
+                        <br />
+                    </Col>
                 </Row>
             </Container>
         )
