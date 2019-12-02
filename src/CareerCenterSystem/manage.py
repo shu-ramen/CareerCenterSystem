@@ -20,13 +20,7 @@ if __name__ == '__main__':
             os.chdir(project_root)
             sys.argv.pop(2)
         execute_from_command_line(sys.argv)
-        import scheduler
-        scheduler.start()
     except IndexError:
         execute_from_command_line(sys.argv)
-        import scheduler
-        scheduler.start()
     else:
         execute_from_command_line(sys.argv)
-        import scheduler
-        scheduler.start()
