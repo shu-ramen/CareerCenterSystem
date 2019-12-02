@@ -218,6 +218,9 @@ ipconfig
 ```
 cd home\of\git\local\CareerCenterSystem (プログラムの保存場所に移動)
 git pull
+cd src\CareerCenterSystem
+python manage.py makemigrations
+python manage.py migrate
 ```
 
 ## src/CareerCenterSystem/CareerCenterSystem/emailsettings.py
