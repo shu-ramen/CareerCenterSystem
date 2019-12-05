@@ -221,7 +221,9 @@ git pull
 cd src\CareerCenterSystem
 python manage.py makemigrations
 python manage.py migrate
+python manage.py runserver react
 ```
+以上のコマンドを打ったら、一度プログラムを終了して更新作業が完了。
 
 ## src/CareerCenterSystem/CareerCenterSystem/emailsettings.py
 * Gmailの場合
