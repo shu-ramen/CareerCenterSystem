@@ -246,3 +246,13 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = サーバーのポート番号
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ```
+
+## データの完全消去方法
+db.sqlite3というファイルを削除する．※システム動作中は削除できないので，システムを切ってから削除を行う．また，バックアップも取っておくと良い．
+以下のコマンドからデータベースを再登録する．
+```
+cd home\of\git\local\CareerCenterSystem (プログラムの保存場所に移動)
+python manage.py migrate (データベースを作成する．)
+python manage.py createsuperuser (管理者ユーザーを登録する．詳細は上述している．)
+python manage.py runserver react 0.0.0.0:18080 (サーバーを起動する．)
+```
