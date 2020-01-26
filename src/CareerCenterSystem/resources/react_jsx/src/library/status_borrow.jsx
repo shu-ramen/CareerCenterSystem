@@ -38,45 +38,58 @@ class Result extends React.Component {
     }
 
     render() {
-        let tbody = this.getTbody();
+        if (this.props.results.length > 0) {
+            let tbody = this.getTbody();
 
-        return (
-            <Container fluid>
-                <br />
-                <Row>
-                    <Col xl={8} lg={8} md={8} sm={12} sx={12}></Col>
-                    <Col xl={4} lg={4} md={4} sm={12} sx={12}>
-                        <Form method="POST">
-                            {getCsrfTokenTag()}
-                            <Button variant="success" type="submit" block>ダウンロード</Button>
-                        </Form>
-                    </Col>
-                </Row>
-                <br />
-                <Row>
-                    <Col xl={12} lg={12} md={12} sm={12} sx={12}>
-                        <Table striped bordered hover size="sm">
-                            <thead>
-                                <th>ID</th>
-                                <th>学籍番号</th>
-                                <th>氏名</th>
-                                <th>メールアドレス</th>
-                                <th>電話番号</th>
-                                <th>図書ID</th>
-                                <th>管理番号</th>
-                                <th>書籍名</th>
-                                <th>カテゴリ</th>
-                                <th>出版社</th>
-                                <th>処理</th>
-                                <th>実行日</th>
-                                <th>返却期限</th>
-                            </thead>
-                            {tbody}
-                        </Table>
-                    </Col>
-                </Row>
-            </Container>
-        );
+            return (
+                <Container fluid>
+                    <br />
+                    <Row>
+                        <Col xl={8} lg={8} md={8} sm={12} sx={12}></Col>
+                        <Col xl={4} lg={4} md={4} sm={12} sx={12}>
+                            <Form method="POST">
+                                {getCsrfTokenTag()}
+                                <Button variant="success" type="submit" block>ダウンロード</Button>
+                            </Form>
+                        </Col>
+                    </Row>
+                    <br />
+                    <Row>
+                        <Col xl={12} lg={12} md={12} sm={12} sx={12}>
+                            <Table striped bordered hover size="sm">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>学籍番号</th>
+                                    <th>氏名</th>
+                                    <th>メールアドレス</th>
+                                    <th>電話番号</th>
+                                    <th>図書ID</th>
+                                    <th>管理番号</th>
+                                    <th>書籍名</th>
+                                    <th>カテゴリ</th>
+                                    <th>出版社</th>
+                                    <th>処理</th>
+                                    <th>実行日</th>
+                                    <th>返却期限</th>
+                                </thead>
+                                {tbody}
+                            </Table>
+                        </Col>
+                    </Row>
+                </Container>
+            );
+        } else {
+            return (
+                <Container fluid>
+                    <br />
+                    <Row>
+                        <Col xl={8} lg={8} md={8} sm={12} sx={12}>
+                            現在貸出中の書籍はありません．
+                        </Col>
+                    </Row>
+                </Container>
+            );
+        }
     }
 }
 
@@ -102,6 +115,12 @@ if (document.getElementsByName('result').length > 0) {
     }
     ReactDOM.render(
         <Result results={results} />,
+        document.getElementById('result_table')
+    );
+}
+else {
+    ReactDOM.render(
+        <Result results={[]} />,
         document.getElementById('result_table')
     );
 }

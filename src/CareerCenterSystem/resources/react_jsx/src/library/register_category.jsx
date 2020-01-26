@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import request from 'superagent';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row, Tabs, Tab } from 'react-bootstrap';
 import { addHeader, getCsrfTokenTag } from '../share/csrf.jsx';
 
 class Register extends React.Component {
@@ -65,45 +65,40 @@ class Register extends React.Component {
                 <Row>
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
-                        <Form method="POST">
-                            <input type="hidden" name="process" value="register_category"></input>
-                            {getCsrfTokenTag()}
-                            <Form.Group controlId="id_name">
-                                <Form.Label>カテゴリ名</Form.Label>
-                                <Form.Control name="name" type="text" placeholder="カテゴリ名を入力してください" maxlength="150" required />
-                            </Form.Group>
-                            <Button variant="success" size="lg" type="submit" block>登録</Button>
-                        </Form>
-                    </Col>
-                    <Col></Col>
-                </Row>
-                <br />
-                <br />
-                <Row>
-                    <Col></Col>
-                    <Col xl={8} lg={8} md={8} sm={12} sx={12}>
-                        <Form method="POST">
-                            <input type="hidden" name="process" value="change_category"></input>
-                            {getCsrfTokenTag()}
-                            {categorySelectBox}
-                            <Form.Group controlId="id_name">
-                                <Form.Label>新しいカテゴリ名</Form.Label>
-                                <Form.Control name="name" type="text" placeholder="新しいカテゴリ名を入力してください" maxlength="150" required />
-                            </Form.Group>
-                            <Button variant="info" size="lg" type="submit" block>変更</Button>
-                        </Form>
-                    </Col>
-                    <Col></Col>
-                </Row>
-                <br />
-                <br />
-                <Row>
-                    <Col></Col>
-                    <Col xl={8} lg={8} md={8} sm={12} sx={12}>
-                        <div id="category-delete">
-                            {categorySelectBox}
-                        </div>
-                        <Button variant="danger" size="lg" onClick={() => this.deleteCategory()} block>削除</Button>
+                        <Tabs defaultActiveKey="register" id="register_category_tab">
+                            <Tab eventKey="register" title="登録">
+                                <br />
+                                <Form method="POST">
+                                    <input type="hidden" name="process" value="register_category"></input>
+                                    {getCsrfTokenTag()}
+                                    <Form.Group controlId="id_name">
+                                        <Form.Label>カテゴリ名</Form.Label>
+                                        <Form.Control name="name" type="text" placeholder="カテゴリ名を入力してください" maxlength="150" required />
+                                    </Form.Group>
+                                    <Button variant="success" size="lg" type="submit" block>登録</Button>
+                                </Form>
+                            </Tab>
+                            <Tab eventKey="change" title="変更">
+                                <br />
+                                <Form method="POST">
+                                    <input type="hidden" name="process" value="change_category"></input>
+                                    {getCsrfTokenTag()}
+                                    {categorySelectBox}
+                                    <Form.Group controlId="id_name">
+                                        <Form.Label>新しいカテゴリ名</Form.Label>
+                                        <Form.Control name="name" type="text" placeholder="新しいカテゴリ名を入力してください" maxlength="150" required />
+                                    </Form.Group>
+                                    <Button variant="info" size="lg" type="submit" block>変更</Button>
+                                </Form>
+                            </Tab>
+                            <Tab eventKey="delete" title="削除">
+                                <br />
+                                <div id="category-delete">
+                                    {categorySelectBox}
+                                </div>
+                                <Button variant="danger" size="lg" onClick={() => this.deleteCategory()} block>削除</Button>
+                            </Tab>
+                        </Tabs>
                     </Col>
                     <Col></Col>
                 </Row>
