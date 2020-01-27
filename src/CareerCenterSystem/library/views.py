@@ -225,6 +225,7 @@ def register_book(request):
         try:
             data = CommCtrl.get_posted_data(request)
             if data["process"] == "register_book":
+                context["tab"] = "register"
                 obj = models.Book()
                 obj_data = {
                     "control_number": data["control_number"],
@@ -239,6 +240,7 @@ def register_book(request):
                 else:
                     context["form"] = book
             elif data["process"] == "export_book_file":
+                context["tab"] = "export_file"
                 response = HttpResponse(content_type='text/csv; charset=Shift-JIS')
                 filename = datetime.datetime.now().strftime("books_%Y%m%d_%H%M%S.csv")
                 response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
@@ -263,6 +265,7 @@ def register_book(request):
                         ])
                 return response
             elif data["process"] == "register_book_file":
+                context["tab"] = "import_file"
                 if "file" in request.FILES:
                     if str(request.FILES["file"]).split(".")[-1] == "csv":
                         form_data = TextIOWrapper(request.FILES["file"])
@@ -309,6 +312,43 @@ def register_book(request):
                             context["messages"] = "【完了】{}件のデータを登録しました．".format(idx)
                     else:
                         context["errors"].append("【失敗】CSVファイルをアップロードしてください．")
+            elif data["process"] == "change_search":
+                context["tab"] = "change"
+                control_number = data["control_number"]
+                books = BookCtrl.search(control_number=control_number)[0]
+                if books.count() == 0:
+                    context["errors"].append("【失敗】該当する管理番号の書籍は登録されていません．")
+                elif books.count() > 1:
+                    context["errors"].append("【失敗】管理番号は正しく入力してください．")
+                else:
+                    book = books[0]
+                    context["change_book"] = True
+                    context["control_number"] = book.control_number
+                    context["title"] = book.title
+                    context["category_name"] = book.category.name
+                    context["publisher"] = book.publisher
+                    context["messages"].append("該当する書籍が見つかりました")
+            elif data["process"] == "change":
+                context["tab"] = "change"
+                control_number = data["control_number"]
+                title = data["title"]
+                category = data["category"]
+                publisher = data["publisher"]
+                books = BookCtrl.search(control_number=control_number)[0]
+                if books.count() == 0:
+                    context["errors"].append("【失敗】該当する管理番号の書籍は登録されていません．")
+                elif books.count() > 1:
+                    context["errors"].append("【失敗】管理番号は正しく入力してください．")
+                else:
+                    book = books[0]
+                    if title != "":
+                        book.title = title
+                    if category != "":
+                        book.category = models.Category.objects.get(name=category)
+                    if publisher != "":
+                        book.publisher = publisher
+                    book.save()
+                    context["messages"].append("書籍の情報を更新しました．")
         except Exception as e:
             context["errors"].append("失敗しました：{}".format(e))
     return HttpResponse(template.render(context, request))

@@ -14,6 +14,21 @@
     {% endfor %}
 {% endif %}
 
+{% if change_book %}
+    <dictsortreversed type="hidden" name="change_book">
+        <input type="hidden" name="control_number" value={{ control_number }} />
+        <input type="hidden" name="title" value={{ title }} />
+        <input type="hidden" name="category_name" value={{ category_name }} />
+        <input type="hidden" name="publisher" value={{ publisher }} />
+    </div>
+{% endif %}
+
+{% if tab %}
+    <input type="hidden" name="tab" value={{ tab }} />
+{% else %}
+    <input type="hidden" name="tab" value="register" />>
+{% endif %}
+
 <div id="main"></div>
 {% endblock %}
 
