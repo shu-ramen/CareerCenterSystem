@@ -241,27 +241,40 @@ def register_book(request):
                     context["form"] = book
             elif data["process"] == "export_book_file":
                 context["tab"] = "export_file"
-                response = HttpResponse(content_type='text/csv; charset=Shift-JIS')
+                response = HttpResponse(content_type='text/csv; charset=utf-32')
                 filename = datetime.datetime.now().strftime("books_%Y%m%d_%H%M%S.csv")
                 response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
-                writer = csv.writer(response)
-                writer.writerow(["管理番号", "書籍名", "カテゴリ", "出版社", "アクティブ"])
+                writer = csv.writer(response, delimiter='\t')
+                writer.writerow([
+                    "管理番号".encode("utf-32").decode("utf-32"),
+                    "書籍名".encode("utf-32").decode("utf-32"),
+                    "カテゴリ".encode("utf-32").decode("utf-32"),
+                    "出版社".encode("utf-32").decode("utf-32"),
+                    "アクティブ".encode("utf-32").decode("utf-32")
+                ])
+                print([
+                    "管理番号".encode("utf-32").decode("utf-32"),
+                    "書籍名".encode("utf-32").decode("utf-32"),
+                    "カテゴリ".encode("utf-32").decode("utf-32"),
+                    "出版社".encode("utf-32").decode("utf-32"),
+                    "アクティブ".encode("utf-32").decode("utf-32")
+                ])
                 for book in models.Book.objects.all():
                     if book.category:
                         writer.writerow([
-                            book.control_number,
-                            book.title,
-                            book.category.name,
-                            book.publisher,
-                            book.is_active
+                            str(book.control_number).encode("utf-32").decode("utf-32"),
+                            str(book.title).encode("utf-32").decode("utf-32"),
+                            str(book.category.name).encode("utf-32").decode("utf-32"),
+                            str(book.publisher).encode("utf-32").decode("utf-32"),
+                            str(book.is_active).encode("utf-32").decode("utf-32")
                         ])
                     else:
                         writer.writerow([
-                            book.control_number,
-                            book.title,
-                            "削除済",
-                            book.publisher,
-                            book.is_active
+                            str(book.control_number).encode("utf-32").decode("utf-32"),
+                            str(book.title).encode("utf-32").decode("utf-32"),
+                            "削除済".encode("utf-32").decode("utf-32"),
+                            str(book.publisher).encode("utf-32").decode("utf-32"),
+                            str(book.is_active).encode("utf-32").decode("utf-32")
                         ])
                 return response
             elif data["process"] == "register_book_file":
@@ -352,6 +365,7 @@ def register_book(request):
                     book.save()
                     context["messages"].append("書籍の情報を更新しました．")
         except Exception as e:
+            print(e)
             context["errors"].append("失敗しました：{}".format(e))
     return HttpResponse(template.render(context, request))
 
@@ -414,29 +428,40 @@ def status_borrow_recent(request):
         "errors": []
     }
     if request.method == "POST":
-        response = HttpResponse(content_type='text/csv; charset=Shift-JIS')
+        response = HttpResponse(content_type='text/csv; charset=Utf-32')
         filename = datetime.datetime.now().strftime("history_recent_%Y%m%d_%H%M%S.csv")
         response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
-        writer = csv.writer(response)
+        writer = csv.writer(response, delimiter='\t')
         writer.writerow([
-            "履歴ID", "学籍番号", "氏名", "メールアドレス", "電話番号",
-            "図書ID", "管理番号", "書籍名", "カテゴリ", "出版社", "処理", "実行日", "返却期限"
+            "履歴ID".encode("utf-32").decode("utf-32"),
+            "学籍番号".encode("utf-32").decode("utf-32"),
+            "氏名".encode("utf-32").decode("utf-32"),
+            "メールアドレス".encode("utf-32").decode("utf-32"),
+            "電話番号".encode("utf-32").decode("utf-32"),
+            "図書ID".encode("utf-32").decode("utf-32"),
+            "管理番号".encode("utf-32").decode("utf-32"),
+            "書籍名".encode("utf-32").decode("utf-32"),
+            "カテゴリ".encode("utf-32").decode("utf-32"),
+            "出版社".encode("utf-32").decode("utf-32"),
+            "処理".encode("utf-32").decode("utf-32"),
+            "実行日".encode("utf-32").decode("utf-32"),
+            "返却期限".encode("utf-32").decode("utf-32")
         ])
         for row in BookCtrl.get_current_history():
             writer.writerow([
-                row["id"],
-                row["username"],
-                row["name"],
-                row["email"],
-                "tel:{}".format(row["phone"]),
-                row["book_id"],
-                row["control_number"],
-                row["title"],
-                row["category"],
-                row["publisher"],
-                row["process"],
-                row["timestamp"],
-                row["deadline"]
+                str(row["id"]).encode("utf-32").decode("utf-32"),
+                str(row["username"]).encode("utf-32").decode("utf-32"),
+                str(row["name"]).encode("utf-32").decode("utf-32"),
+                str(row["email"]).encode("utf-32").decode("utf-32"),
+                "tel:{}".format(row["phone"]).encode("utf-32").decode("utf-32"),
+                str(row["book_id"]).encode("utf-32").decode("utf-32"),
+                str(row["control_number"]).encode("utf-32").decode("utf-32"),
+                str(row["title"]).encode("utf-32").decode("utf-32"),
+                str(row["category"]).encode("utf-32").decode("utf-32"),
+                str(row["publisher"]).encode("utf-32").decode("utf-32"),
+                str(row["process"]).encode("utf-32").decode("utf-32"),
+                str(row["timestamp"]).encode("utf-32").decode("utf-32"),
+                str(row["deadline"]).encode("utf-32").decode("utf-32")
             ])
         return response
     return HttpResponse(template.render(context, request))
@@ -450,29 +475,40 @@ def status_borrow_past(request):
         "errors": []
     }
     if request.method == "POST":
-        response = HttpResponse(content_type='text/csv; charset=Shift-JIS')
+        response = HttpResponse(content_type='text/csv; charset=Utf-32')
         filename = datetime.datetime.now().strftime("history_all_%Y%m%d_%H%M%S.csv")
         response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
-        writer = csv.writer(response)
+        writer = csv.writer(response, delimiter='\t')
         writer.writerow([
-            "履歴ID", "学籍番号", "氏名", "メールアドレス", "電話番号",
-            "図書ID", "管理番号", "書籍名", "カテゴリ", "出版社", "処理", "実行日", "返却期限"
+            "履歴ID".encode("utf-32").decode("utf-32"),
+            "学籍番号".encode("utf-32").decode("utf-32"),
+            "氏名".encode("utf-32").decode("utf-32"),
+            "メールアドレス".encode("utf-32").decode("utf-32"),
+            "電話番号".encode("utf-32").decode("utf-32"),
+            "図書ID".encode("utf-32").decode("utf-32"),
+            "管理番号".encode("utf-32").decode("utf-32"),
+            "書籍名".encode("utf-32").decode("utf-32"),
+            "カテゴリ".encode("utf-32").decode("utf-32"),
+            "出版社".encode("utf-32").decode("utf-32"),
+            "処理".encode("utf-32").decode("utf-32"),
+            "実行日".encode("utf-32").decode("utf-32"),
+            "返却期限".encode("utf-32").decode("utf-32")
         ])
         for row in BookCtrl.get_all_history():
             writer.writerow([
-                row["id"],
-                row["username"],
-                row["name"],
-                row["email"],
-                "tel:{}".format(row["phone"]),
-                row["book_id"],
-                row["control_number"],
-                row["title"],
-                row["category"],
-                row["publisher"],
-                row["process"],
-                row["timestamp"],
-                row["deadline"]
+                str(row["id"]).encode("utf-32").decode("utf-32"),
+                str(row["username"]).encode("utf-32").decode("utf-32"),
+                str(row["name"]).encode("utf-32").decode("utf-32"),
+                str(row["email"]).encode("utf-32").decode("utf-32"),
+                "tel:{}".format(row["phone"]).encode("utf-32").decode("utf-32"),
+                str(row["book_id"]).encode("utf-32").decode("utf-32"),
+                str(row["control_number"]).encode("utf-32").decode("utf-32"),
+                str(row["title"]).encode("utf-32").decode("utf-32"),
+                str(row["category"]).encode("utf-32").decode("utf-32"),
+                str(row["publisher"]).encode("utf-32").decode("utf-32"),
+                str(row["process"]).encode("utf-32").decode("utf-32"),
+                str(row["timestamp"]).encode("utf-32").decode("utf-32"),
+                str(row["deadline"]).encode("utf-32").decode("utf-32")
             ])
         return response
     return HttpResponse(template.render(context, request))
