@@ -11,6 +11,7 @@ from . import models, forms
 from .backend.controller import BookController as BookCtrl
 from .backend.controller import CommController as CommCtrl
 from .backend.controller import EmailController as EmailCtrl
+from .backend.controller import NoticeController as NoticeCtrl
 
 # Create your views here.
 @login_required(login_url="/accounts/login/")
@@ -521,4 +522,37 @@ def remind(request):
         EmailCtrl.remind()
     if EmailCtrl.getLatestReminderTimestamp is not None:
         context["timestamp"] = EmailCtrl.getLatestReminderTimestamp
+    return HttpResponse(template.render(context, request))
+
+@staff_member_required(login_url="/accounts/login/")
+def notice(request):
+    template = loader.get_template('library/notice.html')
+    context = {
+        "notices": NoticeCtrl.get_all_notices(),
+        "tab": "add",
+        "messages": [],
+        "errors": []
+    }
+    if request.method == "POST":
+        try:
+            data = CommCtrl.get_posted_data(request)
+            process = data["process"]
+            if process == "add":
+                content = data["content"]
+                is_important = True if data["is_important"] == "重要" else False
+                notice = models.Notice(
+                    content=content,
+                    is_important=is_important
+                )
+                notice.save()
+                context["messages"].append("お知らせを追加しました")
+                context["tab"] = "add"
+            if process == "delete":
+                response = {
+                    "message": NoticeCtrl.delete_notice(int(data["notice_id"])),
+                    "success": True
+                }
+                return JsonResponse(response)
+        except Exception as e:
+            context["errors"].append("失敗しました：{}".format(e))
     return HttpResponse(template.render(context, request))

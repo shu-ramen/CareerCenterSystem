@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}お知らせ管理 | 図書システム{% endblock %}
+
+{% block stylesheet %}{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+
+{% if notices %}
+    {% for notice in notices %}
+        <div type="hidden" name="notice">
+            <input type="hidden" name="notice_id" value={{ notice.notice_id }} />
+            <input type="hidden" name="content" value={{ notice.content }} />
+            <input type="hidden" name="is_important" value={{ notice.is_important }} />
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if tab %}
+    <input type="hidden" name="tab" value={{ tab }} />
+{% else %}
+    <input type="hidden" name="tab" value="add" />>
+{% endif %}
+
+<div id="main"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/library_notice.js"></script>
+{% endblock %}

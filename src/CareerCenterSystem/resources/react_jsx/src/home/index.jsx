@@ -63,11 +63,26 @@ class News extends React.Component {
     }
 
     getBody() {
-        let body = this.props.messages.map((message) => this.getMessageTag(message));
+        let body = this.props.messages.map((message, idx) => this.getMessageTag(message, idx==(this.props.messages.length-1)));
         return body;
     }
 
-    getMessageTag(message) {
+    getMessageTag(message, is_last) {
+        let messages = message.split("_plus_");
+        let messageTags = messages.map((message) => this.getMessage(message));
+        if (is_last) {
+            return (
+                <div>{messageTags}</div>
+            );
+        }
+        else {
+            return (
+                <div>{messageTags}<hr /></div>
+            );
+        }
+    }
+
+    getMessage(message) {
         return (
             <p>{message}</p>
         );

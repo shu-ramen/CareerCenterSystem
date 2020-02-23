@@ -135,6 +135,18 @@ class Index extends React.Component {
                         </Card>
                         <br />
                     </Col>
+                    <Col xl={4} lg={4} md={4} sm={12} xs={12}>
+                        <Card bg="dark" text="white" style={{ width: '100%' }}>
+                            <Card.Header as="h5">お知らせ管理</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    お知らせ情報の削除や追加を行います．
+                                </Card.Text>
+                                <Button variant="dark" href="notice/" block>実行</Button>
+                            </Card.Body>
+                        </Card>
+                        <br />
+                    </Col>
                 </Row>
             </Container>
         )

@@ -459,3 +459,37 @@ class EmailController(object):
             return (latest[0].timestamp + datetime.timedelta(hours=9)).strftime("%Y/%m/%d-%H:%M")
         else:
             return None
+
+class NoticeController(object):
+    @staticmethod
+    def get_all_notices():
+        notices = []
+        noticeSet = models.Notice.objects.all()
+        if noticeSet.count() > 0:
+            for notice in noticeSet:
+                notices.append({
+                    "notice_id": notice.id,
+                    "content": notice.content.replace("\r", "").replace("\n", "/"),
+                    "is_important": ("重要" if notice.is_important else "通常")
+                })
+        return notices
+    
+    @staticmethod
+    def delete_notice(notice_id):
+        if (models.Notice.objects.filter(id=notice_id).count() == 1):
+            notice = models.Notice.objects.get(id=notice_id)
+            notice.delete()
+            return "削除しました．"
+        else:
+            return "該当するお知らせはありません．"
+    
+    @staticmethod
+    def get_notice_tags(importance):
+        notices = []
+        noticeSet = models.Notice.objects.all()
+        print(noticeSet.count())
+        if noticeSet.count() > 0:
+            for notice in noticeSet:
+                if notice.is_important == importance:
+                    notices.append(notice.content.replace("\r", "").replace("\n", "_plus_"))
+        return notices

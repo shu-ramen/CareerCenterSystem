@@ -33,3 +33,7 @@ class History(models.Model):
 
 class ReminderHistory(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
+
+class Notice(models.Model):
+    content = models.CharField(max_length=1024)
+    is_important = models.BooleanField(default=False)
