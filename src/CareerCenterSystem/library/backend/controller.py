@@ -395,7 +395,10 @@ class EmailController(object):
             today = datetime.datetime.now()
             deadline = today + datetime.timedelta(weeks=2)
             user.email_user(
-                subject=email_borrow.SUBJECT,
+                subject=email_borrow.SUBJECT.format(
+                    user.username,
+                    "{0} {1}".format(user.last_name, user.first_name)
+                ),
                 message=email_borrow.MESSAGE.format(
                     user.username,
                     "{0} {1}".format(user.last_name, user.first_name),
@@ -431,7 +434,10 @@ class EmailController(object):
             user = history.user
             book = history.book
             user.email_user(
-                subject=email_reminder.SUBJECT,
+                subject=email_reminder.SUBJECT.format(
+                    user.username,
+                    "{0} {1}".format(user.last_name, user.first_name)
+                ),
                 message=email_reminder.MESSAGE.format(
                     user.username,
                     "{0} {1}".format(user.last_name, user.first_name),
