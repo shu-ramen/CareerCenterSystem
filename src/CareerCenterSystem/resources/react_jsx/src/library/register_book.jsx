@@ -43,6 +43,14 @@ class Register extends React.Component {
                 <Row>
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
+                        <Button variant="outline-secondary" href="/library">図書システムトップへ戻る</Button>
+                    </Col>
+                    <Col></Col>
+                </Row>
+                <br />
+                <Row>
+                    <Col></Col>
+                    <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Tabs defaultActiveKey={this.props.tab} id="register_book_tab">
                             <Tab eventKey="register" title="新規登録">
                                 <br />

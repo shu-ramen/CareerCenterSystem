@@ -33,6 +33,14 @@ class Reminder extends React.Component {
                 <Row>
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
+                        <Button variant="outline-secondary" href="/library">図書システムトップへ戻る</Button>
+                    </Col>
+                    <Col></Col>
+                </Row>
+                <br />
+                <Row>
+                    <Col></Col>
+                    <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Card border="dark" text="black" style={{ borderWidth: '2px' }}>
                             <Card.Header as="h3">直近のリマインドメール送信日時</Card.Header>
                             <Card.Body>

@@ -45,7 +45,9 @@ class Result extends React.Component {
                 <Container fluid>
                     <br />
                     <Row>
-                        <Col xl={8} lg={8} md={8} sm={12} sx={12}></Col>
+                        <Col xl={8} lg={8} md={8} sm={12} sx={12}>
+                            <Button variant="outline-secondary" href="/library">図書システムトップへ戻る</Button>
+                        </Col>
                         <Col xl={4} lg={4} md={4} sm={12} sx={12}>
                             <Form method="POST">
                                 {getCsrfTokenTag()}
@@ -83,9 +85,19 @@ class Result extends React.Component {
                 <Container fluid>
                     <br />
                     <Row>
+                        <Col></Col>
+                        <Col xl={8} lg={8} md={8} sm={12} sx={12}>
+                            <Button variant="outline-secondary" href="/library">図書システムトップへ戻る</Button>
+                        </Col>
+                        <Col></Col>
+                    </Row>
+                    <br />
+                    <Row>
+                        <Col></Col>
                         <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                             現在貸出中の書籍はありません．
                         </Col>
+                        <Col></Col>
                     </Row>
                 </Container>
             );
