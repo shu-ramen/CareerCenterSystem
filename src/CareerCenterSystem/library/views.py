@@ -304,9 +304,6 @@ def register_book(request):
                                     title = line[1]
                                     category = line[2]
                                     publisher = line[3]
-                                    if BookCtrl.search(control_number=control_number)[0].count() != 0:
-                                        context["errors"].append("【失敗】{}件目のデータが不正です．管理番号が既存のものと重複しています．以降のデータはすべて登録されていません．".format(idx))
-                                        break
                                     if control_number=="" or title == "" or category == "" or publisher == "":
                                         context["errors"].append("【失敗】{}件目のデータが不正です．空白のデータは許容されません．以降のデータはすべて登録されていません．".format(idx))
                                         break
@@ -314,13 +311,22 @@ def register_book(request):
                                         new_category = models.Category(name=category)
                                         new_category.save()
                                         context["messages"].append("カテゴリ【{}】を新たに追加しました".format(category))
-                                    book = models.Book(
-                                        control_number=control_number,
-                                        title=title.replace(" ", "　"),
-                                        publisher=publisher.replace(" ", "　"),
-                                        category=models.Category.objects.get(name=category)
-                                    )
-                                    book.save()
+                                    if BookCtrl.search(control_number=control_number)[0].count() != 0:
+                                        # 既存のデータと重複している場合，内容を更新する
+                                        book = BookCtrl.search(control_number=control_number)[0][0]
+                                        book.title = title.replace(" ", "　")
+                                        book.publisher = publisher.replace(" ", "　")
+                                        book.category = models.Category.objects.get(name=category)
+                                        book.save()
+                                    else:
+                                        # 新規データの場合
+                                        book = models.Book(
+                                            control_number=control_number,
+                                            title=title.replace(" ", "　"),
+                                            publisher=publisher.replace(" ", "　"),
+                                            category=models.Category.objects.get(name=category)
+                                        )
+                                        book.save()
                                 else:
                                     context["errors"].append("【失敗】{}件目のデータが不正です．データ形式を確認してください．以降のデータはすべて登録されていません．".format(idx))
                                     break
