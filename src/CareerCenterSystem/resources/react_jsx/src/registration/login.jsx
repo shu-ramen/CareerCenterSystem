@@ -73,11 +73,11 @@ class Login extends React.Component {
                             {getCsrfTokenTag()}
                             <Form.Group controlId="id_username">
                                 <Form.Label>学籍番号</Form.Label>
-                                <Form.Control name="username"  type="text" placeholder="学籍番号を入力してください" required />
+                                <Form.Control name="username"  type="text" placeholder="学籍番号を入力してください" autocomplete="off" required />
                             </Form.Group>
                             <Form.Group controlId="id_password">
                                 <Form.Label>パスワード</Form.Label>
-                                <Form.Control name="password" type="password" placeholder="パスワードを入力してください" required />
+                                <Form.Control name="password" type="password" placeholder="パスワードを入力してください" autocomplete="off" required />
                             </Form.Group>
                             <Button variant="primary" size="lg"  type="submit" block>ログイン</Button>
                             <Button variant="link" href="/accounts/signup/" block>アカウントを持っていない方はこちら</Button>

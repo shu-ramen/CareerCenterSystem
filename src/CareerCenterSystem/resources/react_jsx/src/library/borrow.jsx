@@ -61,7 +61,7 @@ class Borrow extends React.Component {
                 <td>{book["title"]}</td>
                 <td>{book["category"]}</td>
                 <td>{book["publisher"]}</td>
-                <td><Button variant="danger" onClick={() => this.deleteBook(idx)} size="sm">削除</Button></td>
+                <td><Button variant="danger" onClick={() => this.deleteBook(idx)} size="sm">取消</Button></td>
             </tr>
         )
     }
@@ -198,7 +198,7 @@ class Borrow extends React.Component {
                 <Row>
                     <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
-                        <Row>
+                        {/* <Row>
                             <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                                 <InputGroup className="mb-3">
                                     <InputGroup.Prepend>
@@ -210,7 +210,7 @@ class Borrow extends React.Component {
                             <Col xl={4} lg={4} md={4} sm={12} sx={12}>
                                 <Button variant="info" onClick={() => this.requestBookWithId()} block>追加</Button>
                             </Col>
-                        </Row>
+                        </Row> */}
                         <Row>
                             <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                                 <InputGroup className="mb-3">
