@@ -65,9 +65,9 @@ class CustomUser(AbstractUser):
     ]
 
     def get_full_name(self):
-        full_name = "%s %s".format(self.last_name, self.first_name)
+        full_name = "{0:s} {1:s}".format(self.last_name, self.first_name)
         return full_name
     
     def get_full_name_kana(self):
-        full_name_kana = "%s %s".format(self.last_name_kana, self.first_name_kana)
+        full_name_kana = "{0:s} {1:s}".format(self.last_name_kana, self.first_name_kana)
         return full_name_kana
