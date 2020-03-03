@@ -49,7 +49,7 @@ class CustomUser(AbstractUser):
     """
     first_name_kana = models.CharField(_('first name kana'), max_length=30, blank=True)
     last_name_kana = models.CharField(_('last name kana'), max_length=150, blank=True)
-    phone_number = models.CharField(_('phone number'), max_length=12, blank=False)
+    phone_number = models.CharField(_('phone number'), max_length=16, blank=False)
 
     objects=CustomUserManager()
 
