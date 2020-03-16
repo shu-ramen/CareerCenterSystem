@@ -47,9 +47,9 @@ class CustomUser(AbstractUser):
     Args:
         AbstractUser (object): AbstractUserを継承
     """
-    first_name_kana = models.CharField(_('first name kana'), max_length=30, blank=True)
-    last_name_kana = models.CharField(_('last name kana'), max_length=150, blank=True)
-    phone_number = models.CharField(_('phone number'), max_length=16, blank=False)
+    first_name_kana = models.CharField(_('名（かな）'), max_length=30, blank=True)
+    last_name_kana = models.CharField(_('姓（かな）'), max_length=150, blank=True)
+    phone_number = models.CharField(_('電話番号'), max_length=16, blank=False)
 
     objects=CustomUserManager()
 

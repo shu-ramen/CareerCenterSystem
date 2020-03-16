@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}ユーザー情報{% endblock %}
+
+{% block styles %}
+{% endblock %}
+
+{% block headertitle %}ユーザー情報{% endblock %}
+
+{% block content %}
+<div class="ui grid stackable">
+    <div class="eleven wide column">
+        <div class="ui segment">
+            <div class="content">
+                <div class="header"><h3>ユーザー情報</h3></div>
+                <div class="ui divided bulleted list">
+                    <div class="item">ユーザー名：{{user.username}}</div>
+                    <div class="item">名前：{{user.last_name}}　{{user.first_name}}</div>
+                    <div class="item">名前（かな）：{{user.last_name_kana}}　{{user.first_name_kana}}</div>
+                    <div class="item">メールアドレス：{{user.email}}</div>
+                    <div class="item">電話番号：{{user.phone_number}}</div>
+                </div>
+            </div>
+        </div>
+        <a class="ui button" href="/accounts/user/update/">登録情報変更</a>
+    </div>
+</div>
+{% endblock %}

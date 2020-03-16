@@ -31,7 +31,7 @@ class Header extends React.Component {
             return (
                 <ButtonToolbar>
                     <ButtonGroup>
-                        <Button variant="outline-secondary" href="#">{this.props.username}</Button>
+                        <Button variant="outline-secondary" href="/accounts/user/detail/">{this.props.username}</Button>
                         <Button variant="outline-secondary" href="/accounts/password/change/">パスワード変更</Button>
                         <Button variant="outline-danger" href="/accounts/logout/">ログアウト</Button>
                     </ButtonGroup>
