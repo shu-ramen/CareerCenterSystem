@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import request from 'superagent';
-import { Button, Col, Container, Form, InputGroup, Row, Table } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, InputGroup, Row, Table } from 'react-bootstrap';
 import { addHeader } from '../share/csrf.jsx';
 
 class Borrow extends React.Component {
@@ -39,7 +39,12 @@ class Borrow extends React.Component {
             );
         } else {
             return (
-                <div></div>
+                <Container>
+                    <br />
+                    <Row>
+                        <h5>借りたい図書を１冊ずつ追加してください．図書は一度に複数貸出可能です．</h5>
+                    </Row>
+                </Container>
             )
         }
     }
@@ -197,6 +202,25 @@ class Borrow extends React.Component {
                 <br />
                 <Row>
                     <Col></Col>
+                    <Col xl={8} lg={8} md={8} sm={12} xs={12}>
+                        <Card border="dark" text="black" style={{ borderWidth: '2px' }}>
+                            <Card.Header as="h4">図書の貸出方法</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    １．借りたい図書の書籍IDを入力する。<br />
+                                    ２．追加ボタンを押す。<br />
+                                    ３．１と２を繰り返し、借りたい書籍を貸出リストにすべて追加する。<br />
+                                    ４．貸出申請ボタンを押す。
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        <br />
+                    </Col>
+                    <Col></Col>
+                </Row>
+                <br />
+                <Row>
+                    <Col></Col>
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         {/* <Row>
                             <Col xl={8} lg={8} md={8} sm={12} sx={12}>
@@ -225,6 +249,7 @@ class Borrow extends React.Component {
                             </Col>
                         </Row>
                         {booksTable}
+                        <br />
                         <Row>
                             <Button
                                 variant="success"
