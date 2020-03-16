@@ -31,7 +31,19 @@ class Home extends React.Component {
                                 <Card.Text>
                                     ユーザーの管理などを行います．管理者権限が必要です．
                                 </Card.Text>
-                                <Button variant="dark" href="/admin" block>利用</Button>
+                                <Button variant="dark" href="/admin" target="_blank" block>利用</Button>
+                            </Card.Body>
+                        </Card>
+                        <br />
+                    </Col>
+                    <Col xl={6} lg={6} md={6} sm={12} xs={12}>
+                        <Card bg="info" text="white">
+                            <Card.Header>アンケート</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    機能改善のために利用アンケートにご協力ください
+                                </Card.Text>
+                                <Button variant="info" href="https://forms.gle/QjbDkzzYiXPS5yCD8" target="_blank" block>利用</Button>
                             </Card.Body>
                         </Card>
                         <br />

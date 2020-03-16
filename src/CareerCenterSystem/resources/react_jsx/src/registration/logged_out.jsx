@@ -16,7 +16,7 @@ class LoggedOut extends React.Component {
                     <Col xl={8} lg={8} md={8} sm={12} sx={12}>
                         <Row>
                             <Col xl={12} lg={12} md={12} sm={12} sx={12}>
-                                <Alert variant="light">ご利用ありがとうございました。</Alert>
+                                <Alert variant="light">ご利用ありがとうございました。（一定時間経過後にトップページに遷移します。）</Alert>
                             </Col>
                         </Row>
                         <Row>

@@ -8,21 +8,32 @@
 {% block headertitle %}ユーザー情報{% endblock %}
 
 {% block content %}
-<div class="ui grid stackable">
-    <div class="eleven wide column">
-        <div class="ui segment">
-            <div class="content">
-                <div class="header"><h3>ユーザー情報</h3></div>
-                <div class="ui divided bulleted list">
-                    <div class="item">ユーザー名：{{user.username}}</div>
-                    <div class="item">名前：{{user.last_name}}　{{user.first_name}}</div>
-                    <div class="item">名前（かな）：{{user.last_name_kana}}　{{user.first_name_kana}}</div>
-                    <div class="item">メールアドレス：{{user.email}}</div>
-                    <div class="item">電話番号：{{user.phone_number}}</div>
-                </div>
-            </div>
-        </div>
-        <a class="ui button" href="/accounts/user/update/">登録情報変更</a>
+<div class="row justify-content-md-center">
+    <div class="col-6"><h3>ユーザー情報</h3></div>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-2">ユーザー名：</div>
+    <div class="col-4">{{user.username}}</div>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-2">名前：</div>
+    <div class="col-4">{{user.last_name}} {{user.first_name}}</div>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-2">名前（かな）：</div>
+    <div class="col-4">{{user.last_name_kana}} {{user.first_name_kana}}</div>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-2">メールアドレス：</div>
+    <div class="col-4">{{user.email}}</div>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-2">電話番号：</div>
+    <div class="col-4">{{user.phone_number}}</div>
+</div>
+<div class="row justify-content-md-center">
+    <div class="col-6">
+        <a type="button" class="btn btn-primary btn-block" href="/accounts/user/update/">登録情報変更</a>
     </div>
 </div>
 {% endblock %}
