@@ -24,6 +24,18 @@ class Home extends React.Component {
                         </Card>
                         <br />
                     </Col>
+                    <Col xl={6} lg={6} md={6} sm={12} xs={12}>
+                        <Card bg="dark" text="white">
+                            <Card.Header>管理システム</Card.Header>
+                            <Card.Body>
+                                <Card.Text>
+                                    ユーザーの管理などを行います．管理者権限が必要です．
+                                </Card.Text>
+                                <Button variant="dark" href="/admin" block>利用</Button>
+                            </Card.Body>
+                        </Card>
+                        <br />
+                    </Col>
                 </Row>
             </Container>
         );
