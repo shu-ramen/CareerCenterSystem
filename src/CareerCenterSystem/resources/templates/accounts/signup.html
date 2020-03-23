@@ -2,12 +2,17 @@
 
 {% block title %}新規登録{% endblock %}
 
-{% block stylesheet %}{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/input.css" />
+{% endblock %}
 
 {% block content %}
 {% csrf_token %}
 
 <div id="main"></div>
+
+<div style="display:none;" id="form_data">{{form}}</div>
+
 {% endblock %}
 
 {% block scripts %}

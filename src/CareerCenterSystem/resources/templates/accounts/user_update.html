@@ -14,7 +14,7 @@
         <form class="ui form" action="" method="POST">
             {% csrf_token %}
             {{form.as_p}}
-            <a type="button" class="btn btn-warning">更新</button>
+            <button type="submit" class="btn btn-warning">更新</button>
         </form>
         <a href="/accounts/user/detail/">ユーザー情報に戻る</a>
     </div>

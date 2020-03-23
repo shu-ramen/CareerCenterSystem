@@ -110,16 +110,16 @@ class Register extends React.Component {
                                     {getCsrfTokenTag()}
                                     <input type="hidden" name="process" value="change"></input>
                                     <Form.Group controlId="id_control_number_change">
-                                        <Form.Label>管理番号</Form.Label>
+                                        <Form.Label>管理番号【{this.props.control_number}】</Form.Label>
                                         <Form.Control name="control_number" type="text" value={this.props.control_number} maxlength="16" readonly="readonly" required />
                                     </Form.Group>
                                     <Form.Group controlId="id_title_change">
-                                        <Form.Label>書籍名</Form.Label>
+                                        <Form.Label>書籍名【{this.props.title}】</Form.Label>
                                         <Form.Control name="title" placeholder={this.props.title} type="text" maxlength="256" />
                                     </Form.Group>
                                     {categorySelectBox2}
                                     <Form.Group controlId="id_publisher_change">
-                                        <Form.Label>出版社</Form.Label>
+                                        <Form.Label>出版社【{this.props.publisher}】</Form.Label>
                                         <Form.Control name="publisher" placeholder={this.props.publisher} type="text" maxlength="256"/>
                                     </Form.Group>
                                     <Button variant="success" size="lg" type="submit" block>更新</Button>
