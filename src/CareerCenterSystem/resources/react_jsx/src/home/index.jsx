@@ -36,7 +36,7 @@ class Home extends React.Component {
                         </Card>
                         <br />
                     </Col>
-                    <Col xl={6} lg={6} md={6} sm={12} xs={12}>
+                    {/* <Col xl={6} lg={6} md={6} sm={12} xs={12}>
                         <Card bg="info" text="white">
                             <Card.Header>アンケート</Card.Header>
                             <Card.Body>
@@ -47,7 +47,7 @@ class Home extends React.Component {
                             </Card.Body>
                         </Card>
                         <br />
-                    </Col>
+                    </Col> */}
                 </Row>
             </Container>
         );
