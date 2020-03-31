@@ -45,6 +45,14 @@ class BorrowTable extends React.Component {
                 <br />
                 <Row>
                     <Col></Col>
+                    <Col xl={8} lg={8} md={8} sm={12} sx={12}>
+                        <Button variant="outline-secondary" href="/library">図書システムトップへ戻る</Button>
+                    </Col>
+                    <Col></Col>
+                </Row>
+                <br />
+                <Row>
+                    <Col></Col>
                     <Col xl={12} lg={12} md={12} sm={12} sx={12}>
                         <Table striped bordered hover>
                             <thead>
