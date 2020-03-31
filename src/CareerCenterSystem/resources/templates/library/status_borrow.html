@@ -27,6 +27,10 @@
     {% endfor %}
 {% endif %}
 
+{% if target %}
+    <input type="hidden" name="target" value={{ target }} />
+{% endif %}
+
 <div id="result_table"></div>
 {% endblock %}
 

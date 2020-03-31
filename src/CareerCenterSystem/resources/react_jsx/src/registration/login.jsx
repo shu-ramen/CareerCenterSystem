@@ -81,7 +81,7 @@ class Login extends React.Component {
                             </Form.Group>
                             <Button variant="primary" size="lg"  type="submit" block>ログイン</Button>
                             <Button variant="link" href="/accounts/signup/" block>アカウントを持っていない方はこちら</Button>
-                            <Button variant="link" href="/accounts/password/reset/" block>パスワードまたはユーザー名を忘れた場合はこちら</Button>
+                            {/* <Button variant="link" href="/accounts/password/reset/" block>パスワードまたはユーザー名を忘れた場合はこちら</Button> */}
                             {nextTag}
                         </Form>
                     </Col>

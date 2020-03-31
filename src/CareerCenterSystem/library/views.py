@@ -8,6 +8,7 @@ from django.template import loader
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from . import models, forms
+from accounts.models import CustomUser as User
 from .backend.controller import BookController as BookCtrl
 from .backend.controller import CommController as CommCtrl
 from .backend.controller import EmailController as EmailCtrl
@@ -398,7 +399,7 @@ def unregister_book(request):
                     category = models.Category.objects.get(name=category_name)
                 publisher = data["publisher"]
                 # 検索
-                books, message = BookCtrl.search(control_number, title, category, publisher)
+                books, message = BookCtrl.search(control_number, title, category, publisher, active_only=False)
                 if books is not None:
                     context["results"] = []
                     for book in books:
@@ -409,7 +410,8 @@ def unregister_book(request):
                             "title": book.title,
                             "category": book.category,
                             "publisher": book.publisher,
-                            "borrowable": BookCtrl.is_borrowable(book.id)
+                            "borrowable": BookCtrl.is_borrowable(book.id),
+                            "is_active": book.is_active
                         })
                     context["messages"].append(message)
                 else:
@@ -417,6 +419,14 @@ def unregister_book(request):
             elif process == "unregister_book_request":
                 book_id = int(data["book_id"])
                 message, success = BookCtrl.deactivate(book_id)
+                response = {
+                    "message": message,
+                    "success": success
+                }
+                return JsonResponse(response)
+            elif process == "register_book_request":
+                book_id = int(data["book_id"])
+                message, success = BookCtrl.activate(book_id)
                 response = {
                     "message": message,
                     "success": success
@@ -432,45 +442,60 @@ def status_borrow_recent(request):
     context = {
         "results": BookCtrl.get_current_history(),
         "messages": [],
-        "errors": []
+        "errors": [],
+        "target": "recent"
     }
     if request.method == "POST":
-        response = HttpResponse(content_type='text/csv; charset=Utf-32')
-        filename = datetime.datetime.now().strftime("history_recent_%Y%m%d_%H%M%S.csv")
-        response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
-        writer = csv.writer(response, delimiter='\t')
-        writer.writerow([
-            "履歴ID".encode("utf-32").decode("utf-32"),
-            "学籍番号".encode("utf-32").decode("utf-32"),
-            "氏名".encode("utf-32").decode("utf-32"),
-            "メールアドレス".encode("utf-32").decode("utf-32"),
-            "電話番号".encode("utf-32").decode("utf-32"),
-            "図書ID".encode("utf-32").decode("utf-32"),
-            "管理番号".encode("utf-32").decode("utf-32"),
-            "書籍名".encode("utf-32").decode("utf-32"),
-            "カテゴリ".encode("utf-32").decode("utf-32"),
-            "出版社".encode("utf-32").decode("utf-32"),
-            "処理".encode("utf-32").decode("utf-32"),
-            "実行日".encode("utf-32").decode("utf-32"),
-            "返却期限".encode("utf-32").decode("utf-32")
-        ])
-        for row in BookCtrl.get_current_history():
-            writer.writerow([
-                str(row["id"]).encode("utf-32").decode("utf-32"),
-                str(row["username"]).encode("utf-32").decode("utf-32"),
-                str(row["name"]).encode("utf-32").decode("utf-32"),
-                str(row["email"]).encode("utf-32").decode("utf-32"),
-                "tel:{}".format(row["phone"]).encode("utf-32").decode("utf-32"),
-                str(row["book_id"]).encode("utf-32").decode("utf-32"),
-                str(row["control_number"]).encode("utf-32").decode("utf-32"),
-                str(row["title"]).encode("utf-32").decode("utf-32"),
-                str(row["category"]).encode("utf-32").decode("utf-32"),
-                str(row["publisher"]).encode("utf-32").decode("utf-32"),
-                str(row["process"]).encode("utf-32").decode("utf-32"),
-                str(row["timestamp"]).encode("utf-32").decode("utf-32"),
-                str(row["deadline"]).encode("utf-32").decode("utf-32")
-            ])
-        return response
+        try:
+            data = CommCtrl.get_posted_data(request)
+            process = data["process"]
+            if process == "downlaod":
+                response = HttpResponse(content_type='text/csv; charset=Utf-32')
+                filename = datetime.datetime.now().strftime("history_recent_%Y%m%d_%H%M%S.csv")
+                response['Content-Disposition'] = 'attachment; filename={}'.format(filename)
+                writer = csv.writer(response, delimiter='\t')
+                writer.writerow([
+                    "履歴ID".encode("utf-32").decode("utf-32"),
+                    "学籍番号".encode("utf-32").decode("utf-32"),
+                    "氏名".encode("utf-32").decode("utf-32"),
+                    "メールアドレス".encode("utf-32").decode("utf-32"),
+                    "電話番号".encode("utf-32").decode("utf-32"),
+                    "図書ID".encode("utf-32").decode("utf-32"),
+                    "管理番号".encode("utf-32").decode("utf-32"),
+                    "書籍名".encode("utf-32").decode("utf-32"),
+                    "カテゴリ".encode("utf-32").decode("utf-32"),
+                    "出版社".encode("utf-32").decode("utf-32"),
+                    "処理".encode("utf-32").decode("utf-32"),
+                    "実行日".encode("utf-32").decode("utf-32"),
+                    "返却期限".encode("utf-32").decode("utf-32")
+                ])
+                for row in BookCtrl.get_current_history():
+                    writer.writerow([
+                        str(row["id"]).encode("utf-32").decode("utf-32"),
+                        str(row["username"]).encode("utf-32").decode("utf-32"),
+                        str(row["name"]).encode("utf-32").decode("utf-32"),
+                        str(row["email"]).encode("utf-32").decode("utf-32"),
+                        "tel:{}".format(row["phone"]).encode("utf-32").decode("utf-32"),
+                        str(row["book_id"]).encode("utf-32").decode("utf-32"),
+                        str(row["control_number"]).encode("utf-32").decode("utf-32"),
+                        str(row["title"]).encode("utf-32").decode("utf-32"),
+                        str(row["category"]).encode("utf-32").decode("utf-32"),
+                        str(row["publisher"]).encode("utf-32").decode("utf-32"),
+                        str(row["process"]).encode("utf-32").decode("utf-32"),
+                        str(row["timestamp"]).encode("utf-32").decode("utf-32"),
+                        str(row["deadline"]).encode("utf-32").decode("utf-32")
+                    ])
+                return response
+            elif process == "giveback_book":
+                user = User.objects.get(username=data["username"])
+                message = BookCtrl.giveback(int(data["book_id"]), user)
+                response = {
+                    "message": message,
+                    "success": True if message == "返却が完了しました" else False
+                }
+                return JsonResponse(response)
+        except Exception as e:
+            context["errors"].append("失敗しました：{}".format(e))
     return HttpResponse(template.render(context, request))
 
 @staff_member_required(login_url="/accounts/login/")
@@ -479,7 +504,8 @@ def status_borrow_past(request):
     context = {
         "results": BookCtrl.get_all_history(),
         "messages": [],
-        "errors": []
+        "errors": [],
+        "target": "past"
     }
     if request.method == "POST":
         response = HttpResponse(content_type='text/csv; charset=Utf-32')

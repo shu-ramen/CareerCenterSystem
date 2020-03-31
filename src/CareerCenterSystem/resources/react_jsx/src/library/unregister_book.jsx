@@ -102,8 +102,8 @@ class Result extends React.Component {
     }
 
     getTr(result, idx) {
-        let status = this.getStatus(result["borrowable"]);
-        let button = this.getButton(result["book_id"], result["borrowable"], idx);
+        let status = this.getStatus(result["borrowable"], result["is_active"]);
+        let button = this.getButton(result["book_id"], result["borrowable"], result["is_active"], idx);
         return (
             <tr>
                 <td>{result["book_id"]}</td>
@@ -117,22 +117,32 @@ class Result extends React.Component {
         );
     }
 
-    getStatus(borrowable) {
-        if (borrowable == "True") {
-            return "";
+    getStatus(borrowable, is_active) {
+        if (is_active == "True") {
+            if (borrowable == "True") {
+                return "";
+            } else {
+                return "貸出中";
+            }
         } else {
-            return "貸出中";
+            return "廃棄済";
         }
     }
 
-    getButton(book_id, borrowable, idx) {
-        if (borrowable == "True") {
-            return (
-                <Button variant="danger" onClick={() => this.unregister_book_request(book_id, idx)} size="sm">廃棄</Button>
-            );
+    getButton(book_id, borrowable, is_active, idx) {
+        if (is_active == "True") {
+            if (borrowable == "True") {
+                return (
+                    <Button variant="danger" onClick={() => this.unregister_book_request(book_id, idx)} size="sm">廃棄</Button>
+                );
+            } else {
+                return (
+                    <div></div>
+                );
+            }
         } else {
             return (
-                <div></div>
+                <Button variant="primary" onClick={() => this.register_book_request(book_id, idx)} size="sm">復元</Button>
             );
         }
     }
@@ -153,7 +163,31 @@ class Result extends React.Component {
                         alert(res.body["message"]);
                         let tbody = document.getElementById("result_tbody");
                         ReactDOM.render(<div>廃棄済</div>, tbody.children[idx].children[5]);
-                        ReactDOM.render(this.getButton(book_id, "False", idx), tbody.children[idx].children[6]);
+                        ReactDOM.render(this.getButton(book_id, "False", "False", idx), tbody.children[idx].children[6]);
+                    } else {
+                        alert(res.body["message"]);
+                    }
+                }.bind(this));
+        }
+    }
+
+    register_book_request(book_id, idx) {
+        let confirmation = confirm("本当に復元してもよろしいですか？");
+        if (confirmation) {
+            addHeader(request.post(""))
+                .send({
+                    "book_id": book_id,
+                    "process": "register_book_request"
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        alert(res.text);
+                    }
+                    if (res.body["success"]) {
+                        alert(res.body["message"]);
+                        let tbody = document.getElementById("result_tbody");
+                        ReactDOM.render(<div>復元済</div>, tbody.children[idx].children[5]);
+                        ReactDOM.render(this.getButton(book_id, "True", "True", idx), tbody.children[idx].children[6]);
                     } else {
                         alert(res.body["message"]);
                     }
@@ -200,7 +234,8 @@ if (document.getElementsByName('result').length > 0) {
             "title": resultTag.children[2].value,
             "category": resultTag.children[3].value,
             "publisher": resultTag.children[4].value,
-            "borrowable": resultTag.children[5].value
+            "borrowable": resultTag.children[5].value,
+            "is_active": resultTag.children[6].value
         });
     }
     ReactDOM.render(

@@ -8,7 +8,7 @@ class BookController(object):
     CARTIN_MODE_CTRL_NUM = 1
 
     @staticmethod
-    def search(control_number="", title="", category=None, publisher=""):
+    def search(control_number="", title="", category=None, publisher="", active_only=True):
         """図書の検索
         
         Args:
@@ -28,10 +28,16 @@ class BookController(object):
         else:
             if category is not None:
                 # カテゴリーの指定がある場合
-                books = models.Book.objects.filter(control_number__icontains=control_number, title__icontains=title, category=category, publisher__icontains=publisher, is_active=True)
+                if active_only:
+                    books = models.Book.objects.filter(control_number__icontains=control_number, title__icontains=title, category=category, publisher__icontains=publisher, is_active=True)
+                else:
+                    books = models.Book.objects.filter(control_number__icontains=control_number, title__icontains=title, category=category, publisher__icontains=publisher)
             else:
                 # カテゴリーの指定がある場合
-                books = models.Book.objects.filter(control_number__icontains=control_number, title__icontains=title, publisher__icontains=publisher, is_active=True)
+                if active_only:
+                    books = models.Book.objects.filter(control_number__icontains=control_number, title__icontains=title, publisher__icontains=publisher, is_active=True)
+                else:
+                    books = models.Book.objects.filter(control_number__icontains=control_number, title__icontains=title, publisher__icontains=publisher)
             # 検索条件に一致するものがあるかチェック
             if books.count() > 0:
                 message = "検索が完了しました"
@@ -350,6 +356,29 @@ class BookController(object):
         if (models.Book.objects.filter(id=book_id).count() == 1):
             book = models.Book.objects.get(id=book_id)
             book.is_active = False
+            book.save()
+            message = "図書の廃棄処理を行いました"
+            success = True
+        else:
+            message = "IDの一致する図書が存在しません"
+            success = False
+        return message, success
+    
+    @staticmethod
+    def activate(book_id):
+        """図書の復元（有効化）
+        
+        Args:
+            book_id (int): 図書ID
+        
+        Returns:
+            str, bool: 応答メッセージ, 成功したかどうか
+        """
+        message = None
+        success = None
+        if (models.Book.objects.filter(id=book_id).count() == 1):
+            book = models.Book.objects.get(id=book_id)
+            book.is_active = True
             book.save()
             message = "図書の廃棄処理を行いました"
             success = True

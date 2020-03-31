@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import request from 'superagent';
 import { Button, Col, Container, Form,  Row, Table } from 'react-bootstrap';
-import { getCsrfTokenTag } from '../share/csrf.jsx';
+import { addHeader, getCsrfTokenTag } from '../share/csrf.jsx';
 
 class Result extends React.Component {
     constructor() {
@@ -9,7 +10,7 @@ class Result extends React.Component {
     }
 
     getTbody() {
-        let trs = this.props.results.map((result) => this.getTr(result));
+        let trs = this.props.results.map((result, idx) => this.getTr(result, idx));
         return (
             <tbody id="result_tbody">
                 {trs}
@@ -17,7 +18,8 @@ class Result extends React.Component {
         );
     }
 
-    getTr(result) {
+    getTr(result, idx) {
+        let button = this.getButton(result["book_id"], result["username"], idx);
         return (
             <tr>
                 <td>{result["id"]}</td>
@@ -33,8 +35,46 @@ class Result extends React.Component {
                 <td>{result["process"]}</td>
                 <td>{result["timestamp"]}</td>
                 <td>{result["deadline"]}</td>
+                <td>{button}</td>
             </tr>
         );
+    }
+
+    getButton(book_id, username, idx) {
+        if (this.props.target == "recent") {
+            return (
+                <Button variant="danger" onClick={() => this.giveback_book(book_id, username, idx)} size="sm">返却</Button>
+            )
+        }
+        else {
+            return (
+                <div></div>
+            )
+        }
+    }
+
+    giveback_book(book_id, username, idx) {
+        let confirmation = confirm("本当に返却してもよろしいですか？");
+        if (confirmation) {
+            addHeader(request.post(""))
+                .send({
+                    "book_id": book_id,
+                    "username": username,
+                    "process": "giveback_book"
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        alert(res.text);
+                    }
+                    if (res.body["success"]) {
+                        alert(res.body["message"]);
+                        let tbody = document.getElementById("result_tbody");
+                        ReactDOM.render(<div>返却済</div>, tbody.children[idx].children[13]);
+                    } else {
+                        alert(res.body["message"]);
+                    }
+                }.bind(this));
+        }
     }
 
     render() {
@@ -51,6 +91,7 @@ class Result extends React.Component {
                         <Col xl={4} lg={4} md={4} sm={12} sx={12}>
                             <Form method="POST">
                                 {getCsrfTokenTag()}
+                                <input type="hidden" name="process" value="download"></input>
                                 <Button variant="success" type="submit" block>ダウンロード</Button>
                             </Form>
                         </Col>
@@ -73,6 +114,7 @@ class Result extends React.Component {
                                     <th>処理</th>
                                     <th>実行日</th>
                                     <th>返却期限</th>
+                                    <th>処理</th>
                                 </thead>
                                 {tbody}
                             </Table>
@@ -105,6 +147,11 @@ class Result extends React.Component {
     }
 }
 
+let target = "past";
+if (document.getElementsByName('target').length > 0) {
+    target = document.getElementsByName('target')[0].value;
+}
+
 if (document.getElementsByName('result').length > 0) {
     let resultTags = document.getElementsByName('result');
     let results = []
@@ -126,13 +173,13 @@ if (document.getElementsByName('result').length > 0) {
         });
     }
     ReactDOM.render(
-        <Result results={results} />,
+        <Result results={results} target={target} />,
         document.getElementById('result_table')
     );
 }
 else {
     ReactDOM.render(
-        <Result results={[]} />,
+        <Result results={[]} target={target} />,
         document.getElementById('result_table')
     );
 }
