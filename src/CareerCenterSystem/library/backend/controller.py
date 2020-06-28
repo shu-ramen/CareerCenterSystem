@@ -326,10 +326,10 @@ class BookController(object):
         deadline = date + datetime.timedelta(weeks=2)
         data = {
             "id": history.id,
-            "username": history.user.username,
-            "name": "{0} {1}".format(history.user.last_name, history.user.first_name),
-            "email": history.user.email,
-            "phone": history.user.phone_number,
+            "username": history.user.username if history.user is not None else "削除済ユーザ",
+            "name": "{0} {1}".format(history.user.last_name, history.user.first_name) if history.user is not None else "削除済ユーザ",
+            "email": history.user.email if history.user is not None else "削除済ユーザ",
+            "phone": history.user.phone_number if history.user is not None else "削除済ユーザ",
             "book_id": history.book.id,
             "control_number": history.book.control_number,
             "title": history.book.title,
